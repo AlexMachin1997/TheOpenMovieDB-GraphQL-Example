@@ -19,6 +19,7 @@ const Query = require("./models/Query");
 const Movie = require("./models/Movie");
 const Show = require("./models/Show");
 const Video = require("./models/Videos");
+const Person = require("./models/People");
 
 // Resolvers
 const { RootQuery } = require("./resolvers");
@@ -40,7 +41,8 @@ const stuff = makeExecutableSchema({
     Season,
     Show,
     Movie,
-    Video
+    Video,
+    Person
   ],
   resolvers: RootQuery
 });
