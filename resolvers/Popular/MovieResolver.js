@@ -14,20 +14,19 @@ const MoviePopularResolver = async (parent, args, context, info) => {
     const { results } = data;
 
     // 2. Transform the data where needed e.g. release_date, image url etc
-    forEach(results, data => {
-      const hasPosterPath = has(data, "poster_path");
-      const hasBackdropPath = has(data, "backdrop_path");
-      const hasReleaseDatePath = has(data, "release_date");
-
-      if (hasPosterPath) {
-        data.poster_path = `https://image.tmdb.org/t/p/original${data.poster_path}`;
+    forEach(results, movie => {
+      if (has(movie, "poster_path") === true) {
+        const { poster_path } = movie;
+        movie.poster_path = `https://image.tmdb.org/t/p/original${poster_path}`;
       }
-      if (hasBackdropPath) {
-        data.backdrop_path = `https://image.tmdb.org/t/p/original${data.backdrop_path}`;
+      if (has(movie, "backdrop_path") === true) {
+        const { backdrop_path } = movie;
+        movie.backdrop_path = `https://image.tmdb.org/t/p/original${backdrop_path}`;
       }
 
-      if (hasReleaseDatePath) {
-        data.release_date = moment(data.release_date).format("MMMM d, YYYY");
+      if (has(movie, "release_date") === true) {
+        const { release_date } = movie;
+        data.release_date = moment(release_date).format("MMMM d, YYYY");
       }
     });
 
