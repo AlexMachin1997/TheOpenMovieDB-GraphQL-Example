@@ -7,7 +7,7 @@ const typeDef = gql`
     id: Int
     known_for: [KnownFor]
     name: String
-    popularity: Int
+    popularity: Float
   }
 
   type KnownFor {
