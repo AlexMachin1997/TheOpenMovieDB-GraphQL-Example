@@ -1,6 +1,7 @@
 const axios = require("axios");
 const moment = require("moment");
 const { has, forEach } = require("lodash");
+const { generateDiscoverEndpoint } = require("../../config.js");
 
 const DiscoverMoviesResolver = async (parent, args, context, info) => {
   try {
@@ -17,11 +18,12 @@ const DiscoverMoviesResolver = async (parent, args, context, info) => {
 
     // 1. Send a request to the discover movies endpoint
     const response = await axios.get(
-      `https://api.themoviedb.org/3/discover/movie?api_key=1b5adf76a72a13bad99b8fc0c68cb085&page=1${
-        args.releaseDate ? `&primary_release_year=${args.releaseDate}` : ""
-      }${
-        args.sortBy ? `&sort_by=${args.sortBy}` : "popularity.asc"
-      }${genresQuery}`
+      generateDiscoverEndpoint(
+        "movie",
+        args.releaseDate,
+        args.sortBy,
+        genresQuery
+      )
     );
 
     // 2. Destructure the response

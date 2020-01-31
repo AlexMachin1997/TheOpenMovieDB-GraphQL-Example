@@ -1,11 +1,12 @@
 const axios = require("axios");
 const { has, filter, sortBy, forEach } = require("lodash");
+const { generateCastURLEndpoint } = require("../../config.js");
 
 const MovieCastResolver = async (parent, args, context, info) => {
   try {
     // 1. Make a cast request using the Movie object id field
     const response = await axios.get(
-      `https://api.themoviedb.org/3/movie/${parent.id}/credits?api_key=1b5adf76a72a13bad99b8fc0c68cb085`
+      generateCastURLEndpoint(parent.id, "movie")
     );
 
     // 2. Destructure the response

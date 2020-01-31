@@ -2,11 +2,13 @@ const axios = require("axios");
 const { has, forEach } = require("lodash");
 const moment = require("moment");
 
+const { generateCreditsEndpoint } = require("../../config.js");
+
 const MovieCreditsResolver = async (parent, args, context, info) => {
   try {
     // Send a request to the tv_credits endpoint
     const response = await axios.get(
-      `https://api.themoviedb.org/3/person/${parent.id}/movie_credits?api_key=1b5adf76a72a13bad99b8fc0c68cb085&language=en-US`
+      generateCreditsEndpoint(parent.id, "person", "movie_credits")
     );
 
     const { data } = response;

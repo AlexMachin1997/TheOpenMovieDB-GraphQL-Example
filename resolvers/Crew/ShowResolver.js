@@ -1,12 +1,11 @@
 const axios = require("axios");
-const { has, filter, forEach } = require("lodash");
+const { has, forEach } = require("lodash");
+const { generateCrewEndpoint } = require("../../config.js");
 
 const TVCrewResolver = async (parent, args, context, info) => {
   try {
     // Make a crew request using the TV object id field
-    const response = await axios.get(
-      `https://api.themoviedb.org/3/tv/${parent.id}/credits?api_key=1b5adf76a72a13bad99b8fc0c68cb085`
-    );
+    const response = await axios.get(generateCrewEndpoint(parent.id, "tv"));
 
     // 2. Destructure the response
     const { data } = response;
