@@ -1,6 +1,7 @@
 const axios = require("axios");
 const moment = require("moment");
 const { has, forEach } = require("lodash");
+const { generateTopRatedEndpoint, generateImageURL } = require("../../config");
 
 const PopularShowResolver = async (parent, args, context, info) => {
   try {
@@ -15,19 +16,17 @@ const PopularShowResolver = async (parent, args, context, info) => {
 
     // 2. Transform the data where needed e.g. release_date, image url etc
     forEach(results, data => {
-      const hasPosterPath = has(data, "poster_path");
-      const hasBackdropPath = has(data, "backdrop_path");
-      const hasReleaseDatePath = has(data, "release_date");
+      const { poster_path, backdrop_path, release_date } = data;
 
-      if (hasPosterPath) {
-        data.poster_path = `https://image.tmdb.org/t/p/original${data.poster_path}`;
+      if (has(data, "poster_path") === true) {
+        data.poster_path = generateImageURL(poster_path);
       }
-      if (hasBackdropPath) {
-        data.backdrop_path = `https://image.tmdb.org/t/p/original${data.backdrop_path}`;
+      if (has(data, "backdrop_path") === true) {
+        data.backdrop_path = generateImageURL(backdrop_path);
       }
 
-      if (hasReleaseDatePath) {
-        data.release_date = moment(data.release_date).format("MMMM d, YYYY");
+      if (has(data, "release_date") === true) {
+        data.release_date = moment(release_date).format("MMMM d, YYYY");
       }
     });
 
