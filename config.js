@@ -10,6 +10,8 @@ const API_IMAGE_URL = process.env.OPEN_MOVIE_DB_API_IMAGE_URL;
 // The Open Movie Database API Key
 const API_KEY = process.env.OPEN_MOVIE_DB_API_KEY;
 
+const generateImageURL = field => `${API_IMAGE_URL}${field}`;
+
 const generateCastURLEndpoint = (id, resolverType) =>
   `${API_URI}/${API_VERSION}/${resolverType}/${id}/credits?api_key=${API_KEY}`;
 
@@ -83,5 +85,6 @@ module.exports = {
   generateSingleItemLookupEndpoint,
   generateSocialLinksEndpoint,
   generateTopRatedEndpoint,
-  API_IMAGE_URL
+  API_IMAGE_URL,
+  generateImageURL
 };

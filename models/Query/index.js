@@ -9,9 +9,9 @@ const Query = gql`
     DiscoverMovies(releaseDate: Int, sortBy: String, genres: String): [Movies]
     DiscoverShows(releaseDate: Int, sortBy: String, genres: String): [Shows]
 
-    SearchForAMovie(name: String!, id: Int!): Movie
-    SearchForAShow(name: String!, id: Int!): Show
-    SearchForAPerson(name: String!, id: Int!): Person
+    SearchForAMovie(search: String!, id: Int!): Movie
+    SearchForAShow(search: String!, id: Int!): Show
+    SearchForAPerson(search: String!, id: Int!): Person
 
     PopularMovies: [Movies]
     PopularShows: [Shows]

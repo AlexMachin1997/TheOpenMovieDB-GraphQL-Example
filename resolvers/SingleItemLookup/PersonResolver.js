@@ -1,25 +1,28 @@
 const axios = require("axios");
-const { find, has, forEach } = require("lodash");
+const { find } = require("lodash");
+const {
+  generateSearchEndpoint,
+  generateSingleItemLookupEndpoint,
+  generateImageURL
+} = require("../../config");
 
 const SearchForAPersonResolver = async (parent, args, context, info) => {
   try {
     // 1. Make a request to the search API using a search term provided in the query
     const response = await axios.get(
-      `https://api.themoviedb.org/3/search/person?api_key=1b5adf76a72a13bad99b8fc0c68cb085&language=en-US&query=${args.name}&page=1&include_adult=false
-      `
+      generateSearchEndpoint(args.search, "person")
     );
 
-    // 2. Destructure the response
     const { data } = response;
     const { results } = data;
 
-    // 3. Attempt to find the title which matches the search request
+    // 2. Find a person from the search results
     const SinglePerson = await find(results, person => person.id === args.id);
 
-    // 5. Make the Single Movie Lookup
+    // 3. Perform a single person lookup using the person found in search results array
     try {
       const response = await axios.get(
-        `https://api.themoviedb.org/3/person/${SinglePerson.id}?api_key=1b5adf76a72a13bad99b8fc0c68cb085&language=en-US`
+        generateSingleItemLookupEndpoint(SinglePerson.id, "person")
       );
 
       const { data } = response;
