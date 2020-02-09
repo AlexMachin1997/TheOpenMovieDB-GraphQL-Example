@@ -1,4 +1,5 @@
 const axios = require("axios");
+const { generateReviewEndpoint } = require("../../config");
 
 const MovieReviewsResolver = async (parent, args, context, info) => {
   console.log("Movies");
@@ -6,7 +7,7 @@ const MovieReviewsResolver = async (parent, args, context, info) => {
   try {
     // 1. Make a review request using the Movie object id field
     const response = await axios.get(
-      `https://api.themoviedb.org/3/movie/${parent.id}/reviews?api_key=1b5adf76a72a13bad99b8fc0c68cb085&language=en-US&page=1`
+      generateReviewEndpoint(parent.id, "movie")
     );
 
     // 2. Destructure the response

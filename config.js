@@ -49,10 +49,10 @@ const genereateNowPlayingEndpoint = resolverType => {
 const generatePopularEndpoint = resolverType =>
   `${API_URI}/${API_VERSION}/${resolverType}/popular?api_key=${API_KEY}`;
 
-// Need to add
-
-const generateReccomendationEndpoint = (id, resolverType) =>
+const generateRecomendationEndpoint = (id, resolverType) =>
   `${API_URI}/${API_VERSION}/${resolverType}/${id}/recommendations?api_key=${API_KEY}&language=en-US&page=1`;
+
+// Need to add
 
 const generateReviewEndpoint = (id, resolverType) =>
   `${API_URI}/${API_VERSION}/${resolverType}/${id}/reviews?api_key=${API_KEY}&language=en-US&page=1`;
@@ -69,9 +69,6 @@ const generateSocialLinksEndpoint = (id, resolverType) =>
 const generateTopRatedEndpoint = resolverType =>
   `${API_URI}/${API_VERSION}/${resolverType}/top_rated?api_key=${API_KEY}&page=1`;
 
-const generateRecomendationEndpoint = (id, resolverType) =>
-  `${API_URI}/${API_VERSION}/${resolverType}/${id}/recommendations?api_key=${API_KEY}&language=en-US&page=1`;
-
 module.exports = {
   generateCastURLEndpoint,
   generateCreditsEndpoint,
@@ -80,12 +77,11 @@ module.exports = {
   generateKeywordEndpoint,
   genereateNowPlayingEndpoint,
   generatePopularEndpoint,
-  generateReccomendationEndpoint,
+  generateRecomendationEndpoint,
   generateReviewEndpoint,
   generateSearchEndpoint,
   generateSingleItemLookupEndpoint,
   generateSocialLinksEndpoint,
   generateTopRatedEndpoint,
-  generateRecomendationEndpoint,
   API_IMAGE_URL
 };
