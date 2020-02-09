@@ -1,13 +1,12 @@
 const axios = require("axios");
 const moment = require("moment");
 const { has, forEach } = require("lodash");
+const { generatePopularEndpoint } = require("../../config.js");
 
 const TVPopularResolver = async (parent, args, context, info) => {
   try {
     // 1. Send a request to the discover movies endpoint
-    const response = await axios.get(
-      `https://api.themoviedb.org/3/tv/popular?api_key=1b5adf76a72a13bad99b8fc0c68cb085&page=1`
-    );
+    const response = await axios.get(generatePopularEndpoint("tv"));
 
     // 2. Destructure the response
     const { data } = response;

@@ -1,12 +1,13 @@
 const axios = require("axios");
 const { has, forEach } = require("lodash");
 const moment = require("moment");
+const { generateRecomendationEndpoint } = require("../../config");
 
 const TVReccomendationsResolver = async (parent, args, content, info) => {
   try {
     // 1. Make a reccomendations request using the TV ID field
     const response = await axios.get(
-      `https://api.themoviedb.org/3/tv/${parent.id}/recommendations?api_key=1b5adf76a72a13bad99b8fc0c68cb085&language=en-US&page=1        `
+      generateRecomendationEndpoint(parent.id, "tv")
     );
 
     // 2. Destructure the response

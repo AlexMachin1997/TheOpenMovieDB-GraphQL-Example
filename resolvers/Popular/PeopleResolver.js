@@ -1,13 +1,11 @@
 const axios = require("axios");
-const moment = require("moment");
 const { has, forEach } = require("lodash");
+const { generatePopularEndpoint } = require("../../config.js");
 
-const TVPopularResolver = async (parent, args, context, info) => {
+const PopularPeopleResolver = async (parent, args, context, info) => {
   try {
     // 1. Send a request to the discover movies endpoint
-    const response = await axios.get(
-      `https://api.themoviedb.org/3/person/popular?api_key=1b5adf76a72a13bad99b8fc0c68cb085&page=1`
-    );
+    const response = await axios.get(generatePopularEndpoint("person"));
 
     // 2. Destructure the response
     const { data } = response;
@@ -16,6 +14,12 @@ const TVPopularResolver = async (parent, args, context, info) => {
     const { known_for } = results;
 
     // Transform the results data where needed e.g. image urls etc
+    forEach(results, person => {
+      if (has(person, "profile_path") === true) {
+        const { profile_path } = person;
+        person.profile_path = `https://image.tmdb.org/t/p/original${profile_path}`;
+      }
+    });
 
     // Transform the know_for data where needed e.g. release_date, image urls etc
     forEach(known_for, role => {
@@ -39,4 +43,4 @@ const TVPopularResolver = async (parent, args, context, info) => {
   }
 };
 
-module.exports = TVPopularResolver;
+module.exports = PopularPeopleResolver;
