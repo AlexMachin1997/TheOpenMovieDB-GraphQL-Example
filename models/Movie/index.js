@@ -28,7 +28,7 @@ const MovieModel = gql`
     vote_average: Float
     vote_count: Int
     reviews: [Review]
-    reccomendations: [Movie]
+    recomendations: [Movie]
     keywords: [Keyword]
     social: Social
     cast: [Cast]

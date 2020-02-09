@@ -3,7 +3,7 @@ const { has, forEach } = require("lodash");
 const moment = require("moment");
 const { generateRecomendationEndpoint } = require("../../config");
 
-const TVReccomendationsResolver = async (parent, args, content, info) => {
+const TVRecomendationsResolver = async (parent, args, content, info) => {
   try {
     // 1. Make a reccomendations request using the TV ID field
     const response = await axios.get(
@@ -41,4 +41,4 @@ const TVReccomendationsResolver = async (parent, args, content, info) => {
   }
 };
 
-module.exports = TVReccomendationsResolver;
+module.exports = TVRecomendationsResolver;

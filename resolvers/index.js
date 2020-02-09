@@ -9,9 +9,9 @@ const { MovieCrewResolver, ShowCrewResolver } = require("./Crew");
 
 // Reccomendation resolvers
 const {
-  MovieReccomendationsResolver,
-  ShowReccomendationsResolver
-} = require("./Reccomendations");
+  MovieRecomendationsResolver,
+  ShowRecomendationsResolver
+} = require("./Recomendations");
 
 // Keyword resolver
 const { MovieKeywordResolver, ShowKeywordResolver } = require("./Keywords");
@@ -67,7 +67,7 @@ const resolvers = {
     reviews: MovieReviewResolver,
     cast: MovieCastResolver,
     crew: MovieCrewResolver,
-    reccomendations: MovieReccomendationsResolver,
+    recomendations: MovieRecomendationsResolver,
     keywords: MovieKeywordResolver,
     social: MovieSocialResolver,
     videos: MovieVideoResolver
@@ -78,7 +78,7 @@ const resolvers = {
     reviews: ShowReviewResolver,
     cast: ShowCastResolver,
     crew: ShowCrewResolver,
-    reccomendations: ShowReccomendationsResolver,
+    recomendations: ShowRecomendationsResolver,
     keywords: ShowKeywordResolver,
     social: ShowSocialResolver,
     videos: ShowVideoResolver
