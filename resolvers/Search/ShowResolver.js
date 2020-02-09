@@ -1,13 +1,12 @@
 const axios = require("axios");
 const { has, forEach } = require("lodash");
 const moment = require("moment");
+const { generateSearchEndpoint } = require("../../config");
 
 const SearchForMoviesResolver = async (parent, args, context, info) => {
   try {
     // 1. Make a movies request
-    const response = await axios.get(
-      `https://api.themoviedb.org/3/search/tv?api_key=1b5adf76a72a13bad99b8fc0c68cb085&language=en-US&query=${args.search}&page=1`
-    );
+    const response = await axios.get(generateSearchEndpoint(args.search, "tv"));
 
     // 2. Destructure the response from the API endpoint
     const { data } = response;
