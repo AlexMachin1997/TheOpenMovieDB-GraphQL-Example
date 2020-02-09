@@ -71,6 +71,15 @@ const generateSocialLinksEndpoint = (id, resolverType) =>
 const generateTopRatedEndpoint = resolverType =>
   `${API_URI}/${API_VERSION}/${resolverType}/top_rated?api_key=${API_KEY}&page=1`;
 
+const generateUpcomingEndpoint = resolverType => {
+  switch (resolverType) {
+    case "tv":
+      return `${API_URI}/${API_VERSION}/${resolverType}/on_the_air?api_key=${API_KEY}&page=1`;
+    case "movie":
+      return `${API_URI}/${API_VERSION}/${resolverType}/upcoming?api_key=${API_KEY}&page=1`;
+  }
+};
+
 module.exports = {
   generateCastURLEndpoint,
   generateCreditsEndpoint,
@@ -85,6 +94,6 @@ module.exports = {
   generateSingleItemLookupEndpoint,
   generateSocialLinksEndpoint,
   generateTopRatedEndpoint,
-  API_IMAGE_URL,
-  generateImageURL
+  generateImageURL,
+  generateUpcomingEndpoint
 };
