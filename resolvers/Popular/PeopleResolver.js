@@ -1,40 +1,41 @@
 const axios = require("axios");
 const { has, forEach } = require("lodash");
-const { generatePopularEndpoint } = require("../../config.js");
+const {
+  generatePopularEndpoint,
+  generateImageURL
+} = require("../../config.js");
 
 const PopularPeopleResolver = async (parent, args, context, info) => {
   try {
-    // 1. Send a request to the discover movies endpoint
+    // Send a request to the popular person endpoint
     const response = await axios.get(generatePopularEndpoint("person"));
 
-    // 2. Destructure the response
     const { data } = response;
     const { results } = data;
 
     const { known_for } = results;
 
-    // Transform the results data where needed e.g. image urls etc
+    // Format the popular movies
     forEach(results, person => {
       if (has(person, "profile_path") === true) {
         const { profile_path } = person;
-        person.profile_path = `https://image.tmdb.org/t/p/original${profile_path}`;
+        person.profile_path = generateImageURL(profile_path);
       }
     });
 
-    // Transform the know_for data where needed e.g. release_date, image urls etc
+    // Format the known for arrary which is attached in each result
     forEach(known_for, role => {
       if (has(role, "backdrop_path") === true) {
         const { backdrop_path } = role;
-        role.backdrop_path = `https://image.tmdb.org/t/p/original${backdrop_path}`;
+        role.backdrop_path = generateImageURL(backdrop_path);
       }
 
       if (has(role, "poster_path") === true) {
         const { poster_path } = role;
-        role.poster_path = `https://image.tmdb.org/t/p/original${poster_path}`;
+        role.poster_path = generateImageURL(poster_path);
       }
     });
 
-    // 3. Return the data
     return results;
   } catch (err) {
     console.log(err);

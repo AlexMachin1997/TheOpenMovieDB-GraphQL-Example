@@ -2,7 +2,10 @@ const axios = require("axios");
 const { has, forEach } = require("lodash");
 const moment = require("moment");
 
-const { generateCreditsEndpoint } = require("../../config.js");
+const {
+  generateCreditsEndpoint,
+  generateImageURL
+} = require("../../config.js");
 
 const MovieCreditsResolver = async (parent, args, context, info) => {
   try {
@@ -12,33 +15,31 @@ const MovieCreditsResolver = async (parent, args, context, info) => {
     );
 
     const { data } = response;
-
     const { cast } = data;
 
-    // Format the data
-    forEach(cast, cast => {
-      if (has(cast, "backdrop_path") === true) {
-        const { backdrop_path } = cast;
-        cast.backdrop_path = `https://image.tmdb.org/t/p/original${backdrop_path}`;
+    // Format the cast field
+    forEach(cast, data => {
+      if (has(data, "backdrop_path") === true) {
+        const { backdrop_path } = data;
+        data.backdrop_path = generateImageURL(backdrop_path);
       }
 
-      if (has(cast, "poster_path") === true) {
-        const { poster_path } = cast;
-        cast.poster_path = `https://image.tmdb.org/t/p/original${poster_path}`;
+      if (has(data, "poster_path") === true) {
+        const { poster_path } = data;
+        data.poster_path = generateImageURL(poster_path);
       }
 
-      if (has(cast, "first_air_date") === true) {
-        const { first_air_date } = cast;
-        cast.first_air_date = moment(first_air_date).format("DD/MM/YYYY");
+      if (has(data, "first_air_date") === true) {
+        const { first_air_date } = data;
+        data.first_air_date = moment(first_air_date).format("DD/MM/YYYY");
       }
 
-      if (has(cast, "popularity") === true) {
-        const { popularity } = cast;
-        cast.popularity = popularity.toFixed(2);
+      if (has(data, "popularity") === true) {
+        const { popularity } = data;
+        data.popularity = popularity.toFixed(2);
       }
     });
 
-    // Return the data to the GraphQL query
     return cast;
   } catch (err) {
     console.log(err);
