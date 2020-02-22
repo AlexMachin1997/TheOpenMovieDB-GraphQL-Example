@@ -1,9 +1,8 @@
 const axios = require("axios");
 const { has, forEach } = require("lodash");
-const {
-  generatePopularEndpoint,
-  generateImageURL
-} = require("../../config.js");
+
+const { generatePopularEndpoint } = require("../../utils/generateEndpoints");
+const generateImageURL = require("../../utils/generateImageURL");
 
 const PopularPeopleResolver = async (parent, args, context, info) => {
   try {
@@ -38,7 +37,6 @@ const PopularPeopleResolver = async (parent, args, context, info) => {
 
     return results;
   } catch (err) {
-    console.log(err);
     console.log("The /tv/popular endpoint failed");
     return err.data;
   }

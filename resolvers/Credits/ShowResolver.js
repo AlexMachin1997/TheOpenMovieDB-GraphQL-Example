@@ -1,10 +1,9 @@
 const axios = require("axios");
 const { has, forEach } = require("lodash");
 const moment = require("moment");
-const {
-  generateCreditsEndpoint,
-  generateImageURL
-} = require("../../config.js");
+
+const { generateCreditsEndpoint } = require("../../utils/generateEndpoints");
+const generateImageURL = require("../../utils/generateImageURL");
 
 const ShowCreditsResolver = async (parent, args, context, info) => {
   try {
@@ -42,7 +41,6 @@ const ShowCreditsResolver = async (parent, args, context, info) => {
 
     return cast;
   } catch (err) {
-    console.log(err);
     console.log("The /person/:id/tv_credits endpoint failed");
     return err.data;
   }

@@ -1,6 +1,8 @@
 const axios = require("axios");
 const { forEach, has } = require("lodash");
-const { generateSearchEndpoint, generateImageURL } = require("../../config");
+
+const { generateSearchEndpoint } = require("../../utils/generateEndpoints");
+const generateImageURL = require("../../utils/generateImageURL");
 
 const SearchForPeopleResolver = async (parent, args, context, info) => {
   try {

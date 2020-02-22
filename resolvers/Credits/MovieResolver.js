@@ -2,10 +2,8 @@ const axios = require("axios");
 const { has, forEach } = require("lodash");
 const moment = require("moment");
 
-const {
-  generateCreditsEndpoint,
-  generateImageURL
-} = require("../../config.js");
+const { generateCreditsEndpoint } = require("../../utils/generateEndpoints");
+const generateImageURL = require("../../utils/generateImageURL");
 
 const MovieCreditsResolver = async (parent, args, context, info) => {
   try {
@@ -17,7 +15,7 @@ const MovieCreditsResolver = async (parent, args, context, info) => {
     const { data } = response;
     const { cast } = data;
 
-    // Format the cast field
+    // Format the data
     forEach(cast, data => {
       if (has(data, "backdrop_path") === true) {
         const { backdrop_path } = data;
@@ -42,7 +40,6 @@ const MovieCreditsResolver = async (parent, args, context, info) => {
 
     return cast;
   } catch (err) {
-    console.log(err);
     console.log("The /person/:id/movie_credits endpoint failed");
     return err.data;
   }

@@ -1,6 +1,8 @@
 const axios = require("axios");
 const { has, forEach } = require("lodash");
-const { generateCrewEndpoint, generateImageURL } = require("../../config.js");
+
+const { generateCrewEndpoint } = require("../../utils/generateEndpoints");
+const generateImageURL = require("../../utils/generateImageURL");
 
 const TVCrewResolver = async (parent, args, context, info) => {
   try {

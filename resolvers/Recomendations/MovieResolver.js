@@ -1,7 +1,11 @@
 const axios = require("axios");
 const { has, forEach } = require("lodash");
 const moment = require("moment");
-const { generateRecomendationEndpoint } = require("../../config");
+
+const {
+  generateRecomendationEndpoint
+} = require("../../utils/generateEndpoints");
+const generateImageURL = require("../../utils/generateImageURL");
 
 const MovieRecomendationsResolver = async (parent, args, content, info) => {
   try {
@@ -17,11 +21,11 @@ const MovieRecomendationsResolver = async (parent, args, content, info) => {
     forEach(results, data => {
       if (has(data, "poster_path") === true) {
         const { poster_path } = data;
-        data.poster_path = `https://image.tmdb.org/t/p/original${poster_path}`;
+        data.poster_path = generateImageURL(poster_path);
       }
       if (has(data, "backdrop_path") === true) {
         const { backdrop_path } = data;
-        data.backdrop_path = `https://image.tmdb.org/t/p/original${backdrop_path}`;
+        data.backdrop_path = generateImageURL(backdrop_path);
       }
 
       if (has(data, "release_date") === true) {
@@ -33,8 +37,7 @@ const MovieRecomendationsResolver = async (parent, args, content, info) => {
     return results;
   } catch (err) {
     console.log("The /movie/reccomendations/ endpoint failed");
-    console.log(err);
-    return err;
+    return err.data;
   }
 };
 

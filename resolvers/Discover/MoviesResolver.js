@@ -1,10 +1,9 @@
 const axios = require("axios");
 const moment = require("moment");
 const { has, forEach } = require("lodash");
-const {
-  generateDiscoverEndpoint,
-  generateImageURL
-} = require("../../config.js");
+
+const { generateDiscoverEndpoint } = require("../../utils/generateEndpoints");
+const generateImageURL = require("../../utils/generateImageURL");
 
 const DiscoverMoviesResolver = async (parent, args, context, info) => {
   try {
@@ -32,7 +31,7 @@ const DiscoverMoviesResolver = async (parent, args, context, info) => {
     const { data } = response;
     const { results } = data;
 
-    // Data formatting
+    // Format the data
     forEach(results, data => {
       if (has(data, "poster_path") === true) {
         const { poster_path } = data;
@@ -51,7 +50,6 @@ const DiscoverMoviesResolver = async (parent, args, context, info) => {
 
     return results;
   } catch (err) {
-    console.log(err);
     console.log("The /Discover/Movie endpoint failed");
     return err.data;
   }

@@ -1,10 +1,11 @@
 const axios = require("axios");
 const moment = require("moment");
 const { has, forEach } = require("lodash");
+
 const {
-  genereateNowPlayingEndpoint,
-  generateImageURL
-} = require("../../config.js");
+  genereateNowPlayingEndpoint
+} = require("../../utils/generateEndpoints");
+const generateImageURL = require("../../utils/generateImageURL");
 
 const NowPlayingTVResolver = async (parent, args, context, info) => {
   try {
@@ -34,7 +35,6 @@ const NowPlayingTVResolver = async (parent, args, context, info) => {
 
     return results;
   } catch (err) {
-    console.log(err);
     console.log("The tv/on_the_air endpoint failed");
     return err.data;
   }

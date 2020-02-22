@@ -1,10 +1,9 @@
 const axios = require("axios");
 const moment = require("moment");
 const { has, forEach } = require("lodash");
-const {
-  generateDiscoverEndpoint,
-  generateImageURL
-} = require("../../config.js");
+
+const { generateDiscoverEndpoint } = require("../../utils/generateEndpoints");
+const generateImageURL = require("../../utils/generateImageURL");
 
 const DiscoverTVResolver = async (parent, args, context, info) => {
   try {

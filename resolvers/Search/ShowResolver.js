@@ -1,6 +1,7 @@
 const axios = require("axios");
 const { has, forEach } = require("lodash");
 const moment = require("moment");
+
 const { generateSearchEndpoint, generateImageURL } = require("../../config");
 
 const SearchForMoviesResolver = async (parent, args, context, info) => {
@@ -31,8 +32,8 @@ const SearchForMoviesResolver = async (parent, args, context, info) => {
 
     return results;
   } catch (err) {
-    console.log(err);
-    throw Error(`Technical problem with the /Search/TV endpoint`);
+    console.log(`Technical problem with the /Search/TV endpoint`);
+    return err.data;
   }
 };
 

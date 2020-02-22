@@ -1,7 +1,9 @@
 const axios = require("axios");
 const { forEach, has } = require("lodash");
 const moment = require("moment");
-const { generateSearchEndpoint, generateImageURL } = require("../../config");
+
+const { generateSearchEndpoint } = require("../../utils/generateEndpoints");
+const generateImageURL = require("../../utils/generateImageURL");
 
 const SearchForMoviesResolver = async (parent, args, context, info) => {
   try {

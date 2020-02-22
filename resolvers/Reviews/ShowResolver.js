@@ -1,5 +1,6 @@
 const axios = require("axios");
-const { generateReviewEndpoint } = require("../../config");
+
+const { generateReviewEndpoint } = require("../../utils/generateEndpoints");
 
 const TVReviewsResolver = async (parent, args, context, info) => {
   try {

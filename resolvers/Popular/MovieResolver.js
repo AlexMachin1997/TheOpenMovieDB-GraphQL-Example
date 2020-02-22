@@ -1,10 +1,9 @@
 const axios = require("axios");
 const moment = require("moment");
 const { has, forEach } = require("lodash");
-const {
-  generatePopularEndpoint,
-  generateImageURL
-} = require("../../config.js");
+
+const { generatePopularEndpoint } = require("../../utils/generateEndpoints");
+const generateImageURL = require("../../utils/generateImageURL");
 
 const MoviePopularResolver = async (parent, args, context, info) => {
   try {
@@ -34,7 +33,6 @@ const MoviePopularResolver = async (parent, args, context, info) => {
 
     return results;
   } catch (err) {
-    console.log(err);
     console.log("The /movie/popular endpoint failed");
     return err.data;
   }

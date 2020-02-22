@@ -1,10 +1,9 @@
 const axios = require("axios");
 const moment = require("moment");
 const { has, forEach } = require("lodash");
-const {
-  generatePopularEndpoint,
-  generateImageURL
-} = require("../../config.js");
+
+const { generatePopularEndpoint } = require("../../utils/generateEndpoints");
+const generateImageURL = require("../../utils/generateImageURL");
 
 const TVPopularResolver = async (parent, args, context, info) => {
   try {
@@ -14,7 +13,7 @@ const TVPopularResolver = async (parent, args, context, info) => {
     const { data } = response;
     const { results } = data;
 
-    // 2. Transform the data
+    // Transform the data
     forEach(results, show => {
       if (has(show, "poster_path") === true) {
         const { poster_path } = show;
@@ -33,7 +32,6 @@ const TVPopularResolver = async (parent, args, context, info) => {
 
     return results;
   } catch (err) {
-    console.log(err);
     console.log("The /tv/popular endpoint failed");
     return err.data;
   }

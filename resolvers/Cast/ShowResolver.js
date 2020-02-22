@@ -1,6 +1,6 @@
 const axios = require("axios");
 const { has, filter, sortBy, forEach } = require("lodash");
-const { generateCastURLEndpoint } = require("../../config.js");
+const { generateCastURLEndpoint } = require("../../utils/generateEndpoints");
 
 const TVCastResolver = async (parent, args, context, info) => {
   try {
@@ -28,8 +28,7 @@ const TVCastResolver = async (parent, args, context, info) => {
     return featuredCast;
   } catch (err) {
     console.log("The /credits (Cast) endpoint failed");
-    console.log(err);
-    return err;
+    return err.data;
   }
 };
 

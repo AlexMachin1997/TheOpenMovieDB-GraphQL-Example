@@ -1,10 +1,11 @@
 const axios = require("axios");
 const { has, forEach } = require("lodash");
 const moment = require("moment");
+
 const {
-  generateRecomendationEndpoint,
-  generateImageURL
-} = require("../../config");
+  generateRecomendationEndpoint
+} = require("../../utils/generateEndpoints");
+const generateImageURL = require("../../utils/generateImageURL");
 
 const TVRecomendationsResolver = async (parent, args, content, info) => {
   try {
