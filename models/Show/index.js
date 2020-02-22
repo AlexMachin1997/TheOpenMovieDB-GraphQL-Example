@@ -30,7 +30,7 @@ const typeDef = gql`
     vote_average: Int
     vote_count: Int
     reviews: [Review]
-    reccomendations: [Movie]
+    recomendations: [Movie]
     keywords: [Keyword]
     social: Social
     cast: [Cast]

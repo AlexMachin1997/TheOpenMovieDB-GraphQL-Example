@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const { ApolloServer } = require("apollo-server");
 const { schema } = require("./schema");
 
@@ -5,7 +7,7 @@ const { schema } = require("./schema");
 const server = new ApolloServer({
   schema,
   cacheControl: {
-    defaultMaxAge: 200
+    defaultMaxAge: 2000
   }
 });
 

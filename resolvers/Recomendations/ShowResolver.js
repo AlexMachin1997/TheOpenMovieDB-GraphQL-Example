@@ -1,26 +1,29 @@
 const axios = require("axios");
-const moment = require("moment");
 const { has, forEach } = require("lodash");
+const moment = require("moment");
 
-const { generateTopRatedEndpoint } = require("../../utils/generateEndpoints");
+const {
+  generateRecomendationEndpoint
+} = require("../../utils/generateEndpoints");
 const generateImageURL = require("../../utils/generateImageURL");
 
-const PopularShowResolver = async (parent, args, context, info) => {
+const TVRecomendationsResolver = async (parent, args, content, info) => {
   try {
-    // Send a request to the discover movies endpoint
-    const response = await axios.get(generateTopRatedEndpoint("tv"));
+    // Make a reccomendations request using the TV ID field
+    const response = await axios.get(
+      generateRecomendationEndpoint(parent.id, "tv")
+    );
 
     const { data } = response;
     const { results } = data;
 
-    // Transform the data
+    // Format the data
     forEach(results, data => {
       if (has(data, "poster_path") === true) {
         const { poster_path } = data;
         data.poster_path = generateImageURL(poster_path);
       }
-
-      if (has(data, "backdrop_path") === true) {
+      if (has(data, "poster_path") === true) {
         const { backdrop_path } = data;
         data.backdrop_path = generateImageURL(backdrop_path);
       }
@@ -33,9 +36,10 @@ const PopularShowResolver = async (parent, args, context, info) => {
 
     return results;
   } catch (err) {
-    console.log("The /movie/top_rated endpoint failed");
-    return err.data;
+    console.log("The /tv/reccomendations/ endpoint failed");
+    console.log(err);
+    return err;
   }
 };
 
-module.exports = PopularShowResolver;
+module.exports = TVRecomendationsResolver;

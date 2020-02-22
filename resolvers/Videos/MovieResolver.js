@@ -1,27 +1,24 @@
 const axios = require("axios");
 const { filter } = require("lodash");
 
+const { generateVideoEndpoint } = require("../../utils/generateEndpoints");
+
 const MovieVideoResolver = async (parent, args, context, info) => {
   try {
-    // 1. Send a request to the movie videos endpoint
-    const response = await axios.get(
-      `https://api.themoviedb.org/3/movie/${parent.id}/videos?api_key=1b5adf76a72a13bad99b8fc0c68cb085&language=en-US`
-    );
+    // Send a request to the movie videos endpoint
+    const response = await axios.get(generateVideoEndpoint(parent.id, "movie"));
 
-    // 2. Destructure the response
     const { data } = response;
     const { results } = data;
 
+    // Filter to find the Trailers which are from YouTube
     const YoutubeVideos = filter(
       results,
       video => video.type === "Trailer" && video.site === "YouTube"
     );
-    console.log(YoutubeVideos);
 
-    // 3. Return the data
     return YoutubeVideos;
   } catch (err) {
-    console.log(err);
     console.log("The movie/videos endpoint failed");
     return err.data;
   }

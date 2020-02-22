@@ -2,44 +2,44 @@ const axios = require("axios");
 const { has, forEach } = require("lodash");
 const moment = require("moment");
 
+const { generateCreditsEndpoint } = require("../../utils/generateEndpoints");
+const generateImageURL = require("../../utils/generateImageURL");
+
 const MovieCreditsResolver = async (parent, args, context, info) => {
   try {
     // Send a request to the tv_credits endpoint
     const response = await axios.get(
-      `https://api.themoviedb.org/3/person/${parent.id}/movie_credits?api_key=1b5adf76a72a13bad99b8fc0c68cb085&language=en-US`
+      generateCreditsEndpoint(parent.id, "person", "movie_credits")
     );
 
     const { data } = response;
-
     const { cast } = data;
 
     // Format the data
-    forEach(cast, cast => {
-      if (has(cast, "backdrop_path") === true) {
-        const { backdrop_path } = cast;
-        cast.backdrop_path = `https://image.tmdb.org/t/p/original${backdrop_path}`;
+    forEach(cast, data => {
+      if (has(data, "backdrop_path") === true) {
+        const { backdrop_path } = data;
+        data.backdrop_path = generateImageURL(backdrop_path);
       }
 
-      if (has(cast, "poster_path") === true) {
-        const { poster_path } = cast;
-        cast.poster_path = `https://image.tmdb.org/t/p/original${poster_path}`;
+      if (has(data, "poster_path") === true) {
+        const { poster_path } = data;
+        data.poster_path = generateImageURL(poster_path);
       }
 
-      if (has(cast, "first_air_date") === true) {
-        const { first_air_date } = cast;
-        cast.first_air_date = moment(first_air_date).format("DD/MM/YYYY");
+      if (has(data, "first_air_date") === true) {
+        const { first_air_date } = data;
+        data.first_air_date = moment(first_air_date).format("DD/MM/YYYY");
       }
 
-      if (has(cast, "popularity") === true) {
-        const { popularity } = cast;
-        cast.popularity = popularity.toFixed(2);
+      if (has(data, "popularity") === true) {
+        const { popularity } = data;
+        data.popularity = popularity.toFixed(2);
       }
     });
 
-    // Return the data to the GraphQL query
     return cast;
   } catch (err) {
-    console.log(err);
     console.log("The /person/:id/movie_credits endpoint failed");
     return err.data;
   }

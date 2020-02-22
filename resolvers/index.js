@@ -9,9 +9,9 @@ const { MovieCrewResolver, ShowCrewResolver } = require("./Crew");
 
 // Reccomendation resolvers
 const {
-  MovieReccomendationsResolver,
-  ShowReccomendationsResolver
-} = require("./Reccomendations");
+  MovieRecomendationsResolver,
+  ShowRecomendationsResolver
+} = require("./Recomendations");
 
 // Keyword resolver
 const { MovieKeywordResolver, ShowKeywordResolver } = require("./Keywords");
@@ -62,33 +62,35 @@ const { MovieVideoResolver, ShowVideoResolver } = require("./Videos");
 const { MovieCreditsResolver, ShowCreditsResolver } = require("./Credits");
 
 const resolvers = {
-  // Additional show data lookup (Show refers to the model, the single person lookup id is used to retriveve the additional data)
+  // Additional data for the single movie object
   Movie: {
     reviews: MovieReviewResolver,
     cast: MovieCastResolver,
     crew: MovieCrewResolver,
-    reccomendations: MovieReccomendationsResolver,
+    recomendations: MovieRecomendationsResolver,
     keywords: MovieKeywordResolver,
     social: MovieSocialResolver,
     videos: MovieVideoResolver
   },
 
-  // Additional show data lookup (Show refers to the model, the single show lookup id is used to retriveve the additional data)
+  // Additional data for the single show object
   Show: {
     reviews: ShowReviewResolver,
     cast: ShowCastResolver,
     crew: ShowCrewResolver,
-    reccomendations: ShowReccomendationsResolver,
+    recomendations: ShowRecomendationsResolver,
     keywords: ShowKeywordResolver,
     social: ShowSocialResolver,
     videos: ShowVideoResolver
   },
 
+  // Additional data for the single person object
   Person: {
     tv_credits: ShowCreditsResolver,
     movie_credits: MovieCreditsResolver
   },
 
+  // Root query
   Query: {
     // SingleItemLookup
     SearchForAMovie: SearchForAMovieResolver,

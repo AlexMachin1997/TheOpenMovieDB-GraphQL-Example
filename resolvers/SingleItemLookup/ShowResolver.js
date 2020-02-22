@@ -1,67 +1,64 @@
 const axios = require("axios");
-const { find, has, forEach, isEmpty } = require("lodash");
+const { find, has, forEach } = require("lodash");
+
+const {
+  generateSearchEndpoint,
+  generateSingleItemLookupEndpoint
+} = require("../../utils/generateEndpoints");
+const generateImageURL = require("../../utils/generateImageURL");
 
 const SearchForAShowResolver = async (parent, args, context, info) => {
   try {
-    // 1. Make a request to the search API using a search term provided in the query
-    const response = await axios.get(
-      `https://api.themoviedb.org/3/search/tv?api_key=1b5adf76a72a13bad99b8fc0c68cb085&language=en-US&query=${args.name}&page=1`
-    );
+    // Make a request to the search API using a search term provided in the query
+    const response = await axios.get(generateSearchEndpoint(args.search, "tv"));
 
-    // 2. Destructure the response
     const { data } = response;
     const { results } = data;
 
+    // Find a movie from the search results
     const SingleShow = find(results, show => show.id === args.id);
 
-    // 5. Make the Single tv Lookup
     try {
+      // Perform a single show lookup using the show found in search results array
       const response = await axios.get(
-        `https://api.themoviedb.org/3/tv/${SingleShow.id}?api_key=1b5adf76a72a13bad99b8fc0c68cb085&language=en-US`
+        generateSingleItemLookupEndpoint(SingleShow.id, "tv")
       );
 
-      // Single Show Lookup
       const { data } = response;
 
-      // Single Show Lookup properties
-      const { backdrop_path, created_by, last_episode_to_air } = data;
-
-      // Data formatting
-      if (has(created_by) === true) {
+      // Data formatting for the created_by field
+      if (has(data, "created_by") === true) {
+        const { created_by } = data;
         forEach(created_by, creator => {
-          const { profile_path } = creator;
-
           if (has(creator, "profile_path") === true) {
-            creator.profile_path = `https://image.tmdb.org/t/p/original${profile_path}`;
+            const { profile_path } = creator;
+            creator.profile_path = generateImageURL(profile_path);
           }
         });
       }
 
-      if (has(last_episode_to_air) === true) {
+      // Data formatting for the last_episode_to_air field
+      if (has(data, "last_episode_to_air") === true) {
+        const { last_episode_to_air } = data;
         const { still_path } = last_episode_to_air;
-        if (isEmpty(still_path) === false) {
-          last_episode_to_air.still_path = `https://image.tmdb.org/t/p/original${still_path}`;
-        }
+        last_episode_to_air.still_path = generateImageURL(still_path);
       }
 
+      // Data formatting for the backdrop_path field
       if (has(data, "backdrop_path") === true) {
-        data.backdrop_path = `https://image.tmdb.org/t/p/original${backdrop_path}`;
+        const { backdrop_path } = data;
+        data.backdrop_path = generateImageURL(backdrop_path);
       }
-
-      // if (has(data, "still_path") === true) {
-      //   data.still_path = `https://image.tmdb.org/t/p/original${still_path}`;
-      // }
 
       return data;
     } catch (err) {
       console.log(`The /tv endpoint failed`);
-      console.log(err);
-      return err;
+      return err.data;
     }
   } catch (err) {
     console.log("The /Search endpoint failed");
     console.log(err);
-    return err;
+    return err.data;
   }
 };
 

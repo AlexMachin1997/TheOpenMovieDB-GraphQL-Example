@@ -1,18 +1,22 @@
 const axios = require("axios");
 
+const {
+  generateSocialLinksEndpoint
+} = require("../../utils/generateEndpoints");
+
 const MovieSocialResolver = async (parent, args, info, context) => {
   try {
+    // Make a request to the social (external_links) endpoint using the parent id
     const response = await axios.get(
-      `https://api.themoviedb.org/3/movie/${parent.id}/external_ids?api_key=1b5adf76a72a13bad99b8fc0c68cb085      `
+      generateSocialLinksEndpoint(parent.id, "movie")
     );
 
     const { data } = response;
 
     return data;
   } catch (err) {
-    console.log("The /external_ids (social) endpoint failed");
-    console.log(err);
-    return err;
+    console.log("The movie /external_ids (social) endpoint failed");
+    return err.data;
   }
 };
 
