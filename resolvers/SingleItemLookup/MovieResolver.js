@@ -35,6 +35,21 @@ const SearchForAMovieResolver = async (parent, args, context, info) => {
         data.backdrop_path = generateImageURL(backdrop_path);
       }
 
+      if (has(data, "poster_path") === true) {
+        const { poster_path } = data;
+        data.poster_path = generateImageURL(poster_path);
+      }
+
+      if (has(data, "budget") === true) {
+        const { budget } = data;
+        data.budget = budget.toLocaleString();
+      }
+
+      if (has(data, "revenue") === true) {
+        const { revenue } = data;
+        data.revenue = revenue.toLocaleString();
+      }
+
       // Data formatting for the production_companies field
       forEach(production_companies, company => {
         if (has(company, "logo_path")) {
@@ -46,11 +61,11 @@ const SearchForAMovieResolver = async (parent, args, context, info) => {
       return data;
     } catch (err) {
       console.log(`The /Movie endpoint failed`);
-      return err.data;
+      return err.response;
     }
   } catch (err) {
     console.log("The /Search endpoint failed");
-    return err.data;
+    return err.response;
   }
 };
 

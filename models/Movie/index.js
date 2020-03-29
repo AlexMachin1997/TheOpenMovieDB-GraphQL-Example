@@ -5,7 +5,7 @@ const MovieModel = gql`
     adult: Boolean
     backdrop_path: String
     belongs_to_collection: String
-    budget: Float
+    budget: String
     genres: [Genre]
     homepage: String
     id: Int
@@ -18,7 +18,7 @@ const MovieModel = gql`
     production_companies: [Company]
     production_countries: [Language]
     release_date: String
-    revenue: Int
+    revenue: String
     runtime: Int
     spoken_languages: [Language]
     status: String

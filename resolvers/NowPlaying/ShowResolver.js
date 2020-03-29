@@ -6,6 +6,7 @@ const {
   genereateNowPlayingEndpoint
 } = require("../../utils/generateEndpoints");
 const generateImageURL = require("../../utils/generateImageURL");
+const { formatReleaseDate } = require("../../utils/formatDates");
 
 const NowPlayingTVResolver = async (parent, args, context, info) => {
   try {
@@ -27,16 +28,16 @@ const NowPlayingTVResolver = async (parent, args, context, info) => {
         data.backdrop_path = generateImageURL(backdrop_path);
       }
 
-      if (has(data, "release_date") === true) {
-        const { release_date } = data;
-        data.release_date = moment(release_date).format("MMMM d, YYYY");
+      if (has(data, "first_air_date") === true) {
+        const { first_air_date } = data;
+        data.first_air_date = formatReleaseDate(first_air_date);
       }
     });
 
     return results;
   } catch (err) {
     console.log("The tv/on_the_air endpoint failed");
-    return err.data;
+    return err.response;
   }
 };
 

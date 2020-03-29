@@ -33,7 +33,7 @@ const SearchForMoviesResolver = async (parent, args, context, info) => {
     return results;
   } catch (err) {
     console.log(`Technical problem with the /Search/TV endpoint`);
-    return err.data;
+    return err.response;
   }
 };
 

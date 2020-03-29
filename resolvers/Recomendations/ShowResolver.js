@@ -6,6 +6,7 @@ const {
   generateRecomendationEndpoint
 } = require("../../utils/generateEndpoints");
 const generateImageURL = require("../../utils/generateImageURL");
+const { formatReleaseDate } = require("../../utils/formatDates");
 
 const TVRecomendationsResolver = async (parent, args, content, info) => {
   try {
@@ -28,9 +29,9 @@ const TVRecomendationsResolver = async (parent, args, content, info) => {
         data.backdrop_path = generateImageURL(backdrop_path);
       }
 
-      if (has(data, "release_date") === true) {
-        const { release_date } = data;
-        data.release_date = moment(release_date).format("MMMM d, YYYY");
+      if (has(data, "first_air_date") === true) {
+        const { first_air_date } = data;
+        data.first_air_date = moment(first_air_date).format("DD-MM-YYYY");
       }
     });
 

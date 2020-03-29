@@ -20,7 +20,7 @@ const ShowVideoResolver = async (parent, args, context, info) => {
     return YoutubeVideos;
   } catch (err) {
     console.log("The tv/videos endpoint failed");
-    return err.data;
+    return err.response;
   }
 };
 

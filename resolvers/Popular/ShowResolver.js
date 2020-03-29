@@ -4,6 +4,7 @@ const { has, forEach } = require("lodash");
 
 const { generatePopularEndpoint } = require("../../utils/generateEndpoints");
 const generateImageURL = require("../../utils/generateImageURL");
+const { formatReleaseDate } = require("../../utils/formatDates");
 
 const TVPopularResolver = async (parent, args, context, info) => {
   try {
@@ -19,21 +20,22 @@ const TVPopularResolver = async (parent, args, context, info) => {
         const { poster_path } = show;
         data.poster_path = generateImageURL(poster_path);
       }
+
       if (has(show, "backdrop_path") === true) {
         const { backdrop_path } = show;
         data.backdrop_path = generateImageURL(backdrop_path);
       }
 
-      if (has(show, "release_date") === true) {
-        const { release_date } = data;
-        data.release_date = moment(release_date).format("MMMM d, YYYY");
+      if (has(show, "first_air_date") === true) {
+        const { first_air_date } = show;
+        data.first_air_date = formatReleaseDate(first_air_date);
       }
     });
 
     return results;
   } catch (err) {
     console.log("The /tv/popular endpoint failed");
-    return err.data;
+    return err.response;
   }
 };
 

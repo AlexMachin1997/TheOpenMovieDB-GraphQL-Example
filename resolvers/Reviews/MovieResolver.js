@@ -15,7 +15,7 @@ const MovieReviewsResolver = async (parent, args, context, info) => {
     return results;
   } catch (err) {
     console.log("The /reviews endpoint failed");
-    return err.data;
+    return err.response;
   }
 };
 

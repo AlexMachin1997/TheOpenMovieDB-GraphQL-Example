@@ -16,7 +16,7 @@ const TVSocialResolver = async (parent, args, info, context) => {
     return data;
   } catch (err) {
     console.log("The TV /external_ids (social) endpoint failed");
-    return err.data;
+    return err.response;
   }
 };
 

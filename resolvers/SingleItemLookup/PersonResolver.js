@@ -29,11 +29,11 @@ const SearchForAPersonResolver = async (parent, args, context, info) => {
       return data;
     } catch (err) {
       console.log(`The /Person endpoint failed`);
-      return err.data;
+      return err.response;
     }
   } catch (err) {
     console.log("The /Search endpoint failed");
-    return err.data;
+    return err.response;
   }
 };
 

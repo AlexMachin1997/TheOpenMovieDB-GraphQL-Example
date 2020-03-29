@@ -38,7 +38,7 @@ const PopularPeopleResolver = async (parent, args, context, info) => {
     return results;
   } catch (err) {
     console.log("The /tv/popular endpoint failed");
-    return err.data;
+    return err.response;
   }
 };
 

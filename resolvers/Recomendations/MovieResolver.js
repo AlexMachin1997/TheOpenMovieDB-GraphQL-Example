@@ -30,14 +30,14 @@ const MovieRecomendationsResolver = async (parent, args, content, info) => {
 
       if (has(data, "release_date") === true) {
         const { release_date } = data;
-        data.release_date = moment(release_date).format("MMMM d, YYYY");
+        data.release_date = moment(release_date).format("DD-MM-YYYY");
       }
     });
 
     return results;
   } catch (err) {
     console.log("The /movie/reccomendations/ endpoint failed");
-    return err.data;
+    return err.response;
   }
 };
 

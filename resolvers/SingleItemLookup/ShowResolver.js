@@ -6,6 +6,7 @@ const {
   generateSingleItemLookupEndpoint
 } = require("../../utils/generateEndpoints");
 const generateImageURL = require("../../utils/generateImageURL");
+const { formatReleaseDate } = require("../../utils/formatDates");
 
 const SearchForAShowResolver = async (parent, args, context, info) => {
   try {
@@ -40,8 +41,16 @@ const SearchForAShowResolver = async (parent, args, context, info) => {
       // Data formatting for the last_episode_to_air field
       if (has(data, "last_episode_to_air") === true) {
         const { last_episode_to_air } = data;
-        const { still_path } = last_episode_to_air;
-        last_episode_to_air.still_path = generateImageURL(still_path);
+
+        if (has(last_episode_to_air, "still_path") === true) {
+          const { still_path } = last_episode_to_air;
+          last_episode_to_air.still_path = generateImageURL(still_path);
+        }
+
+        if (has(last_episode_to_air, "air_date") === true) {
+          const { air_date } = last_episode_to_air;
+          last_episode_to_air.air_date = formatReleaseDate(air_date);
+        }
       }
 
       // Data formatting for the backdrop_path field
@@ -50,15 +59,32 @@ const SearchForAShowResolver = async (parent, args, context, info) => {
         data.backdrop_path = generateImageURL(backdrop_path);
       }
 
+      // Data formatting for the poster_Path field
+      if (has(data, "poster_path") === true) {
+        const { poster_path } = data;
+        data.poster_path = generateImageURL(poster_path);
+      }
+
+      // Data formatting for the networks
+      if (has(data, "networks") === true) {
+        const { networks } = data;
+        forEach(networks, network => {
+          if (has(network, "logo_path") === true) {
+            const { logo_path } = network;
+            network.logo_path = generateImageURL(logo_path);
+          }
+        });
+      }
+
       return data;
     } catch (err) {
       console.log(`The /tv endpoint failed`);
-      return err.data;
+      return err.response;
     }
   } catch (err) {
     console.log("The /Search endpoint failed");
     console.log(err);
-    return err.data;
+    return err.response;
   }
 };
 

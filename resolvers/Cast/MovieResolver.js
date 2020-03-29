@@ -32,7 +32,7 @@ const MovieCastResolver = async (parent, args, context, info) => {
     return featuredCast;
   } catch (err) {
     console.log("The /credits (Cast) endpoint failed");
-    return err.data;
+    return err.response;
   }
 };
 

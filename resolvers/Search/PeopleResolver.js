@@ -25,7 +25,7 @@ const SearchForPeopleResolver = async (parent, args, context, info) => {
     return results;
   } catch (err) {
     console.log(`Technical problem with the /Search/Movie endpoint`);
-    return err.data;
+    return err.response;
   }
 };
 

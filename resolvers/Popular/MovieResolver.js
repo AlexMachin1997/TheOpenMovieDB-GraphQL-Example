@@ -4,11 +4,12 @@ const { has, forEach } = require("lodash");
 
 const { generatePopularEndpoint } = require("../../utils/generateEndpoints");
 const generateImageURL = require("../../utils/generateImageURL");
+const { formatReleaseDate } = require("../../utils/formatDates");
 
 const MoviePopularResolver = async (parent, args, context, info) => {
   try {
     // Send a request to the discover movies endpoint
-    const response = await axios.get(generatePopularEndpoint("data"));
+    const response = await axios.get(generatePopularEndpoint("movie"));
 
     // Destructure the response
     const { data } = response;
@@ -27,14 +28,14 @@ const MoviePopularResolver = async (parent, args, context, info) => {
 
       if (has(data, "release_date") === true) {
         const { release_date } = data;
-        data.release_date = moment(release_date).format("MMMM d, YYYY");
+        data.release_date = formatReleaseDate(release_date);
       }
     });
 
     return results;
   } catch (err) {
     console.log("The /movie/popular endpoint failed");
-    return err.data;
+    return err.response;
   }
 };
 

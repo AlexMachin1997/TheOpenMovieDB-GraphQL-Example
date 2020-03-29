@@ -41,7 +41,7 @@ const MovieCreditsResolver = async (parent, args, context, info) => {
     return cast;
   } catch (err) {
     console.log("The /person/:id/movie_credits endpoint failed");
-    return err.data;
+    return err.response;
   }
 };
 

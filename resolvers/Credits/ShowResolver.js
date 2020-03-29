@@ -42,7 +42,7 @@ const ShowCreditsResolver = async (parent, args, context, info) => {
     return cast;
   } catch (err) {
     console.log("The /person/:id/tv_credits endpoint failed");
-    return err.data;
+    return err.response;
   }
 };
 

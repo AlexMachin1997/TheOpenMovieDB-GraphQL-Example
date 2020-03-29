@@ -1,6 +1,8 @@
 const axios = require("axios");
 const { has, filter, sortBy, forEach } = require("lodash");
+
 const { generateCastURLEndpoint } = require("../../utils/generateEndpoints");
+const generateImageURL = require("../../utils/generateImageURL");
 
 const TVCastResolver = async (parent, args, context, info) => {
   try {
@@ -17,18 +19,18 @@ const TVCastResolver = async (parent, args, context, info) => {
     const featuredCast = filter(cast, member => member.order < 7);
 
     // Formatting the featured cast
-    forEach(featuredCast, data => {
-      let { profile_path } = data;
-
-      if (has(data, "profile_path") === true) {
-        member.profile_path = `https://image.tmdb.org/t/p/original${profile_path}`;
+    forEach(featuredCast, member => {
+      if (has(member, "profile_path") === true) {
+        const { profile_path } = member;
+        member.profile_path = generateImageURL(profile_path);
       }
     });
 
     return featuredCast;
   } catch (err) {
     console.log("The /credits (Cast) endpoint failed");
-    return err.data;
+    console.log(err);
+    return err.response;
   }
 };
 
