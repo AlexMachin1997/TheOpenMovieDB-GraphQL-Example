@@ -42,12 +42,13 @@ const PersonCastCredits = async (parent, args, info, context) => {
       }
     });
 
+    // Sort by popularity
     cast.sort((a, b) => {
-      if (a.release_date > b.release_date) {
+      if (a.popularity > b.popularity) {
         return 1;
       }
 
-      if (a.release_date < b.release_date) {
+      if (a.popularity < b.popularity) {
         return -1;
       }
 

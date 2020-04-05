@@ -42,12 +42,13 @@ const PersonCrewCredits = async (parent, args, info, context) => {
       }
     });
 
-    crew.sort((a, b) => {
-      if (a.release_date > b.release_date) {
+    // Sort by populaity
+    cast.sort((a, b) => {
+      if (a.popularity > b.popularity) {
         return 1;
       }
 
-      if (a.release_date < b.release_date) {
+      if (a.popularity < b.popularity) {
         return -1;
       }
 
