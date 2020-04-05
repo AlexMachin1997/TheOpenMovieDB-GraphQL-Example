@@ -35,9 +35,9 @@ const typeDef = gql`
     id: Int
     name: String
     also_known_as: [String]
-    gender: Int
+    gender: String
     biography: String
-    popularity: Int
+    popularity: Float
     place_of_birth: String
     profile_path: String
     adult: Boolean
@@ -66,6 +66,7 @@ const typeDef = gql`
     vote_average: Float
     genre_ids: [Int]
     poster_path: String
+    release_date: String
   }
 
   type CastCredits {
@@ -86,6 +87,7 @@ const typeDef = gql`
     backdrop_path: String
     popularity: Float
     credit_id: String
+    release_date: String
   }
 `;
 

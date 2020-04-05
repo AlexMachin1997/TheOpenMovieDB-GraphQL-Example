@@ -13,7 +13,9 @@ const PersonCastCredits = async (parent, args, info, context) => {
 
     const { data } = response;
 
-    forEach(data.cast, (data) => {
+    const { cast } = data;
+
+    forEach(cast, (data) => {
       if (has(data, "poster_path") === true) {
         const { poster_path } = data;
         data.poster_path = generateImageURL(poster_path);
@@ -29,25 +31,30 @@ const PersonCastCredits = async (parent, args, info, context) => {
         data.first_air_date = moment(first_air_date).format("YYYY");
       }
 
+      if (has(data, "release_date") === true) {
+        const { first_air_date } = data;
+        data.first_air_date = moment(first_air_date).format("YYYY");
+      }
+
       if (has(data, "popularity") === true) {
         const { popularity } = data;
         data.popularity = popularity.toFixed(2);
       }
     });
 
-    data.cast.sort((a, b) => {
-      if (a.first_air_date < b.first_air_date) {
-        return -1;
+    cast.sort((a, b) => {
+      if (a.release_date > b.release_date) {
+        return 1;
       }
 
-      if (a.first_air_date > b.first_air_date) {
-        return 1;
+      if (a.release_date < b.release_date) {
+        return -1;
       }
 
       return 0;
     });
 
-    return data.cast;
+    return cast;
   } catch (err) {
     console.log(err);
     return err.response;

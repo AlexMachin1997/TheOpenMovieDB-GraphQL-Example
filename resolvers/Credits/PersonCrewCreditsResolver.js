@@ -13,7 +13,9 @@ const PersonCrewCredits = async (parent, args, info, context) => {
 
     const { data } = response;
 
-    forEach(data.crew, (data) => {
+    const { crew } = response;
+
+    forEach(crew, (data) => {
       if (has(data, "backdrop_path") === true) {
         const { backdrop_path } = data;
         data.backdrop_path = generateImageURL(backdrop_path);
@@ -29,25 +31,30 @@ const PersonCrewCredits = async (parent, args, info, context) => {
         data.first_air_date = moment(first_air_date).format("YYYY");
       }
 
+      if (has(data, "release_date") === true) {
+        const { first_air_date } = data;
+        data.first_air_date = moment(first_air_date).format("YYYY");
+      }
+
       if (has(data, "popularity") === true) {
         const { popularity } = data;
         data.popularity = popularity.toFixed(2);
       }
     });
 
-    data.crew.sort((a, b) => {
-      if (a.first_air_date < b.first_air_date) {
-        return -1;
+    crew.sort((a, b) => {
+      if (a.release_date > b.release_date) {
+        return 1;
       }
 
-      if (a.first_air_date > b.first_air_date) {
-        return 1;
+      if (a.release_date < b.release_date) {
+        return -1;
       }
 
       return 0;
     });
 
-    return data.crew;
+    return crew;
   } catch (err) {
     console.log(err);
     return err.response;
