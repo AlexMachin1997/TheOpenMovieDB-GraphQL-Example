@@ -29,34 +29,63 @@ const typeDef = gql`
   }
 
   type Person {
-    popularity: Float
+    birthday: String
     known_for_department: String
-    name: String
+    deathday: String
     id: Int
+    name: String
+    also_known_as: [String]
+    gender: Int
+    biography: String
+    popularity: Int
+    place_of_birth: String
     profile_path: String
     adult: Boolean
-    gender: Int
-    tv_credits: [PersonCredits]
-    movie_credits: [PersonCredits]
+    imdb_id: String
+    homepage: String
+    Cast: [CastCredits]
+    Crew: [CrewCredits]
   }
 
-  type PersonCredits {
-    credit_id: String
-    original_name: String
+  type CrewCredits {
     id: Int
-    genre_ids: [Int]
-    character: String
-    name: String
-    poster_path: String
-    vote_count: Int
-    vote_average: Float
-    popularity: Float
-    episode_count: Int
+    department: String
     original_language: String
-    first_air_date: String
-    backdrop_path: String
+    episode_count: Int
+    job: String
     overview: String
-    origin_country: [Int]
+    origin_country: [String]
+    original_name: String
+    vote_count: Int
+    name: String
+    media_type: String
+    popularity: Float
+    credit_id: String
+    backdrop_path: String
+    first_air_date: String
+    vote_average: Float
+    genre_ids: [Int]
+    poster_path: String
+  }
+
+  type CastCredits {
+    id: Int
+    original_language: String
+    episode_count: Int
+    overview: String
+    origin_country: [String]
+    original_name: String
+    genre_ids: [Int]
+    name: String
+    media_type: String
+    poster_path: String
+    first_air_date: String
+    vote_average: Float
+    vote_count: Int
+    character: String
+    backdrop_path: String
+    popularity: Float
+    credit_id: String
   }
 `;
 

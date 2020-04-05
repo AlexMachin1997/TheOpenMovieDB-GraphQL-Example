@@ -10,7 +10,7 @@ const { MovieCrewResolver, ShowCrewResolver } = require("./Crew");
 // Reccomendation resolvers
 const {
   MovieRecomendationsResolver,
-  ShowRecomendationsResolver
+  ShowRecomendationsResolver,
 } = require("./Recomendations");
 
 // Keyword resolver
@@ -23,7 +23,7 @@ const { MovieSocialResolver, ShowSocialResolver } = require("./Social");
 const {
   SearchForAMovieResolver,
   SearchForAShowResolver,
-  SearchForAPersonResolver
+  SearchForAPersonResolver,
 } = require("./SingleItemLookup");
 
 // Discover resolvers
@@ -33,20 +33,20 @@ const { DiscoverMoviesResolver, DiscoverShowsResolver } = require("./Discover");
 const {
   SearchForMoviesResolver,
   SearchForShowsResolver,
-  SearchForPeopleResolver
+  SearchForPeopleResolver,
 } = require("./Search");
 
 // Popular resolvers
 const {
   PopularShowsResolver,
   PopularMoviesResolver,
-  PopularPeopleResolver
+  PopularPeopleResolver,
 } = require("./Popular");
 
 // NowPlaying resolvers
 const {
   NowPlayingShowsResolver,
-  NowPlayingMovieResolver
+  NowPlayingMovieResolver,
 } = require("./NowPlaying");
 
 // Upcoming resolvers
@@ -59,7 +59,10 @@ const { TopRatedMoviesResolver, TopRatedShowsResolver } = require("./TopRated");
 const { MovieVideoResolver, ShowVideoResolver } = require("./Videos");
 
 // Credits resolver
-const { MovieCreditsResolver, ShowCreditsResolver } = require("./Credits");
+const {
+  PersonCastCreditsResolver,
+  PersonCrewCreditsResolver,
+} = require("./Credits");
 
 const resolvers = {
   // Additional data for the single movie object
@@ -70,7 +73,7 @@ const resolvers = {
     recomendations: MovieRecomendationsResolver,
     keywords: MovieKeywordResolver,
     social: MovieSocialResolver,
-    videos: MovieVideoResolver
+    videos: MovieVideoResolver,
   },
 
   // Additional data for the single show object
@@ -81,13 +84,13 @@ const resolvers = {
     recomendations: ShowRecomendationsResolver,
     keywords: ShowKeywordResolver,
     social: ShowSocialResolver,
-    videos: ShowVideoResolver
+    videos: ShowVideoResolver,
   },
 
   // Additional data for the single person object
   Person: {
-    tv_credits: ShowCreditsResolver,
-    movie_credits: MovieCreditsResolver
+    Cast: PersonCastCreditsResolver,
+    Crew: PersonCrewCreditsResolver,
   },
 
   // Root query
@@ -120,10 +123,10 @@ const resolvers = {
     UpcomingMovies: UpcomingMoviesResolver,
 
     TopRatedMovies: TopRatedMoviesResolver,
-    TopRatedShows: TopRatedShowsResolver
-  }
+    TopRatedShows: TopRatedShowsResolver,
+  },
 };
 
 module.exports = {
-  RootQuery: resolvers
+  RootQuery: resolvers,
 };

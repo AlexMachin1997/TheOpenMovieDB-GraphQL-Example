@@ -3,9 +3,6 @@ const { API_URI, API_VERSION, API_KEY } = require("../../config");
 const generateCastURLEndpoint = (id, resolverType) =>
   `${API_URI}/${API_VERSION}/${resolverType}/${id}/credits?api_key=${API_KEY}`;
 
-const generateCreditsEndpoint = (id, resolverType, creditType) =>
-  `${API_URI}/${API_VERSION}/${resolverType}/${id}/${creditType}?api_key=${API_KEY}`;
-
 const generateCrewEndpoint = (id, resolverType) =>
   `${API_URI}/${API_VERSION}/${resolverType}/${id}/credits?api_key=${API_KEY}`;
 
@@ -25,7 +22,7 @@ const generateDiscoverEndpoint = (
 const generateKeywordEndpoint = (id, resolverType) =>
   `${API_URI}/${API_VERSION}/${resolverType}/${id}/keywords?api_key=${API_KEY}`;
 
-const genereateNowPlayingEndpoint = resolverType => {
+const genereateNowPlayingEndpoint = (resolverType) => {
   switch (resolverType) {
     case "tv": {
       return `${API_URI}/${API_VERSION}/${resolverType}/airing_today?api_key=${API_KEY}&page=1`;
@@ -36,7 +33,7 @@ const genereateNowPlayingEndpoint = resolverType => {
   }
 };
 
-const generatePopularEndpoint = resolverType =>
+const generatePopularEndpoint = (resolverType) =>
   `${API_URI}/${API_VERSION}/${resolverType}/popular?api_key=${API_KEY}`;
 
 const generateRecomendationEndpoint = (id, resolverType) =>
@@ -54,10 +51,10 @@ const generateSingleItemLookupEndpoint = (id, resolverType) =>
 const generateSocialLinksEndpoint = (id, resolverType) =>
   `${API_URI}/${API_VERSION}/${resolverType}/${id}/external_ids?api_key=${API_KEY}`;
 
-const generateTopRatedEndpoint = resolverType =>
+const generateTopRatedEndpoint = (resolverType) =>
   `${API_URI}/${API_VERSION}/${resolverType}/top_rated?api_key=${API_KEY}&page=1`;
 
-const generateUpcomingEndpoint = resolverType => {
+const generateUpcomingEndpoint = (resolverType) => {
   switch (resolverType) {
     case "tv":
       return `${API_URI}/${API_VERSION}/${resolverType}/on_the_air?api_key=${API_KEY}&page=1`;
@@ -69,9 +66,11 @@ const generateUpcomingEndpoint = resolverType => {
 const generateVideoEndpoint = (id, resolverType) =>
   `${API_URI}/${API_VERSION}/${resolverType}/${id}/videos?api_key=${API_KEY}&language=en-US`;
 
+const generatePersonCreditsEndpoint = (id) =>
+  `${API_URI}/${API_VERSION}/person/${id}/combined_credits?api_key=${API_KEY}`;
+
 module.exports = {
   generateCastURLEndpoint,
-  generateCreditsEndpoint,
   generateCrewEndpoint,
   generateDiscoverEndpoint,
   generateKeywordEndpoint,
@@ -84,5 +83,6 @@ module.exports = {
   generateSocialLinksEndpoint,
   generateTopRatedEndpoint,
   generateVideoEndpoint,
-  generateUpcomingEndpoint
+  generateUpcomingEndpoint,
+  generatePersonCreditsEndpoint,
 };

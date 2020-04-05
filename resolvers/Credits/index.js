@@ -1,7 +1,7 @@
-const ShowCreditsResolver = require("./ShowResolver");
-const MovieCreditsResolver = require("./MovieResolver");
+const PersonCastCreditsResolver = require("./PersonCastCreditsResolver");
+const PersonCrewCreditsResolver = require("./PersonCrewCreditsResolver");
 
 module.exports = {
-  ShowCreditsResolver,
-  MovieCreditsResolver
+  PersonCastCreditsResolver,
+  PersonCrewCreditsResolver,
 };
