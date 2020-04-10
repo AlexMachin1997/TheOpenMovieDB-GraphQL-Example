@@ -88,6 +88,7 @@ const typeDef = gql`
     popularity: Float
     credit_id: String
     release_date: String
+    original_title: String
   }
 `;
 
