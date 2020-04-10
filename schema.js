@@ -9,6 +9,15 @@ const { Keyword } = require("./models/Keyword");
 const { Language } = require("./models/Language");
 const { Social } = require("./models/Social");
 const { Review } = require("./models/Review");
+
+// Person Models
+const People = require("./models/People");
+const CastCredits = require("./models/People/CastCredits");
+const CrewCredits = require("./models/People/CrewCredits");
+const KnownFor = require("./models/People/KnownFor");
+const Person = require("./models/People/Person");
+
+// Show Models
 const { CreatedBy } = require("./models/Show/CreatedBy");
 const { LastEpisodeToAir } = require("./models/Show/LastEpisodeToAir");
 const { Network } = require("./models/Show/Network");
@@ -16,10 +25,11 @@ const { Season } = require("./models/Show/Season");
 
 // Main models e.g. SingleMovie, TV, People etc
 const Query = require("./models/Query");
-const Movie = require("./models/Movie");
 const Show = require("./models/Show");
 const Video = require("./models/Videos");
-const Person = require("./models/People");
+
+const Movies = require("./models/Movies");
+const Movie = require("./models/Movies/Movie");
 
 // Resolvers
 const { RootQuery } = require("./resolvers");
@@ -42,11 +52,17 @@ const stuff = makeExecutableSchema({
     Show,
     Movie,
     Video,
-    Person
+    Person,
+    CastCredits,
+    CrewCredits,
+    KnownFor,
+    Movie,
+    Movies,
+    People,
   ],
-  resolvers: RootQuery
+  resolvers: RootQuery,
 });
 
 module.exports = {
-  schema: stuff
+  schema: stuff,
 };

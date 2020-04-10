@@ -10,6 +10,7 @@ const typeDef = gql`
     site: String
     size: Int
     type: String
+    url: String
   }
 `;
 

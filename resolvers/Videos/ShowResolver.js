@@ -12,10 +12,12 @@ const ShowVideoResolver = async (parent, args, context, info) => {
     const { results } = data;
 
     // Filter to find the Trailers which are from YouTube
-    const YoutubeVideos = filter(
-      results,
-      video => video.type === "Trailer" && video.site === "YouTube"
-    );
+    const YoutubeVideos = filter(results, (video) => video.site === "YouTube");
+
+    // Add the url for each video
+    forEach(YoutubeVideos, (video) => {
+      video.url = `https://www.youtube.com/watch?v=${video.key}`;
+    });
 
     return YoutubeVideos;
   } catch (err) {

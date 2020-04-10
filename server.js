@@ -7,8 +7,8 @@ const { schema } = require("./schema");
 const server = new ApolloServer({
   schema,
   cacheControl: {
-    defaultMaxAge: 2000
-  }
+    defaultMaxAge: 22500,
+  },
 });
 
 // Start listening to the ApolloServer for GraphQL queries like DiscoverMovies(relaseDate: 2019)
