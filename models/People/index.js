@@ -77,7 +77,6 @@ const typeDef = gql`
     origin_country: [String]
     original_name: String
     genre_ids: [Int]
-    name: String
     media_type: String
     poster_path: String
     first_air_date: String

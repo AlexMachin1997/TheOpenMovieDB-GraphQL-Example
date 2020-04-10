@@ -13,7 +13,7 @@ const PersonCrewCredits = async (parent, args, info, context) => {
 
     const { data } = response;
 
-    const { crew } = response;
+    const { crew } = data;
 
     forEach(crew, (data) => {
       if (has(data, "backdrop_path") === true) {
@@ -40,18 +40,6 @@ const PersonCrewCredits = async (parent, args, info, context) => {
         const { popularity } = data;
         data.popularity = popularity.toFixed(2);
       }
-    });
-
-    cast.sort((a, b) => {
-      if (a.vote_count > b.vote_count) {
-        return -1;
-      }
-
-      if (a.vote_count < b.vote_count) {
-        return 1;
-      }
-
-      return 0;
     });
 
     return crew;
