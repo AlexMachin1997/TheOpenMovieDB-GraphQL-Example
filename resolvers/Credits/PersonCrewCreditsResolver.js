@@ -1,23 +1,21 @@
 const axios = require("axios");
-const { has, forEach } = require("lodash");
+const { forEach, has } = require("lodash");
 const moment = require("moment");
 
-const { generateCreditsEndpoint } = require("../../utils/generateEndpoints");
+const {
+  generatePersonCreditsEndpoint,
+} = require("../../utils/generateEndpoints");
 const generateImageURL = require("../../utils/generateImageURL");
 
-const ShowCreditsResolver = async (parent, args, context, info) => {
+const PersonCrewCredits = async (parent, args, info, context) => {
   try {
-    // Send a request to the tv_credits endpoint
-    const response = await axios.get(
-      generateCreditsEndpoint(parent.id, "person", "tv_credits")
-    );
+    const response = await axios.get(generatePersonCreditsEndpoint(parent.id));
 
     const { data } = response;
 
-    const { cast } = data;
+    const { crew } = data;
 
-    // Format the data
-    forEach(cast, data => {
+    forEach(crew, (data) => {
       if (has(data, "backdrop_path") === true) {
         const { backdrop_path } = data;
         data.backdrop_path = generateImageURL(backdrop_path);
@@ -30,7 +28,12 @@ const ShowCreditsResolver = async (parent, args, context, info) => {
 
       if (has(data, "first_air_date") === true) {
         const { first_air_date } = data;
-        data.first_air_date = moment(first_air_date).format("DD/MM/YYYY");
+        data.first_air_date = moment(first_air_date).format("YYYY");
+      }
+
+      if (has(data, "release_date") === true) {
+        const { first_air_date } = data;
+        data.first_air_date = moment(first_air_date).format("YYYY");
       }
 
       if (has(data, "popularity") === true) {
@@ -39,11 +42,11 @@ const ShowCreditsResolver = async (parent, args, context, info) => {
       }
     });
 
-    return cast;
+    return crew;
   } catch (err) {
-    console.log("The /person/:id/tv_credits endpoint failed");
+    console.log(err);
     return err.response;
   }
 };
 
-module.exports = ShowCreditsResolver;
+module.exports = PersonCrewCredits;
