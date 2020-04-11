@@ -3,7 +3,7 @@ const { has, forEach } = require("lodash");
 
 const { generatePopularEndpoint } = require("../../utils/generateEndpoints");
 const generateImageURL = require("../../utils/generateImageURL");
-const { formatReleaseDate } = require("../../utils/formatDates");
+const { formatDate } = require("../../utils/formatDates");
 
 const TVPopularResolver = async (parent, args, context, info) => {
   try {
@@ -27,7 +27,7 @@ const TVPopularResolver = async (parent, args, context, info) => {
 
       if (has(show, "first_air_date") === true) {
         const { first_air_date } = show;
-        data.first_air_date = formatReleaseDate(first_air_date);
+        data.first_air_date = formatDate(first_air_date, "MMMM Do, YYYY");
       }
     });
 

@@ -5,7 +5,6 @@ const {
   generateRecomendationEndpoint,
 } = require("../../utils/generateEndpoints");
 const generateImageURL = require("../../utils/generateImageURL");
-const { formatReleaseDate } = require("../../utils/formatDates");
 
 const TVRecomendationsResolver = async (parent, args, content, info) => {
   try {

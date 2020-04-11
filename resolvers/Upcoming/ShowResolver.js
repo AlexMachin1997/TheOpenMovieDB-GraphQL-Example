@@ -5,7 +5,7 @@ const { generateUpcomingEndpoint } = require("../../utils/generateEndpoints");
 
 const generateImageURL = require("../../utils/generateImageURL");
 
-const { formatReleaseDate } = require("../../utils/formatDates");
+const { formatDate } = require("../../utils/formatDates");
 
 const NowPlayingTVResolver = async (parent, args, context, info) => {
   try {
@@ -28,12 +28,12 @@ const NowPlayingTVResolver = async (parent, args, context, info) => {
 
       if (has(data, "release_date") === true) {
         const { release_date } = data;
-        data.release_date = formatReleaseDate(release_date);
+        data.release_date = formatDate(release_date, "MMMM Do, YYYY");
       }
 
       if (has(data, "first_air_date") === true) {
         const { first_air_date } = data;
-        data.first_air_date = formatReleaseDate(first_air_date);
+        data.first_air_date = formatDate(first_air_date, "MMMM Do, YYYY");
       }
     });
 
