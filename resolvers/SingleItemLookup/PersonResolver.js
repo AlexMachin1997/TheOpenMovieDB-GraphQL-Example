@@ -1,6 +1,5 @@
 const axios = require("axios");
 const { find, has } = require("lodash");
-const moment = require("moment");
 
 const generateImageURL = require("../../utils/generateImageURL");
 
@@ -8,6 +7,8 @@ const {
   generateSearchEndpoint,
   generateSingleItemLookupEndpoint,
 } = require("../../utils/generateEndpoints");
+
+const { generateBirthdayDate } = require("../../utils/formatDates");
 
 const SearchForAPersonResolver = async (parent, args, context, info) => {
   try {
@@ -37,7 +38,7 @@ const SearchForAPersonResolver = async (parent, args, context, info) => {
 
       if (has(data, "birthday") === true) {
         const { birthday } = data;
-        data.birthday = moment(birthday).format("DD/MM/YYYY");
+        data.birthday = generateBirthdayDate(birthday);
       }
 
       if (has(data, "populaity") === true) {

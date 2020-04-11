@@ -1,7 +1,13 @@
 const moment = require("moment");
 
-const formatReleaseDate = date => moment(date).format("MMMM Do, YYYY");
+const formatDate = (date, pattern) => moment(date).format(pattern);
+
+const generateYear = (date) => moment(date).format("YYYY");
+
+const generateBirthdayDate = (date) => moment(date).format("DD/MM/YYYY");
 
 module.exports = {
-  formatReleaseDate
+  formatDate,
+  generateYear,
+  generateBirthdayDate,
 };

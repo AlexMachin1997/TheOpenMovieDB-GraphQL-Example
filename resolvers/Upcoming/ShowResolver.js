@@ -1,9 +1,11 @@
 const axios = require("axios");
-const moment = require("moment");
 const { has, forEach } = require("lodash");
 
 const { generateUpcomingEndpoint } = require("../../utils/generateEndpoints");
+
 const generateImageURL = require("../../utils/generateImageURL");
+
+const { formatDate } = require("../../utils/formatDates");
 
 const NowPlayingTVResolver = async (parent, args, context, info) => {
   try {
@@ -14,7 +16,7 @@ const NowPlayingTVResolver = async (parent, args, context, info) => {
     const { results } = data;
 
     // Transform the data
-    forEach(results, data => {
+    forEach(results, (data) => {
       if (has(data, "poster_path") === true) {
         const { poster_path } = data;
         data.poster_path = generateImageURL(poster_path);
@@ -26,12 +28,12 @@ const NowPlayingTVResolver = async (parent, args, context, info) => {
 
       if (has(data, "release_date") === true) {
         const { release_date } = data;
-        data.release_date = moment(release_date).format("MMMM Do, YYYY");
+        data.release_date = formatDate(release_date, "MMMM Do, YYYY");
       }
 
       if (has(data, "first_air_date") === true) {
         const { first_air_date } = data;
-        data.first_air_date = moment(first_air_date).format("MMMM Do, YYYY");
+        data.first_air_date = formatDate(first_air_date, "MMMM Do, YYYY");
       }
     });
 

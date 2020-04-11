@@ -1,10 +1,9 @@
 const axios = require("axios");
-const moment = require("moment");
 const { has, forEach } = require("lodash");
 
 const { generatePopularEndpoint } = require("../../utils/generateEndpoints");
 const generateImageURL = require("../../utils/generateImageURL");
-const { formatReleaseDate } = require("../../utils/formatDates");
+const { formatDate } = require("../../utils/formatDates");
 
 const TVPopularResolver = async (parent, args, context, info) => {
   try {
@@ -15,7 +14,7 @@ const TVPopularResolver = async (parent, args, context, info) => {
     const { results } = data;
 
     // Transform the data
-    forEach(results, show => {
+    forEach(results, (show) => {
       if (has(show, "poster_path") === true) {
         const { poster_path } = show;
         data.poster_path = generateImageURL(poster_path);
@@ -28,7 +27,7 @@ const TVPopularResolver = async (parent, args, context, info) => {
 
       if (has(show, "first_air_date") === true) {
         const { first_air_date } = show;
-        data.first_air_date = formatReleaseDate(first_air_date);
+        data.first_air_date = formatDate(first_air_date, "MMMM Do, YYYY");
       }
     });
 

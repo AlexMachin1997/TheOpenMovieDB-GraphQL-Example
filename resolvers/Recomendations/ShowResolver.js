@@ -1,12 +1,10 @@
 const axios = require("axios");
 const { has, forEach } = require("lodash");
-const moment = require("moment");
 
 const {
-  generateRecomendationEndpoint
+  generateRecomendationEndpoint,
 } = require("../../utils/generateEndpoints");
 const generateImageURL = require("../../utils/generateImageURL");
-const { formatReleaseDate } = require("../../utils/formatDates");
 
 const TVRecomendationsResolver = async (parent, args, content, info) => {
   try {
@@ -19,7 +17,7 @@ const TVRecomendationsResolver = async (parent, args, content, info) => {
     const { results } = data;
 
     // Format the data
-    forEach(results, data => {
+    forEach(results, (data) => {
       if (has(data, "poster_path") === true) {
         const { poster_path } = data;
         data.poster_path = generateImageURL(poster_path);
@@ -27,11 +25,6 @@ const TVRecomendationsResolver = async (parent, args, content, info) => {
       if (has(data, "poster_path") === true) {
         const { backdrop_path } = data;
         data.backdrop_path = generateImageURL(backdrop_path);
-      }
-
-      if (has(data, "first_air_date") === true) {
-        const { first_air_date } = data;
-        data.first_air_date = moment(first_air_date).format("DD-MM-YYYY");
       }
     });
 

@@ -29,13 +29,6 @@ const {
 // Discover resolvers
 const { DiscoverMoviesResolver, DiscoverShowsResolver } = require("./Discover");
 
-// Search resolvers
-const {
-  SearchForMoviesResolver,
-  SearchForShowsResolver,
-  SearchForPeopleResolver,
-} = require("./Search");
-
 // Popular resolvers
 const {
   PopularShowsResolver,
@@ -99,11 +92,6 @@ const resolvers = {
     SearchForAMovie: SearchForAMovieResolver,
     SearchForAShow: SearchForAShowResolver,
     SearchForAPerson: SearchForAPersonResolver,
-
-    // Search
-    SearchForMovies: SearchForMoviesResolver,
-    SearchForShows: SearchForShowsResolver,
-    SearchForPeople: SearchForPeopleResolver,
 
     // Discover
     DiscoverMovies: DiscoverMoviesResolver,

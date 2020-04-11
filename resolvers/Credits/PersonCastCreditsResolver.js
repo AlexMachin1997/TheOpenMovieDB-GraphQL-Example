@@ -1,10 +1,12 @@
 const axios = require("axios");
 const { forEach, has } = require("lodash");
-const moment = require("moment");
 
 const {
   generatePersonCreditsEndpoint,
 } = require("../../utils/generateEndpoints");
+
+const { generateYear } = require("../../utils/formatDates");
+
 const generateImageURL = require("../../utils/generateImageURL");
 
 const PersonCastCredits = async (parent, args, info, context) => {
@@ -28,12 +30,12 @@ const PersonCastCredits = async (parent, args, info, context) => {
 
       if (has(data, "first_air_date") === true) {
         const { first_air_date } = data;
-        data.first_air_date = moment(first_air_date).format("YYYY");
+        data.first_air_date = generateYear(first_air_date);
       }
 
       if (has(data, "release_date") === true) {
         const { release_date } = data;
-        data.release_date = moment(release_date).format("YYYY");
+        data.release_date = generateYear(release_date);
       }
 
       if (has(data, "popularity") === true) {

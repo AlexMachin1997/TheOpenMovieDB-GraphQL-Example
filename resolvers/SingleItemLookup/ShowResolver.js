@@ -1,13 +1,14 @@
 const axios = require("axios");
 const { find, has, forEach } = require("lodash");
-const moment = require("moment");
 
 const {
   generateSearchEndpoint,
   generateSingleItemLookupEndpoint,
 } = require("../../utils/generateEndpoints");
+
 const generateImageURL = require("../../utils/generateImageURL");
-const { formatReleaseDate } = require("../../utils/formatDates");
+
+const { generateYear } = require("../../utils/formatDates");
 
 const SearchForAShowResolver = async (parent, args, context, info) => {
   try {
@@ -56,7 +57,7 @@ const SearchForAShowResolver = async (parent, args, context, info) => {
 
           season_number: last_episode_to_air.season_number,
 
-          year: moment(last_episode_to_air.air_date).format("YYYY"),
+          year: generateYear(last_episode_to_air.air_date),
 
           episode_count: seasons[CurrentSeasonIndex].episode_count,
 
