@@ -1,5 +1,4 @@
 const axios = require("axios");
-const moment = require("moment");
 const { has, forEach } = require("lodash");
 
 const { generateDiscoverEndpoint } = require("../../utils/generateEndpoints");
@@ -14,7 +13,7 @@ const DiscoverTVResolver = async (parent, args, context, info) => {
     // When genres exist build a query string to find movies by genres
     if (args.genres === true) {
       // Split the numbers provided and for each number append it to genresQuery with a query parameter
-      args.genres.split(", ").map(data => {
+      args.genres.split(", ").map((data) => {
         genresQuery += `&with_genres=${data}`;
       });
     }
@@ -28,7 +27,7 @@ const DiscoverTVResolver = async (parent, args, context, info) => {
     const { results } = data;
 
     // Data formatting
-    forEach(results, data => {
+    forEach(results, (data) => {
       if (has(data, "poster_path") === true) {
         const { poster_path } = data;
         data.poster_path = generateImageURL(poster_path);

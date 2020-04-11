@@ -1,5 +1,4 @@
 const axios = require("axios");
-const moment = require("moment");
 const { has, forEach } = require("lodash");
 
 const { generatePopularEndpoint } = require("../../utils/generateEndpoints");
@@ -15,7 +14,7 @@ const TVPopularResolver = async (parent, args, context, info) => {
     const { results } = data;
 
     // Transform the data
-    forEach(results, show => {
+    forEach(results, (show) => {
       if (has(show, "poster_path") === true) {
         const { poster_path } = show;
         data.poster_path = generateImageURL(poster_path);

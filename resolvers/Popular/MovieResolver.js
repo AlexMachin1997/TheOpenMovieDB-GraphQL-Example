@@ -1,5 +1,4 @@
 const axios = require("axios");
-const moment = require("moment");
 const { has, forEach } = require("lodash");
 
 const { generatePopularEndpoint } = require("../../utils/generateEndpoints");
@@ -16,7 +15,7 @@ const MoviePopularResolver = async (parent, args, context, info) => {
     const { results } = data;
 
     // Format the data
-    forEach(results, data => {
+    forEach(results, (data) => {
       if (has(data, "poster_path") === true) {
         const { poster_path } = data;
         data.poster_path = generateImageURL(poster_path);
