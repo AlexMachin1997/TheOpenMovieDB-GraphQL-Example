@@ -1,9 +1,10 @@
 const axios = require("axios");
 const { find, has, forEach } = require("lodash");
+const moment = require("moment");
 
 const {
   generateSearchEndpoint,
-  generateSingleItemLookupEndpoint
+  generateSingleItemLookupEndpoint,
 } = require("../../utils/generateEndpoints");
 const generateImageURL = require("../../utils/generateImageURL");
 const { formatReleaseDate } = require("../../utils/formatDates");
@@ -17,7 +18,7 @@ const SearchForAShowResolver = async (parent, args, context, info) => {
     const { results } = data;
 
     // Find a movie from the search results
-    const SingleShow = find(results, show => show.id === args.id);
+    const SingleShow = find(results, (show) => show.id === args.id);
 
     try {
       // Perform a single show lookup using the show found in search results array
@@ -30,7 +31,7 @@ const SearchForAShowResolver = async (parent, args, context, info) => {
       // Data formatting for the created_by field
       if (has(data, "created_by") === true) {
         const { created_by } = data;
-        forEach(created_by, creator => {
+        forEach(created_by, (creator) => {
           if (has(creator, "profile_path") === true) {
             const { profile_path } = creator;
             creator.profile_path = generateImageURL(profile_path);
@@ -38,19 +39,29 @@ const SearchForAShowResolver = async (parent, args, context, info) => {
         });
       }
 
-      // Data formatting for the last_episode_to_air field
-      if (has(data, "last_episode_to_air") === true) {
-        const { last_episode_to_air } = data;
+      // Generate the current season information
+      if (
+        has(data, "last_episode_to_air") === true &&
+        has(data, "seasons") === true
+      ) {
+        const { seasons, last_episode_to_air } = data;
 
-        if (has(last_episode_to_air, "still_path") === true) {
-          const { still_path } = last_episode_to_air;
-          last_episode_to_air.still_path = generateImageURL(still_path);
-        }
+        const CurrentSeasonIndex = seasons.findIndex(
+          (season) => season.season_number === last_episode_to_air.season_number
+        );
 
-        if (has(last_episode_to_air, "air_date") === true) {
-          const { air_date } = last_episode_to_air;
-          last_episode_to_air.air_date = formatReleaseDate(air_date);
-        }
+        // Set the current_season field to the CurrentSeason
+        data.current_season = {
+          image: generateImageURL(last_episode_to_air.still_path),
+
+          season_number: last_episode_to_air.season_number,
+
+          year: moment(last_episode_to_air.air_date).format("YYYY"),
+
+          episode_count: seasons[CurrentSeasonIndex].episode_count,
+
+          overview: seasons[CurrentSeasonIndex].overview,
+        };
       }
 
       // Data formatting for the backdrop_path field
@@ -68,7 +79,7 @@ const SearchForAShowResolver = async (parent, args, context, info) => {
       // Data formatting for the networks
       if (has(data, "networks") === true) {
         const { networks } = data;
-        forEach(networks, network => {
+        forEach(networks, (network) => {
           if (has(network, "logo_path") === true) {
             const { logo_path } = network;
             network.logo_path = generateImageURL(logo_path);

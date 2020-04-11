@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { filter } = require("lodash");
+const { filter, forEach } = require("lodash");
 
 const { generateVideoEndpoint } = require("../../utils/generateEndpoints");
 
