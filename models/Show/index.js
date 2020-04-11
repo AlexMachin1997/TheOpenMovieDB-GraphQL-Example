@@ -39,14 +39,6 @@ const typeDef = gql`
     current_season: CurrentSeason
   }
 
-  type CurrentSeason {
-    image: String
-    season_number: Int
-    year: String
-    episode_count: Int
-    overview: String
-  }
-
   type Shows {
     poster_path: String
     popularity: Float

@@ -10,6 +10,4 @@ const typeDef = gql`
   }
 `;
 
-module.exports = {
-  Social: typeDef
-};
+module.exports = typeDef;

@@ -13,6 +13,4 @@ const typeDef = gql`
   }
 `;
 
-module.exports = {
-  Cast: typeDef
-};
+module.exports = typeDef;

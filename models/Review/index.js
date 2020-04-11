@@ -9,6 +9,4 @@ const typeDef = gql`
   }
 `;
 
-module.exports = {
-  Review: typeDef
-};
+module.exports = typeDef;

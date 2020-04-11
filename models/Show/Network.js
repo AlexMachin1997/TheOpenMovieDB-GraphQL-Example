@@ -9,6 +9,4 @@ const typeDef = gql`
   }
 `;
 
-module.exports = {
-  Network: typeDef
-};
+module.exports = typeDef;

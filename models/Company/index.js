@@ -9,6 +9,4 @@ const typeDef = gql`
   }
 `;
 
-module.exports = {
-  Company: typeDef
-};
+module.exports = typeDef;

@@ -7,6 +7,4 @@ const typeDef = gql`
   }
 `;
 
-module.exports = {
-  Keyword: typeDef
-};
+module.exports = typeDef;

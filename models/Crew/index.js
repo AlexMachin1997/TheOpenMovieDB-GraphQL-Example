@@ -12,6 +12,4 @@ const typeDef = gql`
   }
 `;
 
-module.exports = {
-  Crew: typeDef
-};
+module.exports = typeDef;

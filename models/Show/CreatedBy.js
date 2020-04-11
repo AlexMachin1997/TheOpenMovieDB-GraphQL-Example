@@ -10,6 +10,4 @@ const typeDef = gql`
   }
 `;
 
-module.exports = {
-  CreatedBy: typeDef
-};
+module.exports = typeDef;

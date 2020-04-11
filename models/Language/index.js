@@ -7,6 +7,4 @@ const typeDef = gql`
   }
 `;
 
-module.exports = {
-  Language: typeDef
-};
+module.exports = typeDef;

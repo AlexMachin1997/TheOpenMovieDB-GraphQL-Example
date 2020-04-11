@@ -16,6 +16,4 @@ const typeDef = gql`
   }
 `;
 
-module.exports = {
-  LastEpisodeToAir: typeDef
-};
+module.exports = typeDef;
