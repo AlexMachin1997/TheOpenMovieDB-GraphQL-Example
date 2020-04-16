@@ -6,10 +6,8 @@ const generateCastURLEndpoint = (id, resolverType) =>
 const generateCrewEndpoint = (id, resolverType) =>
   `${API_URI}/${API_VERSION}/${resolverType}/${id}/credits?api_key=${API_KEY}`;
 
-const generateDiscoverEndpoint = (resolverType) => {
-  let url = `${API_URI}/${API_VERSION}/discover/${resolverType}?api_key=${API_KEY}&page=1`;
-  return url;
-};
+const generateDiscoverEndpoint = (resolverType) =>
+  `${API_URI}/${API_VERSION}/discover/${resolverType}?api_key=${API_KEY}&page=1`;
 
 const generateKeywordEndpoint = (id, resolverType) =>
   `${API_URI}/${API_VERSION}/${resolverType}/${id}/keywords?api_key=${API_KEY}`;
