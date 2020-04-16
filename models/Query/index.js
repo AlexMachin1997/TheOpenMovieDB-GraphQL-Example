@@ -2,7 +2,13 @@ const { gql } = require("apollo-server");
 
 const Query = gql`
   type Query {
-    DiscoverMovies(releaseDate: Int, sortBy: String, genres: String): [Movies]
+    DiscoverMovies(
+      sortBy: String
+      genres: String
+      certifications: String
+      userscore: String
+      runtime: String
+    ): [Movies]
     DiscoverShows(releaseDate: Int, sortBy: String, genres: String): [Shows]
 
     SearchForAMovie(search: String!, id: Int!): Movie
