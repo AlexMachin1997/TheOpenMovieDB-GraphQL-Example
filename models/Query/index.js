@@ -9,7 +9,14 @@ const Query = gql`
       userscore: String
       runtime: String
     ): [Movies]
-    DiscoverShows(releaseDate: Int, sortBy: String, genres: String): [Shows]
+
+    DiscoverShows(
+      sortBy: String
+      genres: String
+      certifications: String
+      userscore: String
+      runtime: String
+    ): [Shows]
 
     SearchForAMovie(search: String!, id: Int!): Movie
     SearchForAShow(search: String!, id: Int!): Show
