@@ -2,13 +2,22 @@
   "name": "apollo-server-example",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
     "server": "nodemon server.js"
   },
-  "keywords": [],
+  "keywords": [
+    "Graphql",
+    "Apollo",
+    "Lodash",
+    "Dotenv",
+    "Apollo-Server",
+    "MomentJS",
+    "Nodemon",
+    "NPM"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
