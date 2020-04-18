@@ -2,38 +2,25 @@ const axios = require("axios");
 const { has, forEach } = require("lodash");
 
 const { generateDiscoverEndpoint } = require("../../utils/generateEndpoints");
-
 const generateImageURL = require("../../utils/generateImageURL");
-
 const { formatDate } = require("../../utils/formatDates");
+const generateQueryParameters = require("../../utils/generateQueryParameter");
 
 const DiscoverMoviesResolver = async (parent, args, context, info) => {
   try {
-    // Genres query
-    let genresQuery = "";
-
-    // When genres exist build a query string to find movies by genres
-    if (args.genres === true) {
-      // Split the numbers provided and for each number append it to genresQuery with a query parameter
-      args.genres.split(", ").map((data) => {
-        genresQuery += `&with_genres=${data}`;
-      });
-    }
+    // Generate the /Discover movies endpoint
+    const TheDiscoverMovieURL = generateQueryParameters(
+      generateDiscoverEndpoint("movie"),
+      args
+    );
 
     // Send a request to the discover movies endpoint
-    const response = await axios.get(
-      generateDiscoverEndpoint(
-        "movie",
-        args.releaseDate,
-        args.sortBy,
-        genresQuery
-      )
-    );
+    const response = await axios.get(TheDiscoverMovieURL);
 
     const { data } = response;
     const { results } = data;
 
-    // Format the data
+    // Format the respones data
     forEach(results, (data) => {
       if (has(data, "poster_path") === true) {
         const { poster_path } = data;
@@ -50,8 +37,10 @@ const DiscoverMoviesResolver = async (parent, args, context, info) => {
       }
     });
 
+    // Return the resolver to the models (Spits out the data in the request)
     return results;
   } catch (err) {
+    console.log(err);
     console.log("The /Discover/Movie endpoint failed");
     return err.response;
   }

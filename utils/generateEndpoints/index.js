@@ -6,18 +6,8 @@ const generateCastURLEndpoint = (id, resolverType) =>
 const generateCrewEndpoint = (id, resolverType) =>
   `${API_URI}/${API_VERSION}/${resolverType}/${id}/credits?api_key=${API_KEY}`;
 
-const generateDiscoverEndpoint = (
-  resolverType,
-  releaseDate,
-  sortBy,
-  genresQuery
-) => {
-  const url = `${API_URI}/${API_VERSION}/discover/${resolverType}?api_key=${API_KEY}&page=1${
-    releaseDate ? `&primary_release_year=${releaseDate}` : ""
-  }${sortBy ? `&sort_by=${sortBy}` : "popularity.asc"}${genresQuery}`;
-
-  return url;
-};
+const generateDiscoverEndpoint = (resolverType) =>
+  `${API_URI}/${API_VERSION}/discover/${resolverType}?api_key=${API_KEY}&page=1`;
 
 const generateKeywordEndpoint = (id, resolverType) =>
   `${API_URI}/${API_VERSION}/${resolverType}/${id}/keywords?api_key=${API_KEY}`;

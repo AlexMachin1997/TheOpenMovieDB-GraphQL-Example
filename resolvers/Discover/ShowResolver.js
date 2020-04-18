@@ -4,29 +4,23 @@ const { has, forEach } = require("lodash");
 const { generateDiscoverEndpoint } = require("../../utils/generateEndpoints");
 const generateImageURL = require("../../utils/generateImageURL");
 const { formatDate } = require("../../utils/formatDates");
+const generateQueryParameters = require("../../utils/generateQueryParameter");
 
 const DiscoverTVResolver = async (parent, args, context, info) => {
   try {
-    // Genres query
-    let genresQuery = "";
-
-    // When genres exist build a query string to find movies by genres
-    if (args.genres === true) {
-      // Split the numbers provided and for each number append it to genresQuery with a query parameter
-      args.genres.split(", ").map((data) => {
-        genresQuery += `&with_genres=${data}`;
-      });
-    }
-
-    // Send a request to the discover movies endpoint
-    const response = await axios.get(
-      generateDiscoverEndpoint("tv", args.releaseDate, args.sortBy, genresQuery)
+    // Generate the /Discover shows endpoint
+    const TheDiscoverTVURL = generateQueryParameters(
+      generateDiscoverEndpoint("tv"),
+      args
     );
+
+    // Send a request to the discover tv endpoint
+    const response = await axios.get(TheDiscoverTVURL);
 
     const { data } = response;
     const { results } = data;
 
-    // Data formatting
+    // Format the respones data
     forEach(results, (data) => {
       if (has(data, "poster_path") === true) {
         const { poster_path } = data;
@@ -43,7 +37,7 @@ const DiscoverTVResolver = async (parent, args, context, info) => {
       }
     });
 
-    // 3. Return the DiscoverMoviesResponse
+    // Return the resolver to the models (Spits out the data in the request)
     return results;
   } catch (err) {
     console.log(err);
