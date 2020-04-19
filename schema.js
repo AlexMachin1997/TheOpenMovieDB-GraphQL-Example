@@ -12,10 +12,9 @@ const Review = require("./models/Review");
 
 // Person Models
 const People = require("./models/People");
-const CastCredits = require("./models/People/CastCredits");
-const CrewCredits = require("./models/People/CrewCredits");
 const KnownFor = require("./models/People/KnownFor");
 const Person = require("./models/People/Person");
+const Credits = require("./models/People/Credits");
 
 // Show Models
 const CreatedBy = require("./models/Show/CreatedBy");
@@ -54,13 +53,12 @@ const stuff = makeExecutableSchema({
     Movie,
     Video,
     Person,
-    CastCredits,
-    CrewCredits,
     KnownFor,
     Movie,
     Movies,
     People,
     CurrentSeason,
+    Credits,
   ],
   resolvers: RootQuery,
 });
