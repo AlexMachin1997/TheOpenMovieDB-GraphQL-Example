@@ -1,21 +1,12 @@
 const axios = require("axios");
 const { isEmpty, forEach } = require("lodash");
 
-const fs = require("fs");
-
 const {
   generatePersonCreditsEndpoint,
 } = require("../../utils/generateEndpoints");
 const { generateYear } = require("../../utils/formatDates");
 
-const replaceObjectKey = (object, oldKey, newKey) => {
-  if (isEmpty(object[oldKey]) === false) {
-    object[newKey] = object[oldKey];
-    delete object[oldKey];
-    return object;
-  }
-  return object;
-};
+const replaceObjectKey = require("../../utils/objects/replaceKey");
 
 reorderDate = (arrary, object, index) => {
   if (object.release_date === "-") {
@@ -93,6 +84,13 @@ const CreditsResolver = async (parent, args, info, context) => {
     );
 
     CrewGroup = formatGroup(CrewGroup);
+
+    CrewGroup.map((data) => {
+      replaceObjectKey(data, "original_name", "original_title");
+      replaceObjectKey(data, "name", "original_title");
+    });
+
+    console.log(CrewGroup);
 
     return {
       ActingGroup,
