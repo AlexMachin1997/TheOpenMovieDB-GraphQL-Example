@@ -90,8 +90,6 @@ const CreditsResolver = async (parent, args, info, context) => {
       replaceObjectKey(data, "name", "original_title");
     });
 
-    console.log(CrewGroup);
-
     return {
       ActingGroup,
       ProductionGroup,
