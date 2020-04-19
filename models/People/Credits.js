@@ -6,6 +6,7 @@ const typeDef = gql`
     original_title: String
     episode_count: String
     first_air_date: String
+    media_type: String
   }
 `;
 
