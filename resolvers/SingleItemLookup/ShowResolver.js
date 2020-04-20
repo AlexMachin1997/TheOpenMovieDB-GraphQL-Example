@@ -5,10 +5,8 @@ const {
   generateSearchEndpoint,
   generateSingleItemLookupEndpoint,
 } = require("../../utils/generateEndpoints");
-
 const generateImageURL = require("../../utils/generateImageURL");
-
-const { generateYear } = require("../../utils/formatDates");
+const generateYear = require("../../utils/dates/generateYear");
 
 const SearchForAShowResolver = async (parent, args, context, info) => {
   try {

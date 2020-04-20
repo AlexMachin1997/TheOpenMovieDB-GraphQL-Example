@@ -1,11 +1,9 @@
 const axios = require("axios");
-const { isEmpty, forEach } = require("lodash");
 
 const {
   generatePersonCreditsEndpoint,
 } = require("../../utils/generateEndpoints");
-const { generateYear } = require("../../utils/formatDates");
-
+const generateYear = require("../../utils/dates/generateYear");
 const replaceObjectKey = require("../../utils/objects/replaceKey");
 
 reorderDate = (arrary, object, index) => {

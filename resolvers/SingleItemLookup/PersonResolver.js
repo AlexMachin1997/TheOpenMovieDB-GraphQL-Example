@@ -2,13 +2,11 @@ const axios = require("axios");
 const { find, has } = require("lodash");
 
 const generateImageURL = require("../../utils/generateImageURL");
-
 const {
   generateSearchEndpoint,
   generateSingleItemLookupEndpoint,
 } = require("../../utils/generateEndpoints");
-
-const { generateBirthdayDate } = require("../../utils/formatDates");
+const generateBirthdayDate = require("../../utils/dates/generateBirthday");
 
 const SearchForAPersonResolver = async (parent, args, context, info) => {
   try {

@@ -3,7 +3,7 @@ const { has, forEach } = require("lodash");
 
 const { generatePopularEndpoint } = require("../../utils/generateEndpoints");
 const generateImageURL = require("../../utils/generateImageURL");
-const { formatDate } = require("../../utils/formatDates");
+const formatDate = require("../../utils/dates/custom");
 
 const TVPopularResolver = async (parent, args, context, info) => {
   try {

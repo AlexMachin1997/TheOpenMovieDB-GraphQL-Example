@@ -5,7 +5,7 @@ const {
   genereateNowPlayingEndpoint,
 } = require("../../utils/generateEndpoints");
 const generateImageURL = require("../../utils/generateImageURL");
-const { formatDate } = require("../../utils/formatDates");
+const formatDate = require("../../utils/dates/custom");
 
 const NowPlayingTVResolver = async (parent, args, context, info) => {
   try {

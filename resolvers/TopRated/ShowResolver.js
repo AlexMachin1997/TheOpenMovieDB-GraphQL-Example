@@ -3,7 +3,7 @@ const { has, forEach } = require("lodash");
 
 const { generateTopRatedEndpoint } = require("../../utils/generateEndpoints");
 const generateImageURL = require("../../utils/generateImageURL");
-const { formatDate } = require("../../utils/formatDates");
+const formatDate = require("../../utils/dates/custom");
 
 const PopularShowResolver = async (parent, args, context, info) => {
   try {
