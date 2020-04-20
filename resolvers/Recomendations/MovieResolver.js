@@ -5,6 +5,7 @@ const {
   generateRecomendationEndpoint,
 } = require("../../utils/generateEndpoints");
 const generateImageURL = require("../../utils/generateImageURL");
+const toPercentage = require("../../utils/maths/toPercentage");
 
 const MovieRecomendationsResolver = async (parent, args, content, info) => {
   try {
@@ -13,11 +14,8 @@ const MovieRecomendationsResolver = async (parent, args, content, info) => {
       generateRecomendationEndpoint(parent.id, "movie")
     );
 
-    const { data } = response;
-    const { results } = data;
-
     // Transform the data
-    forEach(results, (data) => {
+    forEach(response.data.results, (data) => {
       if (has(data, "poster_path") === true) {
         const { poster_path } = data;
         data.poster_path = generateImageURL(poster_path);
@@ -26,9 +24,14 @@ const MovieRecomendationsResolver = async (parent, args, content, info) => {
         const { backdrop_path } = data;
         data.backdrop_path = generateImageURL(backdrop_path);
       }
+
+      if (has(data, "vote_average") === true) {
+        const { vote_average } = data;
+        data.vote_average = toPercentage(vote_average);
+      }
     });
 
-    return results;
+    return response.data.results;
   } catch (err) {
     console.log(err);
     console.log("The /movie/reccomendations/ endpoint failed");

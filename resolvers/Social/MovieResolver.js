@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 const {
-  generateSocialLinksEndpoint
+  generateSocialLinksEndpoint,
 } = require("../../utils/generateEndpoints");
 
 const MovieSocialResolver = async (parent, args, info, context) => {
@@ -11,9 +11,7 @@ const MovieSocialResolver = async (parent, args, info, context) => {
       generateSocialLinksEndpoint(parent.id, "movie")
     );
 
-    const { data } = response;
-
-    return data;
+    return response.data;
   } catch (err) {
     console.log("The movie /external_ids (social) endpoint failed");
     return err.response;

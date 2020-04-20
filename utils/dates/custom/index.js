@@ -1,3 +1,6 @@
+const moment = require("moment");
+const { isEmpty } = require("lodash");
+
 const formatDate = (date, pattern) => {
   let formattedDate = moment(date).format(pattern);
 
@@ -8,3 +11,5 @@ const formatDate = (date, pattern) => {
 
   return formattedDate;
 };
+
+module.exports = formatDate;
