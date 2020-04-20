@@ -2,21 +2,17 @@ const axios = require("axios");
 const { has, forEach } = require("lodash");
 
 const { generateUpcomingEndpoint } = require("../../utils/generateEndpoints");
-
 const generateImageURL = require("../../utils/generateImageURL");
-
-const { formatDate } = require("../../utils/formatDates");
+const formatDate = require("../../utils/dates/custom");
+const toPercentage = require("../../utils/maths/toPercentage");
 
 const NowPlayingTVResolver = async (parent, args, context, info) => {
   try {
     // Send a request to the discover movies endpoint
     const response = await axios.get(generateUpcomingEndpoint("tv"));
 
-    const { data } = response;
-    const { results } = data;
-
     // Transform the data
-    forEach(results, (data) => {
+    forEach(response.data.results, (data) => {
       if (has(data, "poster_path") === true) {
         const { poster_path } = data;
         data.poster_path = generateImageURL(poster_path);
@@ -35,9 +31,14 @@ const NowPlayingTVResolver = async (parent, args, context, info) => {
         const { first_air_date } = data;
         data.first_air_date = formatDate(first_air_date, "MMMM Do, YYYY");
       }
+
+      if (has(data, "vote_average") === true) {
+        const { vote_average } = data;
+        data.vote_average = toPercentage(vote_average);
+      }
     });
 
-    return results;
+    return response.data.results;
   } catch (err) {
     console.log("The tv/on_the_air endpoint failed");
     return err.response;

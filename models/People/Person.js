@@ -16,8 +16,15 @@ const typeDef = gql`
     adult: Boolean
     imdb_id: String
     homepage: String
-    Cast: [CastCredits]
-    Crew: [CrewCredits]
+    credits: PeopleCredits
+  }
+
+  type PeopleCredits {
+    ActingGroup: [Credits]
+    ProductionGroup: [Credits]
+    WritingGroup: [Credits]
+    DirectingGroup: [Credits]
+    CrewGroup: [Credits]
   }
 `;
 

@@ -2,13 +2,11 @@ const axios = require("axios");
 const { find, has } = require("lodash");
 
 const generateImageURL = require("../../utils/generateImageURL");
-
 const {
   generateSearchEndpoint,
   generateSingleItemLookupEndpoint,
 } = require("../../utils/generateEndpoints");
-
-const { generateBirthdayDate } = require("../../utils/formatDates");
+const generateBirthdayDate = require("../../utils/dates/generateBirthday");
 
 const SearchForAPersonResolver = async (parent, args, context, info) => {
   try {
@@ -17,11 +15,11 @@ const SearchForAPersonResolver = async (parent, args, context, info) => {
       generateSearchEndpoint(args.search, "person")
     );
 
-    const { data } = response;
-    const { results } = data;
-
     // Find a person from the search results
-    const SinglePerson = find(results, (person) => person.id === args.id);
+    const SinglePerson = find(
+      response.data.results,
+      (person) => person.id === args.id
+    );
 
     try {
       // Perform a single person lookup using the person found in search results array
@@ -54,7 +52,6 @@ const SearchForAPersonResolver = async (parent, args, context, info) => {
       return data;
     } catch (err) {
       console.log(`The /Person endpoint failed`);
-      console.log(err);
       return err.response;
     }
   } catch (err) {

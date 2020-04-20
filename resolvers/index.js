@@ -52,10 +52,7 @@ const { TopRatedMoviesResolver, TopRatedShowsResolver } = require("./TopRated");
 const { MovieVideoResolver, ShowVideoResolver } = require("./Videos");
 
 // Credits resolver
-const {
-  PersonCastCreditsResolver,
-  PersonCrewCreditsResolver,
-} = require("./Credits");
+const CreditsResolver = require("./Credits");
 
 const resolvers = {
   // Additional data for the single movie object
@@ -82,8 +79,7 @@ const resolvers = {
 
   // Additional data for the single person object
   Person: {
-    Cast: PersonCastCreditsResolver,
-    Crew: PersonCrewCreditsResolver,
+    credits: CreditsResolver,
   },
 
   // Root query

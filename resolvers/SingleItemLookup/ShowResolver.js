@@ -5,21 +5,20 @@ const {
   generateSearchEndpoint,
   generateSingleItemLookupEndpoint,
 } = require("../../utils/generateEndpoints");
-
 const generateImageURL = require("../../utils/generateImageURL");
-
-const { generateYear } = require("../../utils/formatDates");
+const generateYear = require("../../utils/dates/generateYear");
+const toPercentage = require("../../utils/maths/toPercentage");
 
 const SearchForAShowResolver = async (parent, args, context, info) => {
   try {
     // Make a request to the search API using a search term provided in the query
     const response = await axios.get(generateSearchEndpoint(args.search, "tv"));
 
-    const { data } = response;
-    const { results } = data;
-
     // Find a movie from the search results
-    const SingleShow = find(results, (show) => show.id === args.id);
+    const SingleShow = find(
+      response.data.results,
+      (show) => show.id === args.id
+    );
 
     try {
       // Perform a single show lookup using the show found in search results array
@@ -77,6 +76,11 @@ const SearchForAShowResolver = async (parent, args, context, info) => {
         data.poster_path = generateImageURL(poster_path);
       }
 
+      if (has(data, "vote_average") === true) {
+        const { vote_average } = data;
+        data.vote_average = toPercentage(vote_average);
+      }
+
       // Data formatting for the networks
       if (has(data, "networks") === true) {
         const { networks } = data;
@@ -91,6 +95,7 @@ const SearchForAShowResolver = async (parent, args, context, info) => {
       return data;
     } catch (err) {
       console.log(`The /tv endpoint failed`);
+      console.log(err);
       return err.response;
     }
   } catch (err) {

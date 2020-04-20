@@ -3,6 +3,8 @@ const { has, forEach } = require("lodash");
 
 const { generatePopularEndpoint } = require("../../utils/generateEndpoints");
 const generateImageURL = require("../../utils/generateImageURL");
+const replaceObjectKey = require("../../utils/objects/replaceKey");
+const toPercentage = require("../../utils/maths/toPercentage");
 
 const PopularPeopleResolver = async (parent, args, context, info) => {
   try {
@@ -28,6 +30,13 @@ const PopularPeopleResolver = async (parent, args, context, info) => {
             const { poster_path } = role;
             role.poster_path = generateImageURL(poster_path);
           }
+
+          if (has(data, "vote_average") === true) {
+            const { vote_average } = data;
+            data.vote_average = toPercentage(vote_average);
+          }
+
+          replaceObjectKey(role, "original_name", "original_title");
         });
       }
     });

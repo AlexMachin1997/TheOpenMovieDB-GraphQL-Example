@@ -3,8 +3,9 @@ const { has, forEach } = require("lodash");
 
 const { generateDiscoverEndpoint } = require("../../utils/generateEndpoints");
 const generateImageURL = require("../../utils/generateImageURL");
-const { formatDate } = require("../../utils/formatDates");
+const formatDate = require("../../utils/dates/custom");
 const generateQueryParameters = require("../../utils/generateQueryParameter");
+const toPercentage = require("../../utils/maths/toPercentage");
 
 const DiscoverMoviesResolver = async (parent, args, context, info) => {
   try {
@@ -17,11 +18,8 @@ const DiscoverMoviesResolver = async (parent, args, context, info) => {
     // Send a request to the discover movies endpoint
     const response = await axios.get(TheDiscoverMovieURL);
 
-    const { data } = response;
-    const { results } = data;
-
     // Format the respones data
-    forEach(results, (data) => {
+    forEach(response.data.results, (data) => {
       if (has(data, "poster_path") === true) {
         const { poster_path } = data;
         data.poster_path = generateImageURL(poster_path);
@@ -35,10 +33,14 @@ const DiscoverMoviesResolver = async (parent, args, context, info) => {
         const { release_date } = data;
         data.release_date = formatDate(release_date, "MMMM Do, YYYY");
       }
+
+      if (has(data, "vote_average") === true) {
+        const { vote_average } = data;
+        data.vote_average = toPercentage(vote_average);
+      }
     });
 
-    // Return the resolver to the models (Spits out the data in the request)
-    return results;
+    return response.data.results;
   } catch (err) {
     console.log(err);
     console.log("The /Discover/Movie endpoint failed");

@@ -8,11 +8,11 @@ const MovieVideoResolver = async (parent, args, context, info) => {
     // Send a request to the movie videos endpoint
     const response = await axios.get(generateVideoEndpoint(parent.id, "movie"));
 
-    const { data } = response;
-    const { results } = data;
-
     // Filter to find the Trailers which are from YouTube
-    const YoutubeVideos = filter(results, (video) => video.site === "YouTube");
+    const YoutubeVideos = filter(
+      response.data.results,
+      (video) => video.site === "YouTube"
+    );
 
     // Add the url for each video
     forEach(YoutubeVideos, (video) => {

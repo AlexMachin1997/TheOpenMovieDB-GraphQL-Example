@@ -3,9 +3,10 @@ const { find, has, forEach } = require("lodash");
 
 const {
   generateSearchEndpoint,
-  generateSingleItemLookupEndpoint
+  generateSingleItemLookupEndpoint,
 } = require("../../utils/generateEndpoints");
 const generateImageURL = require("../../utils/generateImageURL");
+const toPercentage = require("../../utils/maths/toPercentage");
 
 const SearchForAMovieResolver = async (parent, args, context, info) => {
   try {
@@ -14,11 +15,11 @@ const SearchForAMovieResolver = async (parent, args, context, info) => {
       generateSearchEndpoint(args.search, "movie")
     );
 
-    const { data } = response;
-    const { results } = data;
-
     // Find a movie from the search results
-    const SingleMovie = find(results, movie => movie.id === args.id);
+    const SingleMovie = find(
+      response.data.results,
+      (movie) => movie.id === args.id
+    );
 
     try {
       // Perform a movie show lookup using the movie found in the array
@@ -27,9 +28,7 @@ const SearchForAMovieResolver = async (parent, args, context, info) => {
       );
 
       const { data } = response;
-      const { production_companies } = data;
 
-      // Data formatting for the backdrop_path field
       if (has(data, "backdrop_path") === true) {
         const { backdrop_path } = data;
         data.backdrop_path = generateImageURL(backdrop_path);
@@ -50,8 +49,13 @@ const SearchForAMovieResolver = async (parent, args, context, info) => {
         data.revenue = revenue.toLocaleString();
       }
 
+      if (has(data, vote_average) === true) {
+        const { vote_average } = data;
+        data.vote_average = toPercentage(vote_average);
+      }
+
       // Data formatting for the production_companies field
-      forEach(production_companies, company => {
+      forEach(data.production_companies, (company) => {
         if (has(company, "logo_path")) {
           const { logo_path } = company;
           company.logo_path = generateImageURL(logo_path);

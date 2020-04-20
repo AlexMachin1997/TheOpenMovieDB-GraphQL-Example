@@ -7,6 +7,7 @@ const typeDef = gql`
     overview: String
     release_date: String
     original_title: String
+    original_name: String
     genre_ids: [Int]
     id: Int
     media_type: String
