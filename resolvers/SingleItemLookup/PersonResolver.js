@@ -7,6 +7,7 @@ const {
   generateSingleItemLookupEndpoint,
 } = require("../../utils/generateEndpoints");
 const generateBirthdayDate = require("../../utils/dates/generateBirthday");
+const setValue = require("../../utils/objects/setValue");
 
 const SearchForAPersonResolver = async (parent, args, context, info) => {
   try {
@@ -30,23 +31,19 @@ const SearchForAPersonResolver = async (parent, args, context, info) => {
       const { data } = response;
 
       if (has(data, "gender") === true) {
-        const { gender } = data;
-        data.gender = gender === 0 ? "Male" : "Female";
+        setValue(data, "gender", data.gender === 0 ? "Male" : "Female");
       }
 
       if (has(data, "birthday") === true) {
-        const { birthday } = data;
-        data.birthday = generateBirthdayDate(birthday);
+        setValue(data, "birthday", generateBirthdayDate(data.birthday));
       }
 
       if (has(data, "populaity") === true) {
-        const { popularity } = data;
-        data.popularity = popularity.toFixed(2);
+        setValue(data, "popularity", data.popularity.toFixed(2));
       }
 
       if (has(data, "profile_path") === true) {
-        const { profile_path } = data;
-        data.profile_path = generateImageURL(profile_path);
+        setValue(data, "profile_path", generateImageURL(data.profile_path));
       }
 
       return data;

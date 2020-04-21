@@ -31,12 +31,12 @@ const PopularPeopleResolver = async (parent, args, context, info) => {
             role.poster_path = generateImageURL(poster_path);
           }
 
-          if (has(data, "vote_average") === true) {
-            const { vote_average } = data;
-            data.vote_average = toPercentage(vote_average);
+          if (has(role, "vote_average") === true) {
+            const { vote_average } = role;
+            role.vote_average = toPercentage(vote_average);
           }
 
-          replaceObjectKey(role, "original_name", "original_title");
+          replaceObjectKey(role, "original_name", "title");
         });
       }
     });

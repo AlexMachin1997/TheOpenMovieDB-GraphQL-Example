@@ -3,26 +3,28 @@ const { has, filter, sortBy, forEach } = require("lodash");
 
 const { generateCastURLEndpoint } = require("../../utils/generateEndpoints");
 const generateImageURL = require("../../utils/generateImageURL");
+const setValue = require("../../utils/objects/setValue");
+const replaceKey = require("../../utils/objects/replaceKey");
 
 const TVCastResolver = async (parent, args, context, info) => {
   try {
     // Make a cast request using the TV object id field
     const response = await axios.get(generateCastURLEndpoint(parent.id, "tv"));
 
-    const { data } = response;
-    const { cast } = data;
-
     // Sort the cast by order number
-    sortBy(cast, member => member.order);
+    sortBy(response.data.cast, (member) => member.order);
 
     // Finding the featured cast (top 6 actors)
-    const featuredCast = filter(cast, member => member.order < 7);
+    const featuredCast = filter(
+      response.data.cast,
+      (member) => member.order < 7
+    );
 
     // Formatting the featured cast
-    forEach(featuredCast, member => {
-      if (has(member, "profile_path") === true) {
-        const { profile_path } = member;
-        member.profile_path = generateImageURL(profile_path);
+    forEach(featuredCast, (member) => {
+      if (has(member, "profile_path")) {
+        replaceKey(member, "profile_path", "image");
+        setValue(member, "image", generateImageURL(member.image));
       }
     });
 

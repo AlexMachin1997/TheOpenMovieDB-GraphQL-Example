@@ -1,29 +1,34 @@
 const axios = require("axios");
-const { has, forEach } = require("lodash");
+const { has, filter, forEach } = require("lodash");
 
 const { generateCrewEndpoint } = require("../../utils/generateEndpoints");
 const generateImageURL = require("../../utils/generateImageURL");
+const setValue = require("../../utils/objects/setValue");
 
 const TVCrewResolver = async (parent, args, context, info) => {
   try {
-    // Make a crew request using the TV object id field
+    // Make a crew request using the Movie object id field
     const response = await axios.get(generateCrewEndpoint(parent.id, "tv"));
 
-    const { data } = response;
-    const { crew } = data;
+    // Getting the crew by specific job titles
+    const featuredCrew = filter(
+      response.data.crew,
+      (member) =>
+        member.job === "Director" ||
+        member.job === "Screenplay" ||
+        member.job === "Writer"
+    );
 
-    // URL formatting
-    forEach(crew, data => {
-      if (has(data, "profile_path") === true) {
-        const { profile_path } = member;
-        data.profile_path = generateImageURL(profile_path);
+    // URL formatting for images
+    forEach(featuredCrew, (member) => {
+      if (has(member, "profile_path") === true) {
+        setValue(member, "profile_path", generateImageURL(member.profile_path));
       }
     });
 
-    return crew;
+    return featuredCrew;
   } catch (err) {
     console.log("The /credits (Crew) endpoint failed");
-    console.log(err);
     return err;
   }
 };

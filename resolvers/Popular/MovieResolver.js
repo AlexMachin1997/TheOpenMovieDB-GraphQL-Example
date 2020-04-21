@@ -5,6 +5,8 @@ const { generatePopularEndpoint } = require("../../utils/generateEndpoints");
 const generateImageURL = require("../../utils/generateImageURL");
 const formatDate = require("../../utils/dates/custom");
 const toPercentage = require("../../utils/maths/toPercentage");
+const setValue = require("../../utils/objects/setValue");
+const replaceKey = require("../../utils/objects/replaceKey");
 
 const MoviePopularResolver = async (parent, args, context, info) => {
   try {
@@ -12,24 +14,25 @@ const MoviePopularResolver = async (parent, args, context, info) => {
     const response = await axios.get(generatePopularEndpoint("movie"));
 
     // Format the data
-    forEach(response.data.results, (data) => {
-      if (has(data, "poster_path") === true) {
-        const { poster_path } = data;
-        data.poster_path = generateImageURL(poster_path);
-      }
-      if (has(data, "backdrop_path") === true) {
-        const { backdrop_path } = data;
-        data.backdrop_path = generateImageURL(backdrop_path);
+    forEach(response.data.results, (movie) => {
+      if (has(movie, "poster_path") === true) {
+        setValue(movie, "poster_path", generateImageURL(movie.poster_path));
       }
 
-      if (has(data, "release_date") === true) {
-        const { release_date } = data;
-        data.release_date = formatDate(release_date, "MMMM Do, YYYY");
+      if (has(movie, "backdrop_path") === true) {
+        setValue(movie, "backdrop_path", generateImageURL(movie.backdrop_path));
       }
 
-      if (has(data, "vote_average") === true) {
-        const { vote_average } = data;
-        data.vote_average = toPercentage(vote_average);
+      if (has(movie, "release_date") === true) {
+        setValue(
+          movie,
+          "release_date",
+          formatDate(movie.release_date, "MMMM Do, YYYY")
+        );
+      }
+
+      if (has(movie, "vote_average") === true) {
+        setValue(movie, "vote_average", toPercentage(movie.vote_average));
       }
     });
 

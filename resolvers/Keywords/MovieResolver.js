@@ -9,10 +9,7 @@ const MovieKeywordResolver = async (parent, args, info, context) => {
       generateKeywordEndpoint(parent.id, "movie")
     );
 
-    const { data } = response;
-    const { keywords } = data;
-
-    return keywords;
+    return response.data.keywords;
   } catch (err) {
     console.log("The /keywords endpoint failed");
     return err;

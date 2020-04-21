@@ -3,6 +3,8 @@ const { has, filter, sortBy, forEach } = require("lodash");
 
 const { generateCastURLEndpoint } = require("../../utils/generateEndpoints");
 const generateImageURL = require("../../utils/generateImageURL");
+const setValue = require("../../utils/objects/setValue");
+const replaceKey = require("../../utils/objects/replaceKey");
 
 const MovieCastResolver = async (parent, args, context, info) => {
   try {
@@ -11,21 +13,20 @@ const MovieCastResolver = async (parent, args, context, info) => {
       generateCastURLEndpoint(parent.id, "movie")
     );
 
-    const { data } = response;
-    const { cast } = data;
-
     // Sort the cast by order number
-    sortBy(cast, member => member.order);
+    sortBy(response.data.cast, (member) => member.order);
 
     // Finding the featured cast (top 6 actors)
-    const featuredCast = filter(cast, member => member.order < 7);
+    const featuredCast = filter(
+      response.data.cast,
+      (member) => member.order < 7
+    );
 
     // Formatting the featured cast
-    forEach(featuredCast, member => {
-      let { profile_path } = member;
-
+    forEach(featuredCast, (member) => {
       if (has(member, "profile_path")) {
-        member.profile_path = generateImageURL(profile_path);
+        replaceKey(member, "profile_path", "image");
+        setValue(member, "image", generateImageURL(member.image));
       }
     });
 

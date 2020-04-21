@@ -6,10 +6,10 @@ const {
 } = require("../../utils/generateEndpoints");
 const generateImageURL = require("../../utils/generateImageURL");
 const toPercentage = require("../../utils/maths/toPercentage");
+const setValue = require("../../utils/objects/setValue");
 
 const MovieRecomendationsResolver = async (parent, args, content, info) => {
   try {
-    // Make a reccomendations request using the Movie ID field
     const response = await axios.get(
       generateRecomendationEndpoint(parent.id, "movie")
     );
@@ -17,17 +17,15 @@ const MovieRecomendationsResolver = async (parent, args, content, info) => {
     // Transform the data
     forEach(response.data.results, (data) => {
       if (has(data, "poster_path") === true) {
-        const { poster_path } = data;
-        data.poster_path = generateImageURL(poster_path);
+        setValue(data, "poster_path", generateImageURL(data.poster_path));
       }
+
       if (has(data, "backdrop_path") === true) {
-        const { backdrop_path } = data;
-        data.backdrop_path = generateImageURL(backdrop_path);
+        setValue(data, "backdrop_path", generateImageURL(data.backdrop_path));
       }
 
       if (has(data, "vote_average") === true) {
-        const { vote_average } = data;
-        data.vote_average = toPercentage(vote_average);
+        setValue(data, "vote_average", toPercentage(data.vote_average));
       }
     });
 
