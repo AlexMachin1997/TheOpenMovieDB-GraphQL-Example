@@ -2,25 +2,26 @@ const axios = require("axios");
 const { has, forEach } = require("lodash");
 
 const { generatePopularEndpoint } = require("../../utils/generateEndpoints");
-const generateImageURL = require("../../utils/generateImageURL");
+const generateAbsolutePath = require("../../utils/images/generateAbsolutePath");
 const formatDate = require("../../utils/dates/custom");
 const toPercentage = require("../../utils/maths/toPercentage");
 const setValue = require("../../utils/objects/setValue");
-const replaceKey = require("../../utils/objects/replaceKey");
 
 const MoviePopularResolver = async (parent, args, context, info) => {
   try {
-    // Send a request to the discover movies endpoint
     const response = await axios.get(generatePopularEndpoint("movie"));
 
-    // Format the data
     forEach(response.data.results, (movie) => {
       if (has(movie, "poster_path") === true) {
-        setValue(movie, "poster_path", generateImageURL(movie.poster_path));
+        setValue(movie, "poster_path", generateAbsolutePath(movie.poster_path));
       }
 
       if (has(movie, "backdrop_path") === true) {
-        setValue(movie, "backdrop_path", generateImageURL(movie.backdrop_path));
+        setValue(
+          movie,
+          "backdrop_path",
+          generateAbsolutePath(movie.backdrop_path)
+        );
       }
 
       if (has(movie, "release_date") === true) {

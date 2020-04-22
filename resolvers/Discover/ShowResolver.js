@@ -2,7 +2,7 @@ const axios = require("axios");
 const { has, forEach } = require("lodash");
 
 const { generateDiscoverEndpoint } = require("../../utils/generateEndpoints");
-const generateImageURL = require("../../utils/generateImageURL");
+const generateAbsolutePath = require("../../utils/images/generateAbsolutePath");
 const formatDate = require("../../utils/dates/custom");
 const generateQueryParameters = require("../../utils/generateQueryParameter/Discover");
 const toPercentage = require("../../utils/maths/toPercentage");
@@ -10,23 +10,21 @@ const setValue = require("../../utils/objects/setValue");
 
 const DiscoverTVResolver = async (parent, args, context, info) => {
   try {
-    // Generate the /Discover shows endpoint
-    const TheDiscoverTVURL = generateQueryParameters(
-      generateDiscoverEndpoint("tv"),
-      args
+    const response = await axios.get(
+      generateQueryParameters(generateDiscoverEndpoint("tv"), args)
     );
 
-    // Send a request to the discover tv endpoint
-    const response = await axios.get(TheDiscoverTVURL);
-
-    // Format the respones data
     forEach(response.data.results, (show) => {
       if (has(show, "poster_path") === true) {
-        setValue(show, "poster_path", generateImageURL(show.poster_path));
+        setValue(show, "poster_path", generateAbsolutePath(show.poster_path));
       }
 
       if (has(show, "backdrop_path") === true) {
-        setValue(show, "backdrop_path", generateImageURL(show.backdrop_path));
+        setValue(
+          show,
+          "backdrop_path",
+          generateAbsolutePath(show.backdrop_path)
+        );
       }
 
       if (has(show, "first_air_date") === true) {

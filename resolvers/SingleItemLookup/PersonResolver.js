@@ -1,7 +1,7 @@
 const axios = require("axios");
 const { find, has } = require("lodash");
 
-const generateImageURL = require("../../utils/generateImageURL");
+const generateAbsolutePath = require("../../utils/images/generateAbsolutePath");
 const {
   generateSearchEndpoint,
   generateSingleItemLookupEndpoint,
@@ -11,19 +11,16 @@ const setValue = require("../../utils/objects/setValue");
 
 const SearchForAPersonResolver = async (parent, args, context, info) => {
   try {
-    // Make a request to the search API using a search term provided in the query
     const response = await axios.get(
       generateSearchEndpoint(args.search, "person")
     );
 
-    // Find a person from the search results
     const SinglePerson = find(
       response.data.results,
       (person) => person.id === args.id
     );
 
     try {
-      // Perform a single person lookup using the person found in search results array
       const response = await axios.get(
         generateSingleItemLookupEndpoint(SinglePerson.id, "person")
       );
@@ -43,7 +40,7 @@ const SearchForAPersonResolver = async (parent, args, context, info) => {
       }
 
       if (has(data, "profile_path") === true) {
-        setValue(data, "profile_path", generateImageURL(data.profile_path));
+        setValue(data, "profile_path", generateAbsolutePath(data.profile_path));
       }
 
       return data;

@@ -2,7 +2,7 @@ const axios = require("axios");
 const { has, filter, forEach } = require("lodash");
 
 const { generateCrewEndpoint } = require("../../utils/generateEndpoints");
-const generateImageURL = require("../../utils/generateImageURL");
+const generateAbsolutePath = require("../../utils/images/generateAbsolutePath");
 const setValue = require("../../utils/objects/setValue");
 
 const TVCrewResolver = async (parent, args, context, info) => {
@@ -22,7 +22,11 @@ const TVCrewResolver = async (parent, args, context, info) => {
     // URL formatting for images
     forEach(featuredCrew, (member) => {
       if (has(member, "profile_path") === true) {
-        setValue(member, "profile_path", generateImageURL(member.profile_path));
+        setValue(
+          member,
+          "profile_path",
+          generateAbsolutePath(member.profile_path)
+        );
       }
     });
 

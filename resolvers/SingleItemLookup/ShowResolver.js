@@ -5,24 +5,21 @@ const {
   generateSearchEndpoint,
   generateSingleItemLookupEndpoint,
 } = require("../../utils/generateEndpoints");
-const generateImageURL = require("../../utils/generateImageURL");
+const generateAbsolutePath = require("../../utils/images/generateAbsolutePath");
 const generateYear = require("../../utils/dates/generateYear");
 const toPercentage = require("../../utils/maths/toPercentage");
 const setValue = require("../../utils/objects/setValue");
 
 const SearchForAShowResolver = async (parent, args, context, info) => {
   try {
-    // Make a request to the search API using a search term provided in the query
     const response = await axios.get(generateSearchEndpoint(args.search, "tv"));
 
-    // Find a movie from the search results
     const SingleShow = find(
       response.data.results,
       (show) => show.id === args.id
     );
 
     try {
-      // Perform a single show lookup using the show found in search results array
       const response = await axios.get(
         generateSingleItemLookupEndpoint(SingleShow.id, "tv")
       );
@@ -35,7 +32,7 @@ const SearchForAShowResolver = async (parent, args, context, info) => {
             setValue(
               creator,
               "profile_path",
-              generateImageURL(creator.profile_path)
+              generateAbsolutePath(creator.profile_path)
             );
           }
         });
@@ -52,7 +49,7 @@ const SearchForAShowResolver = async (parent, args, context, info) => {
 
         // Set the current_season field to the CurrentSeason
         setValue(data, "current_season", {
-          image: generateImageURL(data.last_episode_to_air.still_path),
+          image: generateAbsolutePath(data.last_episode_to_air.still_path),
           season_number: data.last_episode_to_air.season_number,
           year: generateYear(data.last_episode_to_air.air_date),
           episode_count: data.seasons[CurrentSeasonIndex].episode_count,
@@ -61,11 +58,15 @@ const SearchForAShowResolver = async (parent, args, context, info) => {
       }
 
       if (has(data, "backdrop_path") === true) {
-        setValue(data, "backdrop_path", generateImageURL(data.backdrop_path));
+        setValue(
+          data,
+          "backdrop_path",
+          generateAbsolutePath(data.backdrop_path)
+        );
       }
 
       if (has(data, "poster_path") === true) {
-        setValue(data, "poster_path", generateImageURL(data.poster_path));
+        setValue(data, "poster_path", generateAbsolutePath(data.poster_path));
       }
 
       if (has(data, "vote_average") === true) {
@@ -73,10 +74,13 @@ const SearchForAShowResolver = async (parent, args, context, info) => {
       }
 
       if (has(data, "networks") === true) {
-        const { networks } = data;
-        forEach(networks, (network) => {
+        forEach(data.networks, (network) => {
           if (has(network, "logo_path") === true) {
-            setValue(network, "logo_path", generateImageURL(network.logo_path));
+            setValue(
+              network,
+              "logo_path",
+              generateAbsolutePath(network.logo_path)
+            );
           }
         });
       }

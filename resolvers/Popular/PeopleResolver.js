@@ -2,38 +2,41 @@ const axios = require("axios");
 const { has, forEach } = require("lodash");
 
 const { generatePopularEndpoint } = require("../../utils/generateEndpoints");
-const generateImageURL = require("../../utils/generateImageURL");
+const generateAbsolutePath = require("../../utils/images/generateAbsolutePath");
 const replaceObjectKey = require("../../utils/objects/replaceKey");
+const setValue = require("../../utils/objects/setValue");
 const toPercentage = require("../../utils/maths/toPercentage");
 
 const PopularPeopleResolver = async (parent, args, context, info) => {
   try {
-    // Send a request to the popular person endpoint
     const response = await axios.get(generatePopularEndpoint("person"));
 
-    // Format the popular movies
     forEach(response.data.results, (person) => {
       if (has(person, "profile_path") === true) {
         const { profile_path } = person;
-        person.profile_path = generateImageURL(profile_path);
+        person.profile_path = generateAbsolutePath(profile_path);
       }
 
-      // Format the known_for field in the person object
       if (has(person, "known_for") === true) {
         forEach(person.known_for, (role) => {
           if (has(role, "backdrop_path") === true) {
-            const { backdrop_path } = role;
-            role.backdrop_path = generateImageURL(backdrop_path);
+            setValue(
+              role,
+              "backdrop_path",
+              generateAbsolutePath(role.backdrop_path)
+            );
           }
 
           if (has(role, "poster_path") === true) {
-            const { poster_path } = role;
-            role.poster_path = generateImageURL(poster_path);
+            setValue(
+              role,
+              "poster_path",
+              generateAbsolutePath(role.poster_path)
+            );
           }
 
           if (has(role, "vote_average") === true) {
-            const { vote_average } = role;
-            role.vote_average = toPercentage(vote_average);
+            setValue(role, "vote_avergage", toPercentage(role.vote_average));
           }
 
           replaceObjectKey(role, "original_name", "title");

@@ -9,10 +9,7 @@ const MovieReviewsResolver = async (parent, args, context, info) => {
       generateReviewEndpoint(parent.id, "movie")
     );
 
-    const { data } = response;
-    const { results } = data;
-
-    return results;
+    return response.data.results;
   } catch (err) {
     console.log("The /reviews endpoint failed");
     return err.response;

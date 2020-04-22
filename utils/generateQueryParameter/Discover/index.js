@@ -1,7 +1,7 @@
 const { isEmpty } = require("lodash");
 
 const generateQueryParameter = (url, args) => {
-  // Query parameters supported within TheOpenMovieDB Discover endpo
+  // Query parameters supported within TheOpenMovieDB Discover endpoint
   let sortBy = args.sortBy;
   let genres = args.genres;
   let certifications = args.certifications;

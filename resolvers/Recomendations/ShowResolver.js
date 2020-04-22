@@ -4,7 +4,7 @@ const { has, forEach } = require("lodash");
 const {
   generateRecomendationEndpoint,
 } = require("../../utils/generateEndpoints");
-const generateImageURL = require("../../utils/generateImageURL");
+const generateAbsolutePath = require("../../utils/images/generateAbsolutePath");
 const toPercentage = require("../../utils/maths/toPercentage");
 const replaceKey = require("../../utils/objects/replaceKey");
 const setValue = require("../../utils/objects/setValue");
@@ -15,28 +15,19 @@ const TVRecomendationsResolver = async (parent, args, content, info) => {
       generateRecomendationEndpoint(parent.id, "tv")
     );
 
-    // Format the data
-    forEach(response.data.results, (data) => {
-      if (has(data, "poster_path") === true) {
-        setValue(data, "poster_path", generateImageURL(data.poster_path));
-      }
-      if (has(data, "poster_path") === true) {
-        setValue(data, "poster_path", generateImageURL(data.backdrop_path));
+    forEach(response.data.results, (show) => {
+      if (has(show, "poster_path") === true) {
+        setValue(show, "poster_path", generateAbsolutePath(show.poster_path));
       }
 
-      if (has(data, "vote_average") === true) {
-        setValue(data, "vote_average", toPercentage(data.vote_average));
-      }
-
-      if (has(data, "first_air_date") === true) {
-        replaceKey(data, "first_air_date", "release_date");
+      if (has(show, "vote_average") === true) {
+        setValue(show, "vote_average", toPercentage(show.vote_average));
       }
     });
 
     return response.data.results;
   } catch (err) {
     console.log("The /tv/reccomendations/ endpoint failed");
-    console.log(err);
     return err;
   }
 };
