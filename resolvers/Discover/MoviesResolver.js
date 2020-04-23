@@ -1,10 +1,10 @@
 const axios = require("axios");
 const { has, forEach } = require("lodash");
 
-const { generateDiscoverEndpoint } = require("../../utils/generateEndpoints");
+const generateDiscoverEndpoint = require("../../utils/generateEndpoints/Discover");
 const generateAbsolutePath = require("../../utils/images/generateAbsolutePath");
 const formatDate = require("../../utils/dates/custom");
-const generateQueryParameters = require("../../utils/generateQueryParameter/Discover");
+const generateQueryParameters = require("../../utils/generateQueryParameters/Discover");
 const toPercentage = require("../../utils/maths/toPercentage");
 const setValue = require("../../utils/objects/setValue");
 

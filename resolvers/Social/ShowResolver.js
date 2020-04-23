@@ -1,8 +1,6 @@
 const axios = require("axios");
 
-const {
-  generateSocialLinksEndpoint,
-} = require("../../utils/generateEndpoints");
+const generateSocialLinksEndpoint = require("../../utils/generateEndpoints/Social");
 
 const TVSocialResolver = async (parent, args, info, context) => {
   try {

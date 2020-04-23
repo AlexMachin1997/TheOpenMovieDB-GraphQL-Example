@@ -1,9 +1,7 @@
 const axios = require("axios");
 const { has, forEach } = require("lodash");
 
-const {
-  genereateNowPlayingEndpoint,
-} = require("../../utils/generateEndpoints");
+const genereateNowPlayingEndpoint = require("../../utils/generateEndpoints/NowPlaying");
 const generateAbsolutePath = require("../../utils/images/generateAbsolutePath");
 const formatDate = require("../../utils/dates/custom");
 const toPercentage = require("../../utils/maths/toPercentage");

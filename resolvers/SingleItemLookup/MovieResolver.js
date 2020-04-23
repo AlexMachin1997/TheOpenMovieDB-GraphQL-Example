@@ -1,10 +1,8 @@
 const axios = require("axios");
 const { find, has, forEach } = require("lodash");
 
-const {
-  generateSearchEndpoint,
-  generateSingleItemLookupEndpoint,
-} = require("../../utils/generateEndpoints");
+const generateSingleItemLookupEndpoint = require("../../utils/generateEndpoints/SingleItemLookup");
+const generateSearchEndpoint = require("../../utils/generateEndpoints/Search");
 const generateAbsolutePath = require("../../utils/images/generateAbsolutePath");
 const toPercentage = require("../../utils/maths/toPercentage");
 const setValue = require("../../utils/objects/setValue");

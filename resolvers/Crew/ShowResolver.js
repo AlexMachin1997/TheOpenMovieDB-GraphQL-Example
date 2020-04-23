@@ -1,7 +1,7 @@
 const axios = require("axios");
 const { has, filter, forEach } = require("lodash");
 
-const { generateCrewEndpoint } = require("../../utils/generateEndpoints");
+const generateCrewEndpoint = require("../../utils/generateEndpoints/Crew");
 const generateAbsolutePath = require("../../utils/images/generateAbsolutePath");
 const setValue = require("../../utils/objects/setValue");
 

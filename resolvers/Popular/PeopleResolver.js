@@ -1,7 +1,7 @@
 const axios = require("axios");
 const { has, forEach } = require("lodash");
 
-const { generatePopularEndpoint } = require("../../utils/generateEndpoints");
+const generatePopularEndpoint = require("../../utils/generateEndpoints/Popular");
 const generateAbsolutePath = require("../../utils/images/generateAbsolutePath");
 const replaceObjectKey = require("../../utils/objects/replaceKey");
 const setValue = require("../../utils/objects/setValue");

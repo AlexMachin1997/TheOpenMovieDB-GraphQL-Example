@@ -1,8 +1,6 @@
 const axios = require("axios");
 
-const {
-  generatePersonCreditsEndpoint,
-} = require("../../utils/generateEndpoints");
+const generatePersonCreditsEndpoint = require("../../utils/generateEndpoints/Credits");
 const generateYear = require("../../utils/dates/generateYear");
 const replaceObjectKey = require("../../utils/objects/replaceKey");
 const setValue = require("../../utils/objects/setValue");

@@ -1,9 +1,7 @@
 const axios = require("axios");
 const { has, forEach } = require("lodash");
 
-const {
-  generateRecomendationEndpoint,
-} = require("../../utils/generateEndpoints");
+const generateRecomendationEndpoint = require("../../utils/generateEndpoints/Recomendations");
 const generateAbsolutePath = require("../../utils/images/generateAbsolutePath");
 const toPercentage = require("../../utils/maths/toPercentage");
 const setValue = require("../../utils/objects/setValue");

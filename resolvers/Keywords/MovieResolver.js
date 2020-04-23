@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-const { generateKeywordEndpoint } = require("../../utils/generateEndpoints");
+const generateKeywordEndpoint = require("../../utils/generateEndpoints/Keywords");
 
 const MovieKeywordResolver = async (parent, args, info, context) => {
   try {

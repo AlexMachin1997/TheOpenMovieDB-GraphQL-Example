@@ -1,5 +1,6 @@
 const axios = require("axios");
-const { generateKeywordEndpoint } = require("../../utils/generateEndpoints");
+
+const generateKeywordEndpoint = require("../../utils/generateEndpoints/Keywords");
 
 const TVKeywordResolver = async (parent, args, info, context) => {
   try {

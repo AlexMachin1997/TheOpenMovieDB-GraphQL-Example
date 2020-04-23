@@ -1,7 +1,7 @@
 const axios = require("axios");
 const { has, filter, sortBy, forEach } = require("lodash");
 
-const { generateCastURLEndpoint } = require("../../utils/generateEndpoints");
+const generateCastURLEndpoint = require("../../utils/generateEndpoints/Cast");
 const generateAbsolutePath = require("../../utils/images/generateAbsolutePath");
 const setValue = require("../../utils/objects/setValue");
 const replaceKey = require("../../utils/objects/replaceKey");

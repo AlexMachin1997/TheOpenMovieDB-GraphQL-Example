@@ -1,7 +1,7 @@
 const axios = require("axios");
 const { has, forEach } = require("lodash");
 
-const { generateTopRatedEndpoint } = require("../../utils/generateEndpoints");
+const generateTopRatedEndpoint = require("../../utils/generateEndpoints/TopRated");
 const generateAbsolutePath = require("../../utils/images/generateAbsolutePath");
 const formatDate = require("../../utils/dates/custom");
 const toPercentage = require("../../utils/maths/toPercentage");
@@ -17,7 +17,11 @@ const MoviePopularResolver = async (parent, args, context, info) => {
       }
 
       if (has(movie, "backdrop_path") === true) {
-        setValue(movie, "backdrop_path", generateAbsolutePath(movie.backdrop_path));
+        setValue(
+          movie,
+          "backdrop_path",
+          generateAbsolutePath(movie.backdrop_path)
+        );
       }
 
       if (has(movie, "release_date") === true) {

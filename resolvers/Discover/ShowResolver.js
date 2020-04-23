@@ -4,9 +4,10 @@ const { has, forEach } = require("lodash");
 const { generateDiscoverEndpoint } = require("../../utils/generateEndpoints");
 const generateAbsolutePath = require("../../utils/images/generateAbsolutePath");
 const formatDate = require("../../utils/dates/custom");
-const generateQueryParameters = require("../../utils/generateQueryParameter/Discover");
+const generateQueryParameters = require("../../utils/generateQueryParameters/Discover");
 const toPercentage = require("../../utils/maths/toPercentage");
 const setValue = require("../../utils/objects/setValue");
+const replaceKey = require("../../utils/objects/replaceKey");
 
 const DiscoverTVResolver = async (parent, args, context, info) => {
   try {
