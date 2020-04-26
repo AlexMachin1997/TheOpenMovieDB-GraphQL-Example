@@ -1,40 +1,41 @@
 const axios = require("axios");
 const { has, forEach } = require("lodash");
 
-const { generateUpcomingEndpoint } = require("../../utils/generateEndpoints");
-const generateImageURL = require("../../utils/generateImageURL");
+const generateUpcomingEndpoint = require("../../utils/generateEndpoints/Upcoming");
+const generateAbsolutePath = require("../../utils/images/generateAbsolutePath");
 const formatDate = require("../../utils/dates/custom");
 const toPercentage = require("../../utils/maths/toPercentage");
+const setValue = require("../../utils/objects/setValue");
+const replaceKey = require("../../utils/objects/replaceKey");
 
 const NowPlayingTVResolver = async (parent, args, context, info) => {
   try {
-    // Send a request to the discover movies endpoint
     const response = await axios.get(generateUpcomingEndpoint("tv"));
 
-    // Transform the data
-    forEach(response.data.results, (data) => {
-      if (has(data, "poster_path") === true) {
-        const { poster_path } = data;
-        data.poster_path = generateImageURL(poster_path);
-      }
-      if (has(data, "backdrop_path") === true) {
-        const { backdrop_path } = data;
-        data.backdrop_path = generateImageURL(backdrop_path);
+    forEach(response.data.results, (show) => {
+      if (has(show, "poster_path") === true) {
+        setValue(show, "poster_path", generateAbsolutePath(show.poster_path));
       }
 
-      if (has(data, "release_date") === true) {
-        const { release_date } = data;
-        data.release_date = formatDate(release_date, "MMMM Do, YYYY");
+      if (has(show, "backdrop_path") === true) {
+        setValue(
+          show,
+          "backdrop_path",
+          generateAbsolutePath(show.backdrop_path)
+        );
       }
 
-      if (has(data, "first_air_date") === true) {
-        const { first_air_date } = data;
-        data.first_air_date = formatDate(first_air_date, "MMMM Do, YYYY");
+      if (has(show, "first_air_date") === true) {
+        replaceKey(show, "first_air_date", "release_date");
+        setValue(
+          show,
+          "release_date",
+          formatDate(show.release_date, "MMMM Do, YYYY")
+        );
       }
 
-      if (has(data, "vote_average") === true) {
-        const { vote_average } = data;
-        data.vote_average = toPercentage(vote_average);
+      if (has(show, "vote_average") === true) {
+        setValue(show, "vote_average", toPercentage(show.vote_average));
       }
     });
 

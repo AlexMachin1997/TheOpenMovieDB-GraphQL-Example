@@ -1,12 +1,11 @@
 const axios = require("axios");
 
-const {
-  generatePersonCreditsEndpoint,
-} = require("../../utils/generateEndpoints");
+const generatePersonCreditsEndpoint = require("../../utils/generateEndpoints/Credits");
 const generateYear = require("../../utils/dates/generateYear");
 const replaceObjectKey = require("../../utils/objects/replaceKey");
+const setValue = require("../../utils/objects/setValue");
 
-reorderDate = (arrary, object, index) => {
+moveCreditDate = (arrary, object, index) => {
   if (object.release_date === "-") {
     arrary.splice(index, 1);
     arrary.unshift(object);
@@ -33,7 +32,7 @@ formatGroup = (group) => {
   // Remapping keys and formatting data
   group.map((data) => {
     replaceObjectKey(data, "first_air_date", "release_date");
-    data.release_date = generateYear(data.release_date);
+    setValue(data, "release_date", generateYear(data.release_date));
   });
 
   // Sorting by release date
@@ -41,7 +40,7 @@ formatGroup = (group) => {
 
   // Taking all the release_dates which have - and making them the first elements
   group.map((data, index) => {
-    reorderDate(group, data, index);
+    moveCreditDate(group, data, index);
   });
 
   return group;
@@ -77,6 +76,7 @@ const CreditsResolver = async (parent, args, info, context) => {
 
     DirectingGroup = formatGroup(DirectingGroup);
 
+    // Crew group
     let CrewGroup = response.data.crew.filter(
       (crew) => crew.department === "Crew"
     );

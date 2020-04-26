@@ -46,7 +46,7 @@ const typeDef = gql`
     backdrop_path: String
     vote_average: Float
     overview: String
-    first_air_date: String
+    release_date: String
     genre_ids: [Int]
     original_language: String
     vote_count: Int

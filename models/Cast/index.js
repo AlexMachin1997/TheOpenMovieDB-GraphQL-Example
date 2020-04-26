@@ -9,7 +9,7 @@ const typeDef = gql`
     id: Int
     name: String
     order: Int
-    profile_path: String
+    image: String
   }
 `;
 

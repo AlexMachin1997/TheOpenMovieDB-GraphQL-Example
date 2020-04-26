@@ -5,89 +5,82 @@ const {
   generateSearchEndpoint,
   generateSingleItemLookupEndpoint,
 } = require("../../utils/generateEndpoints");
-const generateImageURL = require("../../utils/generateImageURL");
+const generateAbsolutePath = require("../../utils/images/generateAbsolutePath");
 const generateYear = require("../../utils/dates/generateYear");
 const toPercentage = require("../../utils/maths/toPercentage");
+const setValue = require("../../utils/objects/setValue");
 
 const SearchForAShowResolver = async (parent, args, context, info) => {
   try {
-    // Make a request to the search API using a search term provided in the query
     const response = await axios.get(generateSearchEndpoint(args.search, "tv"));
 
-    // Find a movie from the search results
     const SingleShow = find(
       response.data.results,
       (show) => show.id === args.id
     );
 
     try {
-      // Perform a single show lookup using the show found in search results array
       const response = await axios.get(
         generateSingleItemLookupEndpoint(SingleShow.id, "tv")
       );
 
       const { data } = response;
 
-      // Data formatting for the created_by field
       if (has(data, "created_by") === true) {
-        const { created_by } = data;
-        forEach(created_by, (creator) => {
+        forEach(data.created_by, (creator) => {
           if (has(creator, "profile_path") === true) {
-            const { profile_path } = creator;
-            creator.profile_path = generateImageURL(profile_path);
+            setValue(
+              creator,
+              "profile_path",
+              generateAbsolutePath(creator.profile_path)
+            );
           }
         });
       }
 
-      // Generate the current season information
       if (
         has(data, "last_episode_to_air") === true &&
         has(data, "seasons") === true
       ) {
-        const { seasons, last_episode_to_air } = data;
-
-        const CurrentSeasonIndex = seasons.findIndex(
-          (season) => season.season_number === last_episode_to_air.season_number
+        const CurrentSeasonIndex = data.seasons.findIndex(
+          (season) =>
+            season.season_number === data.last_episode_to_air.season_number
         );
 
         // Set the current_season field to the CurrentSeason
-        data.current_season = {
-          image: generateImageURL(last_episode_to_air.still_path),
-
-          season_number: last_episode_to_air.season_number,
-
-          year: generateYear(last_episode_to_air.air_date),
-
-          episode_count: seasons[CurrentSeasonIndex].episode_count,
-
-          overview: seasons[CurrentSeasonIndex].overview,
-        };
+        setValue(data, "current_season", {
+          image: generateAbsolutePath(data.last_episode_to_air.still_path),
+          season_number: data.last_episode_to_air.season_number,
+          year: generateYear(data.last_episode_to_air.air_date),
+          episode_count: data.seasons[CurrentSeasonIndex].episode_count,
+          overview: data.seasons[CurrentSeasonIndex].overview,
+        });
       }
 
-      // Data formatting for the backdrop_path field
       if (has(data, "backdrop_path") === true) {
-        const { backdrop_path } = data;
-        data.backdrop_path = generateImageURL(backdrop_path);
+        setValue(
+          data,
+          "backdrop_path",
+          generateAbsolutePath(data.backdrop_path)
+        );
       }
 
-      // Data formatting for the poster_Path field
       if (has(data, "poster_path") === true) {
-        const { poster_path } = data;
-        data.poster_path = generateImageURL(poster_path);
+        setValue(data, "poster_path", generateAbsolutePath(data.poster_path));
       }
 
       if (has(data, "vote_average") === true) {
-        const { vote_average } = data;
-        data.vote_average = toPercentage(vote_average);
+        setValue(data, "vote_average", toPercentage(data.vote_average));
       }
 
-      // Data formatting for the networks
       if (has(data, "networks") === true) {
-        const { networks } = data;
-        forEach(networks, (network) => {
+        forEach(data.networks, (network) => {
           if (has(network, "logo_path") === true) {
-            const { logo_path } = network;
-            network.logo_path = generateImageURL(logo_path);
+            setValue(
+              network,
+              "logo_path",
+              generateAbsolutePath(network.logo_path)
+            );
           }
         });
       }

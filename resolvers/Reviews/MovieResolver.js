@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-const { generateReviewEndpoint } = require("../../utils/generateEndpoints");
+const generateReviewEndpoint = require("../../utils/generateEndpoints/Reviews");
 
 const MovieReviewsResolver = async (parent, args, context, info) => {
   try {
@@ -9,10 +9,7 @@ const MovieReviewsResolver = async (parent, args, context, info) => {
       generateReviewEndpoint(parent.id, "movie")
     );
 
-    const { data } = response;
-    const { results } = data;
-
-    return results;
+    return response.data.results;
   } catch (err) {
     console.log("The /reviews endpoint failed");
     return err.response;

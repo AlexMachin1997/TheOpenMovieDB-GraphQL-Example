@@ -2,41 +2,43 @@ const axios = require("axios");
 const { has, forEach } = require("lodash");
 
 const { generateDiscoverEndpoint } = require("../../utils/generateEndpoints");
-const generateImageURL = require("../../utils/generateImageURL");
+const generateAbsolutePath = require("../../utils/images/generateAbsolutePath");
 const formatDate = require("../../utils/dates/custom");
-const generateQueryParameters = require("../../utils/generateQueryParameter");
+const generateQueryParameters = require("../../utils/generateQueryParameters/Discover");
 const toPercentage = require("../../utils/maths/toPercentage");
+const setValue = require("../../utils/objects/setValue");
+const replaceKey = require("../../utils/objects/replaceKey");
 
 const DiscoverTVResolver = async (parent, args, context, info) => {
   try {
-    // Generate the /Discover shows endpoint
-    const TheDiscoverTVURL = generateQueryParameters(
-      generateDiscoverEndpoint("tv"),
-      args
+    const response = await axios.get(
+      generateQueryParameters(generateDiscoverEndpoint("tv"), args)
     );
 
-    // Send a request to the discover tv endpoint
-    const response = await axios.get(TheDiscoverTVURL);
-
-    // Format the respones data
-    forEach(response.data.results, (data) => {
-      if (has(data, "poster_path") === true) {
-        const { poster_path } = data;
-        data.poster_path = generateImageURL(poster_path);
-      }
-      if (has(data, "backdrop_path") === true) {
-        const { backdrop_path } = data;
-        data.backdrop_path = generateImageURL(backdrop_path);
+    forEach(response.data.results, (show) => {
+      if (has(show, "poster_path") === true) {
+        setValue(show, "poster_path", generateAbsolutePath(show.poster_path));
       }
 
-      if (has(data, "release_date") === true) {
-        const { release_date } = data;
-        data.release_date = formatDate(release_date, "MMMM Do, YYYY");
+      if (has(show, "backdrop_path") === true) {
+        setValue(
+          show,
+          "backdrop_path",
+          generateAbsolutePath(show.backdrop_path)
+        );
       }
 
-      if (has(data, "vote_average") === true) {
-        const { vote_average } = data;
-        data.vote_average = toPercentage(vote_average);
+      if (has(show, "first_air_date") === true) {
+        replaceKey(show, "first_air_date", "release_date");
+        setValue(
+          show,
+          "release_date",
+          formatDate(show.release_date, "MMMM Do, YYYY")
+        );
+      }
+
+      if (has(show, "vote_average") === true) {
+        setValue(show, "vote_average", toPercentage(show.vote_average));
       }
     });
 

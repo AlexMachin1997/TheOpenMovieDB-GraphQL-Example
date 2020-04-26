@@ -4,8 +4,12 @@ const { isEmpty } = require("lodash");
 const formatDate = (date, pattern) => {
   let formattedDate = moment(date).format(pattern);
 
+  if (isEmpty(pattern) === true) {
+    return "Please provide a pattern";
+  }
+
   if (isEmpty(date) === true) {
-    formattedDate = "--/--/--";
+    formattedDate = "--/--/----";
     return formattedDate;
   }
 

@@ -1,31 +1,26 @@
 const axios = require("axios");
 const { has, filter, sortBy, forEach } = require("lodash");
 
-const { generateCastURLEndpoint } = require("../../utils/generateEndpoints");
-const generateImageURL = require("../../utils/generateImageURL");
+const generateCastURLEndpoint = require("../../utils/generateEndpoints/Cast");
+const generateAbsolutePath = require("../../utils/images/generateAbsolutePath");
+const setValue = require("../../utils/objects/setValue");
+const replaceKey = require("../../utils/objects/replaceKey");
 
 const MovieCastResolver = async (parent, args, context, info) => {
   try {
-    // Make a cast request using the Movie object id field
     const response = await axios.get(
       generateCastURLEndpoint(parent.id, "movie")
     );
 
-    const { data } = response;
-    const { cast } = data;
+    const featuredCast = filter(
+      response.data.cast,
+      (member) => member.order < 7
+    );
 
-    // Sort the cast by order number
-    sortBy(cast, member => member.order);
-
-    // Finding the featured cast (top 6 actors)
-    const featuredCast = filter(cast, member => member.order < 7);
-
-    // Formatting the featured cast
-    forEach(featuredCast, member => {
-      let { profile_path } = member;
-
+    forEach(featuredCast, (member) => {
       if (has(member, "profile_path")) {
-        member.profile_path = generateImageURL(profile_path);
+        replaceKey(member, "profile_path", "image");
+        setValue(member, "image", generateAbsolutePath(member.image));
       }
     });
 
