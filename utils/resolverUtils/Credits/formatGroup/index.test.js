@@ -1,7 +1,7 @@
 const formatGroup = require("./index");
 
-describe("block", () => {
-  it("Should return true", () => {
+describe("formatGroup", () => {
+  it("The arrays should match", () => {
     const inputData = [
       {
         first_air_date: "2016-10-02",
