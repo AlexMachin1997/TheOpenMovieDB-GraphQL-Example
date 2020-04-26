@@ -32,6 +32,7 @@ const SearchForAPersonResolver = async (parent, args, context, info) => {
       }
 
       if (has(data, "birthday") === true) {
+        console.log(data.birthday);
         setValue(data, "birthday", generateBirthdayDate(data.birthday));
       }
 
