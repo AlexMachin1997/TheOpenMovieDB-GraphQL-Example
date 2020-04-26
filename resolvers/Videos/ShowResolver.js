@@ -1,7 +1,7 @@
 const axios = require("axios");
 const { filter, forEach } = require("lodash");
 
-const generateVideoEndpoint = require("../../utils/generateEndpoints/Video");
+const generateVideoEndpoint = require("../../utils/generateEndpoints/Videos");
 const setValue = require("../../utils/objects/setValue");
 
 const ShowVideoResolver = async (parent, args, context, info) => {
