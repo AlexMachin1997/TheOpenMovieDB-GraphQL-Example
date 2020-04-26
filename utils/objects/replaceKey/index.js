@@ -1,8 +1,8 @@
-const { isEmpty } = require("lodash");
+const { has } = require("lodash");
 
 const replaceKey = (object, oldKey, newKey) => {
   // Empty object key check
-  if (isEmpty(object[oldKey]) === false) {
+  if (has(object, oldKey) === true) {
     // New key
     object[newKey] = object[oldKey];
 
