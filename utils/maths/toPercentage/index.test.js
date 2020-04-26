@@ -3,8 +3,8 @@ const toPercentage = require("./");
 describe("generateYear unit test's", () => {
   test("It should return 40", () => {
     // Data
-    const input = toPercentage(6.04);
-    const expectedOutput = 60;
+    const input = toPercentage(6.4);
+    const expectedOutput = 64;
 
     // Test
     expect(input).toBe(expectedOutput);

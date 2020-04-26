@@ -33,7 +33,7 @@ const NowPlayingTVResolver = async (parent, args, context, info) => {
       }
 
       if (has(movie, "vote_average") === true) {
-        setValue(movie, "vote_avergage", toPercentage(movie.vote_average));
+        setValue(movie, "vote_average", toPercentage(movie.vote_average));
       }
     });
 

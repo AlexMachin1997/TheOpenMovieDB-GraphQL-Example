@@ -1,8 +1,8 @@
-const { isEmpty } = require("lodash");
+const { has } = require("lodash");
 
 const setValue = (object, key, value) => {
-  if (isEmpty(object[key]) === true) {
-    return "Please provide a valid object option";
+  if (has(object, key) === false) {
+    return value;
   }
 
   return (object[key] = value);

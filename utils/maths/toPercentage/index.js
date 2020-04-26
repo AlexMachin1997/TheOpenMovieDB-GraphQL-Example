@@ -1,2 +1,2 @@
-const toPercentage = (value) => Math.round(value * 10);
+const toPercentage = (value) => value * 10;
 module.exports = toPercentage;
