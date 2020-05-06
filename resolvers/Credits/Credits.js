@@ -1,8 +1,8 @@
 const axios = require("axios");
 
 const generatePersonCreditsEndpoint = require("../../utils/generateEndpoints/Credits");
-const formatGroups = require("../../utils/resolverUtils/Credits/formatGroups");
-const mediaType = require("../../utils/resolverUtils/Credits/formatGroup/types");
+const formatGroups = require("../../utils/resolverUtils/Credits");
+const mediaType = require("../../utils/resolverUtils/Credits/filterGroupByMediaType/types");
 
 const CreditsResolver = async (parent, args, info, context) => {
   try {

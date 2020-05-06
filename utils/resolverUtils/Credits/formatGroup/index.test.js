@@ -1,35 +1,39 @@
 const formatGroup = require("./index");
 
 describe("formatGroup", () => {
+  const input = [
+    {
+      first_air_date: "2016-10-02",
+      name: "Westworld",
+      media_type: "tv",
+    },
+    {
+      release_date: "2020-04-24",
+      original_title: "Black widow",
+      media_type: "movie",
+    },
+  ];
+
+  const output = [
+    {
+      release_date: "2020",
+      original_title: "Black widow",
+      media_type: "movie",
+    },
+    {
+      release_date: "2016",
+      original_title: "Westworld",
+      media_type: "tv",
+    },
+  ];
+
   it("The arrays should match", () => {
-    const inputData = [
-      {
-        first_air_date: "2016-10-02",
-        name: "Westworld",
-        media_type: "tv",
-      },
-      {
-        release_date: "2020-04-24",
-        original_title: "Black widow",
-        media_type: "movie",
-      },
-    ];
+    const response = formatGroup(input, "ALL");
+    expect(response).toStrictEqual(output);
+  });
 
-    const expectedOutput = [
-      {
-        release_date: "2020",
-        original_title: "Black widow",
-        media_type: "movie",
-      },
-      {
-        release_date: "2016",
-        original_title: "Westworld",
-        media_type: "tv",
-      },
-    ];
-
-    const input = formatGroup(inputData, "ALL");
-
-    expect(input).toStrictEqual(expectedOutput);
+  it("The arrays should have an array of 2", () => {
+    const response = formatGroup(input, "ALL");
+    expect(response.length).toBe(2);
   });
 });

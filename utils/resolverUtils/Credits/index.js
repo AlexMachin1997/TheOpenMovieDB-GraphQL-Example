@@ -1,5 +1,4 @@
-const formatGroup = require("../formatGroup");
-const mediaTypes = require("../formatGroup/types");
+const formatGroup = require("./formatGroup");
 
 const formatGroups = (data, mediaType) => {
   // Acting group
