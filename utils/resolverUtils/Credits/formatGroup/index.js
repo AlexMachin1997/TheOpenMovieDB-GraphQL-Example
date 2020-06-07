@@ -1,26 +1,28 @@
-const reorderGroupByReleaseDate = require("../reorderGroupByReleaseDate");
-const orderGroupByYear = require("../reorderGroupByYear");
-const filterGroupByMediaType = require("../filterGroupByMediaType");
-const replaceKeys = require("../replaceKeys");
-const setValues = require("../setValues");
+const reorderGroupByReleaseDate = require('../reorderGroupByReleaseDate');
+const orderGroupByYear = require('../reorderGroupByYear');
+const filterGroupByMediaType = require('../filterGroupByMediaType');
+const replaceKeys = require('../replaceKeys');
+const setValues = require('../setValues');
 
-const formatGroup = (group, mediaType) => {
-  // Replace any specified keys
-  group = replaceKeys(group);
+const formatGroup = (singleGroup, mediaType) => {
+	let group = singleGroup;
 
-  // Replace any specified values
-  group = setValues(group);
+	// Replace any specified keys
+	group = replaceKeys(group);
 
-  // Conditional filtering (based on the mediaType which is ALL, MOVIE or TV. Default is ALL)
-  group = filterGroupByMediaType(mediaType, group);
+	// Replace any specified values
+	group = setValues(group);
 
-  // Sort the group by release_date
-  group = orderGroupByYear(group);
+	// Conditional filtering (based on the mediaType which is ALL, MOVIE or TV. Default is ALL)
+	group = filterGroupByMediaType(mediaType, group);
 
-  // Taking all the release_dates which have - and making them the first elements
-  group = reorderGroupByReleaseDate(group);
+	// Sort the group by release_date
+	group = orderGroupByYear(group);
 
-  return group;
+	// Taking all the release_dates which have - and making them the first elements
+	group = reorderGroupByReleaseDate(group);
+
+	return group;
 };
 
 module.exports = formatGroup;

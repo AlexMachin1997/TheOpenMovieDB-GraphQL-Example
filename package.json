@@ -1,39 +1,46 @@
 {
-  "name": "apollo-server-example",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "jest",
-    "start": "node index.js",
-    "server": "nodemon index.js"
-  },
-  "jest": {
-    "setupFiles": [
-      "dotenv/config"
-    ]
-  },
-  "keywords": [
-    "Graphql",
-    "Apollo",
-    "Lodash",
-    "Dotenv",
-    "Apollo-Server",
-    "MomentJS",
-    "Nodemon",
-    "NPM"
-  ],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "apollo-server": "^2.12.0",
-    "axios": "^0.19.2",
-    "dotenv": "^8.2.0",
-    "lodash": "^4.17.15",
-    "moment": "^2.24.0",
-    "nodemon": "^2.0.3"
-  },
-  "devDependencies": {
-    "jest": "^25.4.0"
-  }
+	"name": "apollo-server-example",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "jest",
+		"start": "node index.js",
+		"server": "nodemon index.js",
+		"lint": "eslint --fix . --ext .js"
+	},
+	"jest": {
+		"setupFiles": [
+			"dotenv/config"
+		]
+	},
+	"keywords": [
+		"Graphql",
+		"Apollo",
+		"Lodash",
+		"Dotenv",
+		"Apollo-Server",
+		"MomentJS",
+		"Nodemon",
+		"NPM"
+	],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"apollo-server": "^2.12.0",
+		"axios": "^0.19.2",
+		"dotenv": "^8.2.0",
+		"lodash": "^4.17.15",
+		"moment": "^2.24.0",
+		"nodemon": "^2.0.3"
+	},
+	"devDependencies": {
+		"eslint": "^6.8.0",
+		"eslint-config-airbnb-base": "^14.1.0",
+		"eslint-config-prettier": "^6.11.0",
+		"eslint-plugin-import": "^2.20.2",
+		"eslint-plugin-prettier": "^3.1.3",
+		"jest": "^25.4.0",
+		"prettier": "^2.0.5"
+	}
 }

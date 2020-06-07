@@ -11,8 +11,8 @@ const API_IMAGE_URL = process.env.OPEN_MOVIE_DB_API_IMAGE_URL;
 const API_KEY = process.env.OPEN_MOVIE_DB_API_KEY;
 
 module.exports = {
-  API_URI,
-  API_VERSION,
-  API_IMAGE_URL,
-  API_KEY
+	API_URI,
+	API_VERSION,
+	API_IMAGE_URL,
+	API_KEY
 };
