@@ -1,0 +1,64 @@
+# Job name
+name: Application Linting
+
+# When the to run the greeting
+on: [pull_request, push]
+
+# Jobs to run for the action (You can have multiple actions in one file)
+jobs:
+  run-linters:
+    # Job display name
+    name: Linting Action
+
+    # Runs on a Linux based OS
+    runs-on: ubuntu-latest
+
+    # Steps involved for this particular task
+    steps:
+      # Checks out the reporsitoy and enables the use of commands made avaliable in the project ie npm run
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      # Setup Nodes on the versions specified in the matrix stratergy
+      - name: Set up Node.js version
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      # Cache the node_modules
+      - name: Cache node modules
+        uses: actions/cache@v2
+
+        # Defining the cache env config ie the key
+        env:
+          cache-name: cache-node-modules
+
+        # Caching options (https://github.com/actions/cache)
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.npm
+
+          # Key for caching the files initally
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
+          # Restore keys
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      # Installs all the project dependencies e.g. prettier, eslint etc via a custom project script
+      - name: Install Node.js dependencies
+        run: npm run all-dependencies
+
+      # Run the linting action
+      - name: Run linters
+        uses: samuelmeuli/lint-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }} # Authorizes the github action via a Github token which is for this repo only (Generated automatically)
+          eslint: true # Enables eslint
+          prettier: true # Enables prettier to prettieifer the code when commiting and spots any violations
+          auto_fix: true # Auto fixes an prettier or eslint violations
+          git_name: 'TheOpenMovieDB-React-Example BOT'
+          git_email: 'AlexMachin1997@gmail.com'
+          commit_message: 'TheOpenMovieDB-React-Example BOT has fixed an eslint/prettier issue' # Might need removing if it causes the linting to break

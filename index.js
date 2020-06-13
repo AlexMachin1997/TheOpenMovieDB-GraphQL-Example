@@ -5,9 +5,10 @@ const { schema } = require('./schema');
 
 // Create the ApolloServer instance and pass in the transformed GraphQL schemas (Models) and resolvers (Controllers)
 const server = new ApolloServer({
+	subscriptions: false,
 	schema,
 	cacheControl: {
-		defaultMaxAge: 22500
+		defaultMaxAge: 3600000
 	}
 });
 
