@@ -1,7 +1,7 @@
 {
 	"name": "theopenmoviedb-graphql-example",
 	"version": "1.2.0",
-	"description": "A graphql service to handle incoming requests from the apollo-clientt, it's purpose is to find movies, shows, actors and provide various filtering capabilites",
+	"description": "A GraphQL service to handle incoming requests from the apollo-client, it's purpose is to find movies, shows, actors and provide various filtering capabilites",
 	"main": "index.js",
 	"scripts": {
 		"test": "jest",
