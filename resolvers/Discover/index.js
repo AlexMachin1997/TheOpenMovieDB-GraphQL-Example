@@ -1,7 +1,7 @@
-const DiscoverMoviesResolver = require("./MoviesResolver");
-const DiscoverShowsResolver = require("./ShowResolver");
+const DiscoverMoviesResolver = require('./MoviesResolver');
+const DiscoverShowsResolver = require('./ShowResolver');
 
 module.exports = {
-  DiscoverMoviesResolver,
-  DiscoverShowsResolver
+	DiscoverMoviesResolver,
+	DiscoverShowsResolver
 };

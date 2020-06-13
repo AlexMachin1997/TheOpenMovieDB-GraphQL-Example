@@ -1,7 +1,7 @@
-const MovieKeywordResolver = require("./MovieResolver");
-const ShowKeywordResolver = require("./ShowResolver");
+const MovieKeywordResolver = require('./MovieResolver');
+const ShowKeywordResolver = require('./ShowResolver');
 
 module.exports = {
-  MovieKeywordResolver,
-  ShowKeywordResolver
+	MovieKeywordResolver,
+	ShowKeywordResolver
 };

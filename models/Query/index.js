@@ -1,42 +1,42 @@
-const { gql } = require("apollo-server");
+const { gql } = require('apollo-server');
 
 const Query = gql`
-  type Query {
-    DiscoverMovies(
-      sortBy: String
-      genres: String
-      certifications: String
-      userscore: String
-      runtime: String
-    ): [Movies]
+	type Query {
+		DiscoverMovies(
+			sortBy: String
+			genres: String
+			certifications: String
+			userscore: String
+			runtime: String
+		): [Movies]
 
-    DiscoverShows(
-      sortBy: String
-      genres: String
-      certifications: String
-      userscore: String
-      runtime: String
-    ): [Shows]
+		DiscoverShows(
+			sortBy: String
+			genres: String
+			certifications: String
+			userscore: String
+			runtime: String
+		): [Shows]
 
-    SearchForAMovie(search: String!, id: Int!): Movie
-    SearchForAShow(search: String!, id: Int!): Show
-    SearchForAPerson(search: String!, id: Int!): Person
+		SearchForAMovie(search: String!, id: Int!): Movie
+		SearchForAShow(search: String!, id: Int!): Show
+		SearchForAPerson(search: String!, id: Int!): Person
 
-    PopularMovies: [Movies]
-    PopularShows: [Shows]
-    PopularPeople: [People]
+		PopularMovies: [Movies]
+		PopularShows: [Shows]
+		PopularPeople: [People]
 
-    UpcomingShows: [Shows]
-    UpcomingMovies: [Movies]
+		UpcomingShows: [Shows]
+		UpcomingMovies: [Movies]
 
-    NowPlayingShows: [Shows]
-    NowPlayingMovies: [Movies]
+		NowPlayingShows: [Shows]
+		NowPlayingMovies: [Movies]
 
-    TopRatedMovies: [Movies]
-    TopRatedShows: [Shows]
+		TopRatedMovies: [Movies]
+		TopRatedShows: [Shows]
 
-    FilterCredits(id: Int!, mediaType: String!): PeopleCredits
-  }
+		FilterCredits(id: Int!, mediaType: String!): PeopleCredits
+	}
 `;
 
 module.exports = Query;

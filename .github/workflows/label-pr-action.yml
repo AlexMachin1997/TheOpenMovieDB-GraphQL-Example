@@ -1,0 +1,20 @@
+# Job name
+name: Automatic PR Labelling
+
+# When to run the labeler
+on: [pull_request]
+
+# Jobs to run for the action (You can have multiple actions in one file)
+jobs:
+  label-pull-request:
+    # Job display name
+    name: Labeler action
+
+    # Runs on a Linux based OS
+    runs-on: ubuntu-latest
+
+    # Run the automated labeller script
+    steps:
+      - uses: actions/labeler@v2
+        with:
+          repo-token: '${{ secrets.GITHUB_TOKEN }}' # Authorizes the github action via a Github token which is for this repo only (Generated automatically)

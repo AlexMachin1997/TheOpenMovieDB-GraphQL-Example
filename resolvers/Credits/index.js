@@ -1,7 +1,7 @@
-const CreditsResolver = require("./Credits");
-const FilteredCreditsResolver = require("./FilterCredits");
+const CreditsResolver = require('./Credits');
+const FilteredCreditsResolver = require('./FilterCredits');
 
 module.exports = {
-  CreditsResolver,
-  FilteredCreditsResolver,
+	CreditsResolver,
+	FilteredCreditsResolver
 };

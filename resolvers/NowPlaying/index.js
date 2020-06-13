@@ -1,7 +1,7 @@
-const NowPlayingShowsResolver = require("./ShowResolver");
-const NowPlayingMovieResolver = require("./MoviesResolver");
+const NowPlayingShowsResolver = require('./ShowResolver');
+const NowPlayingMovieResolver = require('./MoviesResolver');
 
 module.exports = {
-  NowPlayingMovieResolver,
-  NowPlayingShowsResolver
+	NowPlayingMovieResolver,
+	NowPlayingShowsResolver
 };

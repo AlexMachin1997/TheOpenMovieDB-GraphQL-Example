@@ -1,0 +1,64 @@
+# Job name
+name: Intergration and Unit Tests
+
+# When the to run the greeting
+on: [pull_request, push]
+
+# Jobs to run for the action (You can have multiple actions in one file)
+jobs:
+  test:
+    # Job display name
+    name: Running React-Testing-Library and Jest tests
+
+    # Runs on a Linux based OS
+    runs-on: ubuntu-latest
+
+    # Run the job on 2 different versions of Node (12, 14)
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x]
+
+    # Steps involved for this particular task
+    steps:
+      # Checks out the reporsitoy and enables the use of commands made avaliable in the project ie npm run
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      # Setup Nodes on the versions specified in the matrix stratergy
+      - name: Set up Node.js version ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      # Cache the node_modules
+      - name: Cache node modules
+        uses: actions/cache@v2
+
+        # Defining the cache env config ie the key
+        env:
+          cache-name: cache-node-modules
+
+        # Caching options (https://github.com/actions/cache)
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.npm
+
+          # Key for caching the files initally
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
+          # Restore keys
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      # Installs all the project dependencies e.g. prettier, eslint etc via a custom project script
+      - name: Install Node.js dependencies
+        run: npm run all-dependencies
+
+      # Run the react-testing-library tests
+      - name: Run all tests
+        env:
+          OPEN_MOVIE_DB_API_URI: ${{ secrets.OPEN_MOVIE_DB_API_URI }}
+          OPEN_MOVIE_DB_API_KEY: ${{ secrets.OPEN_MOVIE_DB_API_KEY }}
+        run: npm run test

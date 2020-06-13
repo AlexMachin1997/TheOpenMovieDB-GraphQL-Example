@@ -1,7 +1,7 @@
-const MovieCrewResolver = require("./MovieResolver");
-const ShowCrewResolver = require("./ShowResolver");
+const MovieCrewResolver = require('./MovieResolver');
+const ShowCrewResolver = require('./ShowResolver');
 
 module.exports = {
-  MovieCrewResolver,
-  ShowCrewResolver
+	MovieCrewResolver,
+	ShowCrewResolver
 };

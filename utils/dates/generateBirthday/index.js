@@ -1,24 +1,24 @@
-const { isEmpty } = require("lodash");
-const moment = require("moment");
+const { isEmpty } = require('lodash');
+const moment = require('moment');
 
 const generateBirthdayDate = (date) => {
-  let birthdayDate = moment(date).format("DD/MM/YYYY");
+	let birthdayDate = moment(date).format('DD/MM/YYYY');
 
-  if (isEmpty(date) === true) {
-    birthdayDate = "--/--/----";
-    return birthdayDate;
-  }
+	if (isEmpty(date) === true) {
+		birthdayDate = '--/--/----';
+		return birthdayDate;
+	}
 
-  let splitBirthayDate = birthdayDate.split("/");
+	const splitBirthayDate = birthdayDate.split('/');
 
-  let age = moment().diff(
-    `${splitBirthayDate[2]}-${splitBirthayDate[1]}-${splitBirthayDate[0]}`,
-    "years"
-  );
+	const age = moment().diff(
+		`${splitBirthayDate[2]}-${splitBirthayDate[1]}-${splitBirthayDate[0]}`,
+		'years'
+	);
 
-  let output = `${birthdayDate} (${age} years old)`;
+	const output = `${birthdayDate} (${age} years old)`;
 
-  return output;
+	return output;
 };
 
 module.exports = generateBirthdayDate;
