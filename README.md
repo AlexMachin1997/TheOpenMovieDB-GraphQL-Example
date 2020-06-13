@@ -30,7 +30,7 @@
 
 This project contains of all the source code for my current personal project, The Open Movie DB clone.
 
-This project will only contain the Back-end code, the front-end code will be stored in a seperate reposity which can be found [here](https://github.com/AlexMachin1997/TheOpenMovieDB-React-Example)
+**This project will only contain the Back-end code, the front-end code will be stored in a seperate reposity which can be found [here](https://github.com/AlexMachin1997/TheOpenMovieDB-React-Example)**
 
 ## README contents
 
