@@ -7,15 +7,15 @@
 </h2>
 
 <h3 align="center">
-  <a href="https://github.com/AlexMachin1997/TheOpenMovieDB-React-Example/blob/master/package.json" target="_blank">
+  <a href="https://github.com/AlexMachin1997/TheOpenMovieDB-Graphql-Example/blob/master/package.json" target="_blank">
      <img alt="Github Dependencies Status" src="https://david-dm.org/AlexMachin1997/TheOpenMovieDB-Graphql-Example.svg">
   </a>
 
-  <a href="https://github.com/AlexMachin1997/TheOpenMovieDB-React-Example/blob/master/package.json" target="_blank">
+  <a href="https://github.com/AlexMachin1997/TheOpenMovieDB-Graphql-Example/blob/master/package.json" target="_blank">
     <img alt="Github Dev Dependencies Status" src="https://david-dm.org/AlexMachin1997/TheOpenMovieDB-Graphql-Example/dev-status.svg">
   </a>
 
-  <a href="https://github.com/AlexMachin1997/TheOpenMovieDB-React-Example/commits/master" target="_blank">
+  <a href="https://github.com/AlexMachin1997/TheOpenMovieDB-Graphql-Example/commits/master" target="_blank">
     <img alt="Last commit" src="https://img.shields.io/github/last-commit/AlexMachin1997/TheOpenMovieDB-Graphql-Example.svg">
   </a>
 
@@ -30,7 +30,7 @@
 
 This project contains of all the source code for my current personal project, The Open Movie DB clone.
 
-This project will only contain the Back-end code, the front-end code will be stored in a seperate reposity which can be found [here](https://github.com/AlexMachin1997/TheOpenMovieDB-Graphql-Example)
+This project will only contain the Back-end code, the front-end code will be stored in a seperate reposity which can be found [here](https://github.com/AlexMachin1997/TheOpenMovieDB-React-Example)
 
 ## README contents
 
@@ -109,7 +109,7 @@ As of the current version of the GraphQL service, it is currently capable of per
 
 - Clone the project to your development environment by using `git clone https://github.com/AlexMachin1997/TheOpenMovieDB-Graphql-Example.git`
 
-- Install all dependencies for the application by issuing this command `npm install` **(Excludes all development dependencies e.g. prettier, eslint, jest etc)**
+- Install all dependencies for the application by issuing this command `npm run coreDependencies` **(Excludes all development dependencies e.g. prettier, eslint, jest etc)**
 
 ## Unit and integration testing setup
 
@@ -119,13 +119,13 @@ The Applications tests
 
 - GraphQL resolver mocking **(COMING SOON)**
 
-- Checks all the date functionality still works
+- Checks all the math utils work as exepected e.g. outputting numbers into percentages
 
-- Checks all the external dependencies can be generated and be what they should be.
+- Checks all the the date utilites work as expected e.g. outputting a celebrites birthday
 
-- Checks images can generate an absolute image url
+- Checks images can generate an absolute image url e.g. https://image.tmdb.org/t/p/w440_and_h660_face/q3E71oY6qgAEiw6YZIHDlHSLwer.jpg
 
-- Checks the "Discover" endpoints queryParamerts can be generated
+- Checks the "Discover" endpoints query parameters can be generated e.g. ?search="Iron Man"
 
 - Checks all the object utils work as expected e.g. updating object keys
 
@@ -135,7 +135,7 @@ The Applications tests
 
 ### Reporting issues
 
-If you find any problems while using the API, report them [here](https://github.com/AlexMachin1997/TheOpenMovieDB-React-Example/issues), and I will address them as quick as I can.
+If you find any problems while using the API, report them [here](https://github.com/AlexMachin1997/TheOpenMovieDB-Graphql-Example/issues), and I will address them as quick as I can.
 
 ### Feature requests
 
@@ -158,8 +158,8 @@ If you want to connect with me on my professional social network platforms feel 
 
 ### Application Versioning
 
-The application is currently at version 1.0.0, with each feature added it will increment based on these [guidelines](https://docs.npmjs.com/about-semantic-versioning)
+The application is currently at version 1.2.0, with each feature added it will increment based on these [guidelines](https://docs.npmjs.com/about-semantic-versioning)
 
 ### Project Licence information
 
-This project is licensed under the MIT License, for more details about the PWA refer to the LICENCE.md file located within the project.
+This project is licensed under the MIT License, for more details about the PWA refer to the LICENSE.md file located within the project.
