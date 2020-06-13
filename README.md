@@ -3,7 +3,7 @@
 </h1>
 
 <h2 align="center">
-	:construction:      TheOpenMovieDB-Clone-Graphql-Service 🚀 In progress.. :construction:
+	:construction: &nbsp;&nbsp;TheOpenMovieDB-GraphQL-Example 🚀&nbsp;&nbsp; In progress.. :construction:
 </h2>
 
 <h3 align="center">
@@ -19,7 +19,7 @@
     <img alt="Last commit" src="https://img.shields.io/github/last-commit/AlexMachin1997/TheOpenMovieDB-Graphql-Example.svg">
   </a>
 
-  <a href="https://github.com/AlexMachin1997/TheOpenMovieDB-Graphql-Example/LICENSE.md" target="_blank">
+  <a href="https://github.com/AlexMachin1997/TheOpenMovieDB-Graphql-Example/blob/master/LICENSE.md" target="_blank">
     <img alt="MIT License" src="https://img.shields.io/github/license/AlexMachin1997/TheOpenMovieDB-Graphql-Example">
   </a>
 
