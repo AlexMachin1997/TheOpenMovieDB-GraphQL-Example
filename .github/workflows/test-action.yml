@@ -58,4 +58,7 @@ jobs:
 
       # Run the react-testing-library tests
       - name: Run all tests
+        env:
+          OPEN_MOVIE_DB_API_URI: ${{ secrets.OPEN_MOVIE_DB_API_URI }}
+          OPEN_MOVIE_DB_API_KEY: ${{ secrets.OPEN_MOVIE_DB_API_KEY }}
         run: npm run test

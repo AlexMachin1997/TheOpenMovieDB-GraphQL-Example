@@ -1,5 +1,4 @@
 const { isEmpty } = require('lodash');
-const { API_IMAGE_URL } = require('../../../config');
 
 const generateAbsolutePath = (imageName) => {
 	// Empty image check
@@ -8,7 +7,7 @@ const generateAbsolutePath = (imageName) => {
 	}
 
 	// Return the absolute path
-	return `${API_IMAGE_URL}${imageName}`;
+	return `https://image.tmdb.org/t/p/original${imageName}`;
 };
 
 module.exports = generateAbsolutePath;
