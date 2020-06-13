@@ -2,7 +2,7 @@
 name: Application Linting
 
 # When the to run the greeting
-on: [pull_request, push]
+on: [pull_request]
 
 # Jobs to run for the action (You can have multiple actions in one file)
 jobs:
@@ -59,6 +59,6 @@ jobs:
           eslint: true # Enables eslint
           prettier: true # Enables prettier to prettieifer the code when commiting and spots any violations
           auto_fix: true # Auto fixes an prettier or eslint violations
-          git_name: 'TheOpenMovieDB-React-Example BOT'
+          git_name: 'TheOpenMovieDB-GraphQL-Example BOT'
           git_email: 'AlexMachin1997@gmail.com'
-          commit_message: 'TheOpenMovieDB-React-Example BOT has fixed an eslint/prettier issue' # Might need removing if it causes the linting to break
+          commit_message: 'TheOpenMovieDB-GraphQL-Example BOT has fixed an eslint/prettier issue' # Might need removing if it causes the linting to break
