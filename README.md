@@ -3,7 +3,7 @@
 </h1>
 
 <h2 align="center">
-	:construction: TheOpenMovieDB-Clone-Graphql-Service 🚀 In progress.. :construction:
+	:construction:      TheOpenMovieDB-Clone-Graphql-Service 🚀 In progress.. :construction:
 </h2>
 
 <h3 align="center">
