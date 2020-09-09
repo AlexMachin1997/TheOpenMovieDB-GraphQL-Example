@@ -7,6 +7,7 @@ const generateSearchEndpoint = require('../../utils/generateEndpoints/Search');
 const generateYear = require('../../utils/dates/generateYear');
 const toPercentage = require('../../utils/maths/toPercentage');
 const setValue = require('../../utils/objects/setValue');
+const replaceKey = require('../../utils/objects/replaceKey');
 
 // eslint-disable-next-line no-unused-vars
 const SearchForAShowResolver = async (parent, args, context, info) => {
@@ -22,6 +23,11 @@ const SearchForAShowResolver = async (parent, args, context, info) => {
 
 			const { data } = SingleItemLookupResponse;
 
+			if (has(data, 'last_air_date') === true) {
+				replaceKey(data, 'first_air_date', 'releaseDate');
+				setValue(data, 'releaseDate', generateYear(data.releaseDate));
+			}
+
 			if (has(data, 'created_by') === true) {
 				forEach(data.created_by, (creator) => {
 					if (has(creator, 'profile_path') === true) {
@@ -35,14 +41,38 @@ const SearchForAShowResolver = async (parent, args, context, info) => {
 					(season) => season.season_number === data.last_episode_to_air.season_number
 				);
 
-				// Set the current_season field to the CurrentSeason
-				setValue(data, 'current_season', {
-					image: generateAbsolutePath(data.last_episode_to_air.still_path),
-					season_number: data.last_episode_to_air.season_number,
-					year: generateYear(data.last_episode_to_air.air_date),
-					episode_count: data.seasons[CurrentSeasonIndex].episode_count,
-					overview: data.seasons[CurrentSeasonIndex].overview
-				});
+				// eslint-disable-next-line camelcase
+				const { last_episode_to_air, seasons } = data;
+
+				const currentSeason = {
+					image: setValue(
+						last_episode_to_air,
+						'still_path',
+						generateAbsolutePath(last_episode_to_air.still_path)
+					),
+					season_number: setValue(
+						last_episode_to_air,
+						'season_number',
+						last_episode_to_air.season_number
+					),
+					year: setValue(
+						last_episode_to_air,
+						'air_date',
+						generateYear(last_episode_to_air.air_date)
+					),
+					episode_count: setValue(
+						seasons[CurrentSeasonIndex],
+						'episode_count',
+						seasons[CurrentSeasonIndex].episode_count
+					),
+					overview: setValue(
+						seasons[CurrentSeasonIndex],
+						'overview',
+						seasons[CurrentSeasonIndex].overview
+					)
+				};
+
+				data.current_season = currentSeason;
 			}
 
 			if (has(data, 'backdrop_path') === true) {

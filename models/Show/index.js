@@ -37,6 +37,7 @@ const typeDef = gql`
 		crew: [Crew]
 		videos: [Video]
 		current_season: CurrentSeason
+		releaseDate: String
 	}
 
 	type Shows {

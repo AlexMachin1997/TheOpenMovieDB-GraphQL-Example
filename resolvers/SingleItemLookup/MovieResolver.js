@@ -7,6 +7,7 @@ const generateAbsolutePath = require('../../utils/images/generateAbsolutePath');
 const toPercentage = require('../../utils/maths/toPercentage');
 const setValue = require('../../utils/objects/setValue');
 const replaceKey = require('../../utils/objects/replaceKey');
+const generateYear = require('../../utils/dates/generateYear');
 
 // eslint-disable-next-line no-unused-vars
 const SearchForAMovieResolver = async (parent, args, context, info) => {
@@ -21,6 +22,10 @@ const SearchForAMovieResolver = async (parent, args, context, info) => {
 			);
 
 			const { data } = SingleMovieResponse;
+
+			if (has(data, 'release_date') === true) {
+				setValue(data, 'release_date', generateYear(data.release_date));
+			}
 
 			if (has(data, 'backdrop_path') === true) {
 				setValue(data, 'backdrop_path', generateAbsolutePath(data.backdrop_path));

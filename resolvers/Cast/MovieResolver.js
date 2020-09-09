@@ -11,7 +11,7 @@ const MovieCastResolver = async (parent, args, context, info) => {
 	try {
 		const response = await axios.get(generateCastURLEndpoint(parent.id, 'movie'));
 
-		const featuredCast = filter(response.data.cast, (member) => member.order < 7);
+		const featuredCast = filter(response.data.cast, (member) => member.order <= 9);
 
 		forEach(featuredCast, (member) => {
 			if (has(member, 'profile_path')) {
@@ -20,7 +20,7 @@ const MovieCastResolver = async (parent, args, context, info) => {
 			}
 		});
 
-		return featuredCast;
+		return featuredCast.sort((a, b) => (a.order > b.order ? 1 : -1));
 	} catch (err) {
 		console.log('The /credits (Cast) endpoint failed');
 		return err.response;
