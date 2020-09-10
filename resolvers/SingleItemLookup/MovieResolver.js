@@ -64,9 +64,12 @@ const SearchForAMovieResolver = async (parent, args, context, info) => {
 				has(data, 'spoken_languages') === true &&
 				data.spoken_languages.length !== 0
 			) {
-				data.originalLanguage = data.spoken_languages.filter(
-					(language) => language.name === data.original_language
+				// Finds the first language which matches the original_Language assigned to the movie
+				const language = data.spoken_languages.find(
+					(el) => el.iso_639_1 === data.original_language
 				);
+
+				Movie.originalLanguage = language.name;
 			}
 
 			// Production companies
@@ -146,10 +149,13 @@ const SearchForAMovieResolver = async (parent, args, context, info) => {
 			return Movie;
 		} catch (err) {
 			console.log(`The /Movie endpoint failed`);
+			console.log(err.message);
+
 			return err.response;
 		}
 	} catch (err) {
 		console.log('The /Search endpoint failed');
+		console.log(err.message);
 		return err.response;
 	}
 };
