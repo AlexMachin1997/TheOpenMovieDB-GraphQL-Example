@@ -49,8 +49,7 @@ const resolvers = {
 	Movie: {
 		reviews: MovieReviewResolver,
 		cast: MovieCastResolver,
-		crew: MovieCrewResolver,
-		recomendations: MovieRecomendationsResolver,
+		recommendations: MovieRecomendationsResolver,
 		keywords: MovieKeywordResolver,
 		social: MovieSocialResolver,
 		videos: MovieVideoResolver

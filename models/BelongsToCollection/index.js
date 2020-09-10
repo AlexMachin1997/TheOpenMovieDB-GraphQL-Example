@@ -1,10 +1,11 @@
 const { gql } = require('apollo-server');
 
 const typeDef = gql`
-	type Company {
+	type BelowsToCollection {
 		id: Int
-		logo: String
 		name: String
+		backgroundUrl: String
+		posterUrl: String
 	}
 `;
 

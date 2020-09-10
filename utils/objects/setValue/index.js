@@ -1,8 +1,8 @@
-const { has } = require('lodash');
+const { has, isEmpty, set } = require('lodash');
 
 const setValue = (object, key, value) => {
-	if (has(object, key) === false) {
-		return value;
+	if (has(object, key) === false || isEmpty(object[key]) === true) {
+		return '';
 	}
 
 	return (object[key] = value);

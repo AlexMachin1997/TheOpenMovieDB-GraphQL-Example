@@ -29,7 +29,7 @@ const SearchForAPersonResolver = async (parent, args, context, info) => {
 				setValue(data, 'birthday', generateBirthdayDate(data.birthday));
 			}
 
-			if (has(data, 'populaity') === true) {
+			if (has(data, 'popularity') === true) {
 				setValue(data, 'popularity', data.popularity.toFixed(2));
 			}
 

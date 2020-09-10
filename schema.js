@@ -9,6 +9,7 @@ const Keyword = require('./models/Keyword');
 const Language = require('./models/Language');
 const Social = require('./models/Social');
 const Review = require('./models/Review');
+const BelowsToCollection = require('./models/BelongsToCollection');
 
 // Person Models
 const People = require('./models/People');
@@ -25,7 +26,8 @@ const CurrentSeason = require('./models/Show/CurrentSeason');
 
 // Main models e.g. SingleMovie, TV, People etc
 const Query = require('./models/Query');
-const Show = require('./models/Show');
+const Show = require('./models/Show/Show');
+const Shows = require('./models/Show');
 const Video = require('./models/Videos');
 
 const Movies = require('./models/Movies');
@@ -50,6 +52,7 @@ const stuff = makeExecutableSchema({
 		Network,
 		Season,
 		Show,
+		Shows,
 		Movie,
 		Video,
 		Person,
@@ -58,7 +61,8 @@ const stuff = makeExecutableSchema({
 		Movies,
 		People,
 		CurrentSeason,
-		Credits
+		Credits,
+		BelowsToCollection
 	],
 	resolvers: RootQuery
 });

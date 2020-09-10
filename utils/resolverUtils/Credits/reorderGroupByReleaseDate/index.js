@@ -3,6 +3,7 @@ const reorderGroupByReleaseDate = (group) => {
 		if (data.release_date === '-') {
 			group.splice(index, 1);
 			group.unshift(data);
+			return data;
 		}
 	});
 	return group;

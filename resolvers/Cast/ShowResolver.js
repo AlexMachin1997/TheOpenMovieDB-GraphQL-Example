@@ -22,7 +22,7 @@ const TVCastResolver = async (parent, args, context, info) => {
 		});
 
 		// Sort the cast by order id
-		return featuredCast.sort((a, b) => (a.order > b.order ? 1 : -1));
+		return featuredCast;
 	} catch (err) {
 		console.log('The /credits (Cast) endpoint failed');
 		console.log(err);
