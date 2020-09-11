@@ -22,10 +22,10 @@ const MovieModel = gql`
 		videos: [Video]
 		belongsToCollection: BelowsToCollection
 		tagline: String
+		runtime: String
 
 		budget: String
 		revenue: String
-		runtime: String
 	}
 `;
 

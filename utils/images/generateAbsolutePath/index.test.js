@@ -10,6 +10,6 @@ describe("generateAbsolutePath unit test's", () => {
 
 	// No image resource provided
 	test('It should return "Please provide a relative path" ', () => {
-		expect(generateAbsolutePath()).toBe('Please provide a relative path');
+		expect(generateAbsolutePath()).toBe('');
 	});
 });

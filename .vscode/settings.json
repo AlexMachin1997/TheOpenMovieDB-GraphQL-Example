@@ -22,6 +22,7 @@
 	"workbench.sideBar.location": "left",
 
 	"javascript.updateImportsOnFileMove.enabled": "always",
+	"javascript.suggest.completeFunctionCalls": true,
 
 	"typescript.validate.enable": true,
 

@@ -24,7 +24,9 @@ const SearchForAMovieResolver = async (parent, args, context, info) => {
 			const Movie = {};
 
 			// ID
-			Movie.id = data.id;
+			if (has(data, 'id') === true) {
+				Movie.id = data.id;
+			}
 
 			// Name
 			if (has(data, 'title') === true) {
