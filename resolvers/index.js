@@ -59,8 +59,7 @@ const resolvers = {
 	Show: {
 		reviews: ShowReviewResolver,
 		cast: ShowCastResolver,
-		crew: ShowCrewResolver,
-		recomendations: ShowRecomendationsResolver,
+		recommendations: ShowRecomendationsResolver,
 		keywords: ShowKeywordResolver,
 		social: ShowSocialResolver,
 		videos: ShowVideoResolver

@@ -4,8 +4,8 @@ const typeDef = gql`
 	type Network {
 		name: String
 		id: Int
-		logo_path: String
-		origin_country: String
+		logoUrl: String
+		originCountry: String
 	}
 `;
 

@@ -117,14 +117,34 @@ const SearchForAMovieResolver = async (parent, args, context, info) => {
 				Movie.tagline = data.tagline;
 			}
 
-			// Movie Collections
+			// Show Collections
 			if (has(data, 'belongs_to_collection') === true) {
-				Movie.belongsToCollection = {
-					id: data.belongs_to_collection.id,
-					name: data.belongs_to_collection.name,
-					backgroundUrl: generateAbsolutePath(data.belongs_to_collection.backdrop_path),
-					posterUrl: generateAbsolutePath(data.belongs_to_collection.poster_path)
+				const belongsToCollection = {
+					id: 0,
+					name: '',
+					backgroundUrl: '',
+					posterUrl: ''
 				};
+
+				const { belongs_to_collection } = data;
+
+				if (has(belongsToCollection, 'id') === true) {
+					belongsToCollection.id = belongs_to_collection.id;
+				}
+
+				if (has(belongsToCollection, 'name') === true) {
+					belongsToCollection.name = belongs_to_collection.name;
+				}
+
+				if (has(belongsToCollection, 'backdrop_path') === true) {
+					belongsToCollection.backgroundUrl = generateAbsolutePath(
+						belongs_to_collection.backdrop_path
+					);
+				}
+
+				if (has(belongsToCollection, 'poster_path') === true) {
+					belongsToCollection.posterUrl = generateAbsolutePath(belongs_to_collection.poster_path);
+				}
 			}
 
 			// Runtime

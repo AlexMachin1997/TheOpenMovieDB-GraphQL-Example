@@ -18,20 +18,19 @@ const Person = require('./models/People/Person');
 const Credits = require('./models/People/Credits');
 
 // Show Models
-const CreatedBy = require('./models/Show/CreatedBy');
-const LastEpisodeToAir = require('./models/Show/LastEpisodeToAir');
+// const LastEpisodeToAir = require('./models/Show/LastEpisodeToAir');
 const Network = require('./models/Show/Network');
-const Season = require('./models/Show/Season');
+// const Season = require('./models/Show/Season');
 const CurrentSeason = require('./models/Show/CurrentSeason');
 
 // Main models e.g. SingleMovie, TV, People etc
 const Query = require('./models/Query');
-const Show = require('./models/Show/Show');
-const Shows = require('./models/Show');
+const Show = require('./models/Show');
+const Shows = require('./models/Show/Shows');
 const Video = require('./models/Videos');
 
-const Movies = require('./models/Movies');
-const Movie = require('./models/Movies/Movie');
+const Movies = require('./models/Movie/Movies');
+const Movie = require('./models/Movie');
 
 // Resolvers
 const { RootQuery } = require('./resolvers');
@@ -47,10 +46,9 @@ const stuff = makeExecutableSchema({
 		Language,
 		Social,
 		Review,
-		CreatedBy,
-		LastEpisodeToAir,
+		// LastEpisodeToAir,
 		Network,
-		Season,
+		// Season,
 		Show,
 		Shows,
 		Movie,

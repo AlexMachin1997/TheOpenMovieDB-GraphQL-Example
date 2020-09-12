@@ -2,10 +2,10 @@ const { gql } = require('apollo-server');
 
 const typeDef = gql`
 	type CurrentSeason {
-		image: String
-		season_number: Int
+		backgroundUrl: String
+		seasonNumber: Int
 		year: String
-		episode_count: Int
+		episodeCount: Int
 		overview: String
 	}
 `;

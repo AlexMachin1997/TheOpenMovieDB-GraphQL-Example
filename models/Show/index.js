@@ -1,19 +1,36 @@
 const { gql } = require('apollo-server');
 
 const typeDef = gql`
-	type Shows {
-		poster_path: String
-		popularity: Float
+	type Show {
 		id: Int
-		backdrop_path: String
-		vote_average: Float
-		overview: String
-		release_date: String
-		genre_ids: [Int]
-		original_language: String
-		vote_count: Int
 		name: String
-		original_name: String
+		overview: String
+		backgroundUrl: String
+		posterUrl: String
+		genres: [Genre]
+		homepage: String
+		originalLanguage: String
+		productionCompanies: [Company]
+		releaseDate: String
+		voteAverage: Float
+		status: String
+		reviews: [Review]
+		recommendations: [Movie]
+		keywords: [Keyword]
+		social: Social
+		cast: [Cast]
+		videos: [Video]
+		belongsToCollection: BelowsToCollection
+		tagline: String
+		runtime: String
+
+		Network: [Network]
+		numberOfSeasons: Int
+		numberOfEpisodes: Int
+		originCountry: [String]
+		company: [Company]
+		currentSeason: CurrentSeason
+		type: String
 	}
 `;
 
