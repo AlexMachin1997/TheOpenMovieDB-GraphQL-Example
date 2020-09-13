@@ -22,7 +22,6 @@
 	"workbench.sideBar.location": "left",
 
 	"javascript.updateImportsOnFileMove.enabled": "always",
-	"javascript.suggest.completeFunctionCalls": true,
 
 	"typescript.validate.enable": true,
 
@@ -32,7 +31,6 @@
 	},
 	"files.defaultLanguage": "{activeEditorLanguage}",
 
-	"javascript.implicitProjectConfig.checkJs": true,
 	"javascript.validate.enable": true, // Highligts the unused imports when true
 	"editor.showUnused": true, // Highligts the unused imports when true
 

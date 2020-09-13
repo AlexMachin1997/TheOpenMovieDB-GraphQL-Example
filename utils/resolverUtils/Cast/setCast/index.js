@@ -1,40 +1,30 @@
-const { isEmpty } = require('lodash');
 const generateAbsolutePath = require('../../../images/generateAbsolutePath');
 
 const setCast = async (castMembers) => {
-	let featuredCast = castMembers.filter((el) => el.order <= 9);
+	let featuredCast = castMembers.sort((a, b) => (a.order > b.order ? 1 : -1));
 
-	featuredCast = featuredCast.sort((a, b) => (a.order > b.order ? 1 : -1));
+	featuredCast = featuredCast.slice(0, 9);
 
 	const updatedFeaturedCast = [];
 
 	featuredCast.forEach((cast) => {
+		// Initial object for a cast member (Some attributes are updated if they meet certain conditions)
 		const castMember = {
 			id: cast.id ?? 0,
 			character: cast.character ?? '',
 			profileImageUrl: cast.profile_path ?? '',
-			gender: cast.gender ?? 'Other',
-			episodeCount: 0
+			gender: cast.gender ?? '',
+			episodeCount: cast.episodeCount ?? 0
 		};
 
-		// id
-		if (isEmpty(cast.id) === true) {
-			castMember.id = cast.id;
-		}
-
-		// character
-		if (isEmpty(cast.character) === true) {
-			castMember.character = cast.character;
-		}
-
 		// Profile image url
-		if (isEmpty(cast.profile_path) === true) {
+		if (castMember.profileImageUrl !== '') {
 			castMember.profileImageUrl = generateAbsolutePath(cast.profile_path);
 		}
 
-		// gender
-		if (cast.gender !== null || cast.gender !== null) {
-			castMember.gender = cast.gender === 2 ? 'Male' : 'Female';
+		// Gender
+		if (castMember.gender !== '') {
+			castMember.gender = castMember.gender === 0 ? 'Male' : 'Female';
 		}
 
 		// Perform API Request to get the episode count - https://trello.com/c/RyPuIPSc/42-extra-tv-show-functionality-episode-count

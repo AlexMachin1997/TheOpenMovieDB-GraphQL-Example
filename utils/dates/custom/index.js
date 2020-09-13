@@ -1,7 +1,7 @@
 const moment = require('moment');
 const { isEmpty } = require('lodash');
 
-const formatDate = (date, pattern) => {
+const formatDate = (date, pattern = 'MMMM Do, YYYY') => {
 	let formattedDate = moment(date).format(pattern);
 
 	if (isEmpty(pattern) === true) {
