@@ -1,6 +1,6 @@
 const replaceKey = require('./');
 
-describe("replaceKey unit test's", () => {
+describe('objects -> replaceKey', () => {
 	// Test data
 	const mockedData = {
 		name: 'ALex James Machin',

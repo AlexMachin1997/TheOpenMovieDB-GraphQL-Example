@@ -5,14 +5,24 @@ const toPercentage = require('../../../maths/toPercentage');
 const generateAbsolutePath = require('../../../images/generateAbsolutePath');
 
 const setMovies = (movies) => {
-	// Create the movie object
-	let Movie = {};
-
 	// Create the Movies array
 	const Movies = [];
 
 	// Loop through each movie and created a new custom object which matches the Movies schema
 	movies.forEach((movie) => {
+		const Movie = {
+			id: String(movie.id) ?? 0, // Id is cast to a string to perform truthy/falsy checks
+			name: movie.name ?? '',
+			overview: movie.overview ?? '',
+			backgroundUrl: movie.backdrop_path ?? '',
+			posterUrl: movie.poster_path ?? '',
+			genres: movie.genre_ids.length !== 0 ? movie.genre_ids : [], // The array length is checked, an array is not a falsy value
+			releaseDate: movie.release_date ?? '',
+			originalLanguage: movie.original_language ?? '',
+			voteAverage: movie.vote_average ?? '',
+			popularity: String(movie.popularity) ?? 0 // popularity  is cast to a string to perform truthy/falsy checks
+		};
+
 		// Id
 		if (has(movie, 'id') === true) {
 			Movie.id = movie.id;
@@ -66,9 +76,6 @@ const setMovies = (movies) => {
 
 		// Pushes the current object to the Movies array
 		Movies.push(Movie);
-
-		// Resets the current object
-		Movie = {};
 	});
 
 	// Return the new array to the GraphQL resolver

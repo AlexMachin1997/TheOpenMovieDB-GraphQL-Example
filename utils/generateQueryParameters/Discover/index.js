@@ -2,12 +2,9 @@ const { isEmpty } = require('lodash');
 
 const generateQueryParameter = (discoverURL, args) => {
 	// Query parameters supported within TheOpenMovieDB Discover endpoint
-	const { sortBy } = args;
-	const { genres } = args;
-	const { certifications } = args;
-	const { userscore } = args;
-	const { runtime } = args;
+	const { sortBy, genres, certifications, userscore, runtime } = args;
 
+	// Base Url
 	let url = discoverURL;
 
 	// Sort by query

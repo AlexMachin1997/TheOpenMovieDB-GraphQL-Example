@@ -8,6 +8,8 @@ const formatGroup = (singleGroup, mediaType) => {
 	// Stores the initial credits
 	let group = singleGroup;
 
+	if (group.length === 0) return [];
+
 	// Replace any specified keys
 	group = replaceKeys(group);
 

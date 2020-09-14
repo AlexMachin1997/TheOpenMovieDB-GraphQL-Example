@@ -1,21 +1,19 @@
 const axios = require('axios');
-const { filter, forEach } = require('lodash');
 
 const generateVideoEndpoint = require('../../utils/generateEndpoints/Videos');
-const setValue = require('../../utils/objects/setValue');
+const setFeaturedVideo = require('../../utils/resolverUtils/Videos/setFeaturedVideo');
 
 // eslint-disable-next-line no-unused-vars
 const ShowVideoResolver = async (parent, args, context, info) => {
 	try {
 		const response = await axios.get(generateVideoEndpoint(parent.id, 'tv'));
 
-		const YoutubeVideos = filter(response.data.results, (video) => video.site === 'YouTube');
+		const { data } = response;
+		const { results } = data;
 
-		forEach(YoutubeVideos, (video) => {
-			setValue(video, 'url', `https://www.youtube.com/watch?v=${video.key}`);
-		});
+		const Video = setFeaturedVideo(results);
 
-		return YoutubeVideos;
+		return Video;
 	} catch (err) {
 		console.log('The tv/videos endpoint failed');
 		return err.response;

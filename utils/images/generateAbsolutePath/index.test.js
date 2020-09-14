@@ -1,15 +1,23 @@
 const generateAbsolutePath = require('./');
 
-describe("generateAbsolutePath unit test's", () => {
+describe('images -> generateAbsolutePath', () => {
 	// Valid image path
 	test('It should return an absolute image path', () => {
-		expect(generateAbsolutePath('/gVVaukIifGJD78llZKgyT5FQbAe.jpg')).toBe(
-			'https://image.tmdb.org/t/p/original/gVVaukIifGJD78llZKgyT5FQbAe.jpg'
-		);
+		// Arrange and act
+		const response = generateAbsolutePath('/gVVaukIifGJD78llZKgyT5FQbAe.jpg');
+		const output = 'https://image.tmdb.org/t/p/original/gVVaukIifGJD78llZKgyT5FQbAe.jpg';
+
+		// Assertion
+		expect(response).toBe(output);
 	});
 
 	// No image resource provided
 	test('It should return "Please provide a relative path" ', () => {
-		expect(generateAbsolutePath()).toBe('');
+		// Arrange and act
+		const response = generateAbsolutePath();
+		const output = '';
+
+		// Assertion
+		expect(response).toBe(output);
 	});
 });

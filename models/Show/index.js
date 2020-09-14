@@ -19,7 +19,7 @@ const typeDef = gql`
 		keywords: [Keyword]
 		social: Social
 		cast: [Cast]
-		videos: [Video]
+		featuredVideo: Video
 		belongsToCollection: BelowsToCollection
 		tagline: String
 		runtime: String

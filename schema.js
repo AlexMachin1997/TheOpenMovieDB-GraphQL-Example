@@ -18,9 +18,7 @@ const Person = require('./models/People/Person');
 const Credits = require('./models/People/Credits');
 
 // Show Models
-// const LastEpisodeToAir = require('./models/Show/LastEpisodeToAir');
 const Network = require('./models/Show/Network');
-// const Season = require('./models/Show/Season');
 const CurrentSeason = require('./models/Show/CurrentSeason');
 
 // Main models e.g. SingleMovie, TV, People etc
@@ -46,9 +44,7 @@ const stuff = makeExecutableSchema({
 		Language,
 		Social,
 		Review,
-		// LastEpisodeToAir,
 		Network,
-		// Season,
 		Show,
 		Shows,
 		Movie,

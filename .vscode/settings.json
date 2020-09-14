@@ -12,7 +12,7 @@
 		"source.fixAll.eslint": true
 	},
 	"editor.cursorSmoothCaretAnimation": true,
-	"editor.fontSize": 20,
+	"editor.fontSize": 25,
 	"editor.minimap.enabled": false,
 	"editor.tabSize": 2,
 

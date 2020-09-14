@@ -8,7 +8,7 @@ const { MovieCastResolver, ShowCastResolver } = require('./Cast');
 const { MovieCrewResolver, ShowCrewResolver } = require('./Crew');
 
 // Reccomendation resolvers
-const { MovieRecomendationsResolver, ShowRecomendationsResolver } = require('./Recomendations');
+const { MovieRecommendationsResolver, ShowRecommendationsResolver } = require('./Recommendations');
 
 // Keyword resolver
 const { MovieKeywordResolver, ShowKeywordResolver } = require('./Keywords');
@@ -49,20 +49,20 @@ const resolvers = {
 	Movie: {
 		reviews: MovieReviewResolver,
 		cast: MovieCastResolver,
-		recommendations: MovieRecomendationsResolver,
+		recommendations: MovieRecommendationsResolver,
 		keywords: MovieKeywordResolver,
 		social: MovieSocialResolver,
-		videos: MovieVideoResolver
+		featuredVideo: MovieVideoResolver
 	},
 
 	// Additional data for the single show object
 	Show: {
 		reviews: ShowReviewResolver,
 		cast: ShowCastResolver,
-		recommendations: ShowRecomendationsResolver,
+		recommendations: ShowRecommendationsResolver,
 		keywords: ShowKeywordResolver,
 		social: ShowSocialResolver,
-		videos: ShowVideoResolver
+		featuredVideo: ShowVideoResolver
 	},
 
 	// Additional data for the single person object
@@ -98,7 +98,7 @@ const resolvers = {
 		TopRatedMovies: TopRatedMoviesResolver,
 		TopRatedShows: TopRatedShowsResolver,
 
-		// Credits resolver (Single endpoint to provide filtering capabilites)
+		// Credits resolver (Single endpoint to provide filtering capabilities)
 		FilterCredits: FilteredCreditsResolver
 	}
 };

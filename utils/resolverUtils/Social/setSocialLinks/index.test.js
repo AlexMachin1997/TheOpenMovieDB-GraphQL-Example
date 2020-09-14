@@ -1,29 +1,45 @@
 const setSocialLinks = require('./index');
 
-describe('Social -> setSocialLinks', () => {
+describe('setSocialLinks', () => {
 	// Facebook and instagram link tests
 	describe('facebook and instagram links', () => {
 		describe('facebook', () => {
 			it('The url should exist', () => {
+				// Arrange and act
 				const response = setSocialLinks({ facebook_id: 1234 });
-				expect(response.facebook).toBe('https://www.facebook.com/1234');
+				const output = 'https://www.facebook.com/1234';
+
+				// Assertion
+				expect(response.facebook).toBe(output);
 			});
 
 			it('The url should be empty', () => {
+				// Arrange and act
 				const response = setSocialLinks({ facebook_id: '' });
-				expect(response.facebook).toBe('');
+				const output = '';
+
+				// Assertion
+				expect(response.facebook).toBe(output);
 			});
 		});
 
 		describe('instagram', () => {
 			it('The url should exist', () => {
+				// Arrange and act
 				const response = setSocialLinks({ facebook_id: 1234 });
-				expect(response.instagram).toBe('https://www.instagram.com/1234');
+				const output = 'https://www.instagram.com/1234';
+
+				// Assertion
+				expect(response.instagram).toBe(output);
 			});
 
 			it('The url should not exist', () => {
+				// Arrange and act
 				const response = setSocialLinks({ facebook_id: '' });
-				expect(response.instagram).toBe('');
+				const output = '';
+
+				// Assertion
+				expect(response.instagram).toBe(output);
 			});
 		});
 	});
@@ -31,26 +47,42 @@ describe('Social -> setSocialLinks', () => {
 	// Twitter
 	describe('twitter link', () => {
 		it('The url should exist', () => {
+			// Arrange and act
 			const response = setSocialLinks({ twitter_id: 1234 });
-			expect(response.twitter).toBe('https://www.twitter.com/1234');
+			const output = 'https://www.twitter.com/1234';
+
+			// Assertion
+			expect(response.twitter).toBe(output);
 		});
 
 		it('The url should be empty', () => {
+			// Arrange and act
 			const response = setSocialLinks({ twitter_id: '' });
-			expect(response.twitter).toBe('');
+			const output = '';
+
+			// Assertion
+			expect(response.twitter).toBe(output);
 		});
 	});
 
 	// Homepage
 	describe('homepage', () => {
 		it('The url should exist', () => {
+			// Arrange and act
 			const response = setSocialLinks({ homepage: 'https://www.alexmachin.co.uk/' });
-			expect(response.homepage).toBe('https://www.alexmachin.co.uk/');
+			const output = 'https://www.alexmachin.co.uk/';
+
+			// Assertion
+			expect(response.homepage).toBe(output);
 		});
 
 		it('The url should be empty', () => {
+			// Arrange and act
 			const response = setSocialLinks({ homepage: '' });
-			expect(response.homepage).toBe('');
+			const output = '';
+
+			// Assertion
+			expect(response.homepage).toBe(output);
 		});
 	});
 });

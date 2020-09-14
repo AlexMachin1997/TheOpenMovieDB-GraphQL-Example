@@ -32,7 +32,10 @@ describe('reorderGroupByYear', () => {
 	];
 
 	it('The order should be The Walking Dead, Devs and Westworld', () => {
+		// Arrange and act
 		const response = reorderGroupByYear(input);
+
+		// Assertion
 		expect(response).toStrictEqual(output);
 	});
 });

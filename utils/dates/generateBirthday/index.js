@@ -9,10 +9,10 @@ const generateBirthdayDate = (date) => {
 		return birthdayDate;
 	}
 
-	const splitBirthayDate = birthdayDate.split('/');
+	const splitBirthdayDate = birthdayDate.split('/');
 
 	const age = moment().diff(
-		`${splitBirthayDate[2]}-${splitBirthayDate[1]}-${splitBirthayDate[0]}`,
+		`${splitBirthdayDate[2]}-${splitBirthdayDate[1]}-${splitBirthdayDate[0]}`,
 		'years'
 	);
 

@@ -1,12 +1,12 @@
-const generateBirthday = require('./');
+const generateBirthday = require('./index');
 
 describe("generateBirthday unit test's", () => {
 	test('It should return 20/11/1997 (22 years old)', () => {
-		// Data
-		const input = generateBirthday('1997-11-20');
-		const expectedOutput = '20/11/1997 (22 years old)';
+		// Arrange and act
+		const response = generateBirthday('1997-11-20');
+		const output = '20/11/1997 (22 years old)';
 
-		// Test
-		expect(input).toBe(expectedOutput);
+		// Assertion
+		expect(response).toBe(output);
 	});
 });

@@ -54,7 +54,7 @@ jobs:
 
       # Installs all the project dependencies e.g. prettier, eslint etc via a custom project script
       - name: Install Node.js dependencies
-        run: npm run all-dependencies
+        run: npm run allDependencies
 
       # Run the react-testing-library tests
       - name: Run all tests

@@ -32,7 +32,10 @@ describe('reorderGroupByReleaseDate', () => {
 	];
 
 	it('Westworld should be the first element in the array', () => {
+		// Arrange and act
 		const response = reorderGroupByReleaseDate(data);
+
+		// Assertion
 		expect(response).toStrictEqual(expectedResult);
 	});
 });

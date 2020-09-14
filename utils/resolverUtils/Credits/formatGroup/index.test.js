@@ -13,6 +13,7 @@ describe('formatGroup', () => {
 			media_type: 'movie'
 		}
 	];
+
 	const output = [
 		{
 			release_date: '2020',
@@ -25,12 +26,20 @@ describe('formatGroup', () => {
 			media_type: 'tv'
 		}
 	];
+
 	it('The arrays should match', () => {
+		// Arrange and act
 		const response = formatGroup(input, 'ALL');
+
+		// Assertion
 		expect(response).toStrictEqual(output);
 	});
+
 	it('The arrays should have an array of 2', () => {
+		// Arrange and act
 		const response = formatGroup(input, 'ALL');
+
+		// Assertion
 		expect(response.length).toBe(2);
 	});
 });
