@@ -7,7 +7,7 @@ const { MovieCastResolver, ShowCastResolver } = require('./Cast');
 // Crew resolvers
 const { MovieCrewResolver, ShowCrewResolver } = require('./Crew');
 
-// Reccomendation resolvers
+// Recommendation resolvers
 const { MovieRecommendationsResolver, ShowRecommendationsResolver } = require('./Recommendations');
 
 // Keyword resolver

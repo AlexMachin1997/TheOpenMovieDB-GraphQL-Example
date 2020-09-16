@@ -1,5 +1,12 @@
 const generateAbsolutePath = require('../../../images/generateAbsolutePath');
 
+/**
+ * Description:
+ * A utility function for creating a custom castMember object and pushing it to the updatedFeaturedCast array which gets returned to a GraphQL resolver.
+ *
+ * @param {Array} castMembers
+ */
+
 const setCast = async (castMembers) => {
 	let featuredCast = castMembers.sort((a, b) => (a.order > b.order ? 1 : -1));
 
@@ -8,7 +15,6 @@ const setCast = async (castMembers) => {
 	const updatedFeaturedCast = [];
 
 	featuredCast.forEach((cast) => {
-		// Initial object for a cast member (Some attributes are updated if they meet certain conditions)
 		const castMember = {
 			id: cast.id ?? 0,
 			character: cast.character ?? '',

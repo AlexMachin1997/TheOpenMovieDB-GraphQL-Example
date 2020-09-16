@@ -6,7 +6,6 @@ const Company = require('./models/Company');
 const Crew = require('./models/Crew');
 const Genre = require('./models/Genres');
 const Keyword = require('./models/Keyword');
-const Language = require('./models/Language');
 const Social = require('./models/Social');
 const Review = require('./models/Review');
 const BelowsToCollection = require('./models/BelongsToCollection');
@@ -41,7 +40,6 @@ const stuff = makeExecutableSchema({
 		Crew,
 		Genre,
 		Keyword,
-		Language,
 		Social,
 		Review,
 		Network,

@@ -23,8 +23,6 @@
 
 	"javascript.updateImportsOnFileMove.enabled": "always",
 
-	"typescript.validate.enable": true,
-
 	"files.autoSave": "off",
 	"files.exclude": {
 		"USE_GITIGNORE": true

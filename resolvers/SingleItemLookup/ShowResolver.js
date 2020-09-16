@@ -6,8 +6,6 @@ const generateAbsolutePath = require('../../utils/images/generateAbsolutePath');
 const generateSearchEndpoint = require('../../utils/generateEndpoints/Search');
 const generateYear = require('../../utils/dates/generateYear');
 const toPercentage = require('../../utils/maths/toPercentage');
-const setValue = require('../../utils/objects/setValue');
-const replaceKey = require('../../utils/objects/replaceKey');
 
 // eslint-disable-next-line no-unused-vars
 const SearchForAShowResolver = async (parent, args, context, info) => {
@@ -15,9 +13,6 @@ const SearchForAShowResolver = async (parent, args, context, info) => {
 		const response = await axios.get(generateSearchEndpoint(args.search, 'tv'));
 
 		const SingleItemLookup = find(response.data.results, (show) => show.id === args.id);
-
-		const Show = {};
-
 		try {
 			const SingleItemLookupResponse = await axios.get(
 				generateSingleItemLookupEndpoint(SingleItemLookup.id, 'tv')
@@ -25,44 +20,71 @@ const SearchForAShowResolver = async (parent, args, context, info) => {
 
 			const { data } = SingleItemLookupResponse;
 
-			// ID
-			if (has(data, 'id') === true) {
-				Show.id = data.id;
-			}
+			/*
+
+			Default SHow Object:
+
+			- Passes in any default values or values which are just being assigned to the object
+
+			- If any of the properties need overwriting they can be done so below e.g. releaseDate
+
+			- If any of the properties aren't available then use the defaults e.g. '', 0, []
+
+			*/
+			const Show = {
+				id: String(data.id) ?? '',
+				name: data.name ?? '',
+				overview: data.overview ?? '',
+				backgroundUrl: data.backdrop_path ?? '',
+				posterUrl: data.poster_path ?? '',
+				genres: data.genres.length !== 0 ? data.genres : [],
+				originalLanguage: data.original_language,
+				productionCompanies: [],
+				releaseDate: data.first_air_date ?? '',
+				voteAverage: String(data.vote_average) ?? '',
+				status: data.status ?? '',
+				tagline: data.tagline ?? '',
+				belongsToCollection: {
+					id: 0,
+					name: '',
+					backgroundUrl: '',
+					posterUrl: ''
+				},
+				runtime: '',
+
+				// Show Specific fields
+				type: data.type ?? '',
+				numberOfEpisodes: String(data.number_of_episodes) ?? 0,
+				numberOfSeasons: String(data.number_of_seasons) ?? 0,
+				CurrentSeason: {
+					backgroundUrl: '',
+					seasonNumber: 0,
+					year: '',
+					episodeCount: 0,
+					overview: ''
+				}
+			};
 
 			// Name
-			if (has(data, 'name') === true) {
-				Show.name = data.name;
-			} else {
+			// When the name isn't available try to use the
+			if (has(data, 'name') === false) {
 				Show.name = data.original_name;
 			}
 
-			// Overview
-			if (has(data, 'overview') === true) {
-				Show.overview = data.overview;
-			}
-
 			// Background url
+			// Overwrite the existing backgroundUrl with an absolute image path
 			if (has(data, 'backdrop_path') === true) {
 				Show.backgroundUrl = generateAbsolutePath(data.backdrop_path);
 			}
 
 			// Poster url
+			// Overwrite the existing posterUrl with an absolute image path
 			if (has(data, 'poster_path') === true) {
 				Show.posterUrl = generateAbsolutePath(data.poster_path);
 			}
 
-			// Genres
-			if (has(data, 'genres') === true) {
-				Show.genres = data.genres;
-			}
-
-			// Homepage
-			if (has(data, 'homepage') === true) {
-				Show.homepage = data.homepage;
-			}
-
 			// Original language
+			// If the below conditions are met overwrite the default originalLanguage to something meaningful e.g. "en" -> "English"
 			if (
 				has(data, 'original_language') === true &&
 				has(data, 'languages') === true &&
@@ -80,7 +102,7 @@ const SearchForAShowResolver = async (parent, args, context, info) => {
 
 				data.production_companies.forEach((singleCompany) => {
 					const company = {
-						id: singleCompany.id ?? '',
+						id: String(singleCompany.id) ?? 0,
 						logo: singleCompany.logo_path ?? '',
 						name: singleCompany.name ?? ''
 					};
@@ -107,51 +129,20 @@ const SearchForAShowResolver = async (parent, args, context, info) => {
 				Show.voteAverage = toPercentage(data.vote_average);
 			}
 
-			// Status
-			if (has(data, 'status') === true) {
-				Show.status = data.status;
-			}
-
-			// Tagline
-			if (has(data, 'tagline') === true) {
-				Show.tagline = data.tagline;
-			}
-
 			// Show Collections
 			if (has(data, 'belongs_to_collection') === true) {
-				const belongsToCollection = {
-					id: 0,
-					name: '',
-					backgroundUrl: '',
-					posterUrl: ''
-				};
-
 				const { belongs_to_collection } = data;
 
-				// id
-				if (has(belongsToCollection, 'id') === true) {
-					belongsToCollection.id = belongs_to_collection.id;
-				}
-
-				// name
-				if (has(belongsToCollection, 'name') === true) {
-					belongsToCollection.name = belongs_to_collection.name;
-				}
-
-				// background url
-				if (has(belongsToCollection, 'backdrop_path') === true) {
-					belongsToCollection.backgroundUrl = generateAbsolutePath(
-						belongs_to_collection.backdrop_path
-					);
-				}
-
-				// poster url
-				if (has(belongsToCollection, 'poster_path') === true) {
-					belongsToCollection.posterUrl = generateAbsolutePath(belongs_to_collection.poster_path);
-				}
+				Show.belongsToCollection.id = String(belongs_to_collection.id) ?? '';
+				Show.belongsToCollection.name = belongs_to_collection.name ?? '';
+				Show.belongsToCollection.backgroundUrl =
+					generateAbsolutePath(belongs_to_collection.backdrop_path) ?? '';
+				Show.belongsToCollection.posterUrl =
+					generateAbsolutePath(belongs_to_collection.poster_path) ?? '';
 			}
 
 			// Runtime
+			// When the episode_run_time is avaliable overwrite with a movie/show length e.g. 1hr 2min
 			if (has(data, 'episode_run_time') === true) {
 				// Select the longest runtime
 				const runtime = Math.max(...data.episode_run_time);
@@ -167,60 +158,42 @@ const SearchForAShowResolver = async (parent, args, context, info) => {
 
 			*/
 
-			// Type e.g. scripted
-			if (has(data, 'type') === true) {
-				Show.type = data.type;
-			}
-
-			// Number of episodes
-			if (has(data, 'number_of_episodes') === true) {
-				Show.numberOfEpisodes = data.number_of_episodes;
-			}
-
-			// Number of seasons
-			if (has(data, 'number_of_seasons') === true) {
-				Show.numberOfSeasons = data.number_of_seasons;
-			}
-
 			if (has(data, 'last_episode_to_air') === true && has(data, 'seasons') === true) {
-				const CurrentSeasonIndex = data.seasons.findIndex(
-					(season) => season.season_number === data.last_episode_to_air.season_number
-				);
-
-				const CurrentSeason = {
-					backgroundUrl: '',
-					seasonNumber: 0,
-					year: '',
-					episodeCount: 0,
-					overview: ''
-				};
-
 				const { last_episode_to_air, seasons } = data;
 
-				// Background url
-				if (has(last_episode_to_air, 'still_path') === true) {
-					CurrentSeason.backgroundUrl = generateAbsolutePath(last_episode_to_air.still_path);
-				}
+				Show.CurrentSeason.backgroundUrl =
+					generateAbsolutePath(last_episode_to_air.still_path) ?? '';
 
-				// Season number
-				if (has(last_episode_to_air, 'season_number') === true) {
-					CurrentSeason.seasonNumber = last_episode_to_air.season_number;
-				}
+				Show.CurrentSeason.seasonNumber = String(last_episode_to_air.season_number) ?? '';
 
-				// year
-				if (has(last_episode_to_air, 'air_date') === true) {
-					CurrentSeason.year = generateYear(last_episode_to_air.air_date);
-				}
+				Show.CurrentSeason.year = generateYear(last_episode_to_air.air_date) ?? '';
+
+				/*
+
+				CurrentSeason functionality
+
+				To get the episodeCount and overview we need the CurrentSeasonIndex, this requires additional checks to be put in place.
+
+				Checks put in place:
+
+				- To ensure the index is found we check to see if the index is available ie not -1 which findIndex returns.
+
+				- Once we have the index we then need to check if the properties actual exist in the object, if they are available set them otherwise the default values will be used (Show object)
+
+				*/
+				const CurrentSeasonIndex = seasons.findIndex(
+					(season) => season.season_number === data.last_episode_to_air.season_number
+				);
 
 				if (CurrentSeasonIndex !== -1) {
 					// Episode count
 					if (has(seasons[CurrentSeasonIndex], 'episode_count') === true) {
-						CurrentSeason.episodeCount = seasons[CurrentSeasonIndex].episode_count;
+						Show.CurrentSeason.episodeCount = seasons[CurrentSeasonIndex].episode_count;
 					}
 
 					// Overview
 					if (has(seasons[CurrentSeasonIndex], 'overview') === true) {
-						CurrentSeason.overview = seasons[CurrentSeasonIndex].overview;
+						Show.CurrentSeason.overview = seasons[CurrentSeasonIndex].overview;
 					}
 				}
 			}

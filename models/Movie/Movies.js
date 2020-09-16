@@ -11,7 +11,6 @@ const MoviesModel = gql`
 		releaseDate: String
 		originalLanguage: String
 		voteAverage: Float
-		popularity: Float
 	}
 `;
 

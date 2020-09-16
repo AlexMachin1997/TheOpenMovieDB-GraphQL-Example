@@ -1,27 +1,19 @@
 const axios = require('axios');
-const { has, forEach } = require('lodash');
 
 const generateRecommendationsEndpoint = require('../../utils/generateEndpoints/Recommendations');
-const generateAbsolutePath = require('../../utils/images/generateAbsolutePath');
-const toPercentage = require('../../utils/maths/toPercentage');
-const setValue = require('../../utils/objects/setValue');
+const setShows = require('../../utils/resolverUtils/Shows/setShows');
 
 // eslint-disable-next-line no-unused-vars
 const TVRecommendationsResolver = async (parent, args, content, info) => {
 	try {
 		const response = await axios.get(generateRecommendationsEndpoint(parent.id, 'tv'));
 
-		forEach(response.data.results, (show) => {
-			if (has(show, 'poster_path') === true) {
-				setValue(show, 'poster_path', generateAbsolutePath(show.poster_path));
-			}
+		const { data } = response;
+		const { results } = data;
 
-			if (has(show, 'vote_average') === true) {
-				setValue(show, 'vote_average', toPercentage(show.vote_average));
-			}
-		});
+		const Shows = setShows(results);
 
-		return response.data.results;
+		return Shows;
 	} catch (err) {
 		console.log('The /tv/recommendations/ endpoint failed');
 		return err;

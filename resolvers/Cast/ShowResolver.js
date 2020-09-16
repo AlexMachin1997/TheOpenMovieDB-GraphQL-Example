@@ -1,5 +1,4 @@
 const axios = require('axios');
-const { has, filter, forEach, isEmpty } = require('lodash');
 
 const generateCastURLEndpoint = require('../../utils/generateEndpoints/Cast');
 const setCast = require('../../utils/resolverUtils/Cast/setCast');
