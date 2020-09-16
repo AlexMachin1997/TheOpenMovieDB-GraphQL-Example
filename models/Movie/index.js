@@ -18,7 +18,8 @@ const MovieModel = gql`
 		recommendations: [Movie]
 		keywords: [Keyword]
 		social: Social
-		cast: [Cast]
+		featuredCast: [Cast]
+		featuredCrew: [Crew]
 		featuredVideo: Video
 		belongsToCollection: BelowsToCollection
 		tagline: String

@@ -48,7 +48,8 @@ const resolvers = {
 	// Additional data for the single movie object
 	Movie: {
 		reviews: MovieReviewResolver,
-		cast: MovieCastResolver,
+		featuredCast: MovieCastResolver,
+		featuredCrew: MovieCrewResolver,
 		recommendations: MovieRecommendationsResolver,
 		keywords: MovieKeywordResolver,
 		social: MovieSocialResolver,
@@ -58,7 +59,8 @@ const resolvers = {
 	// Additional data for the single show object
 	Show: {
 		reviews: ShowReviewResolver,
-		cast: ShowCastResolver,
+		featuredCast: ShowCastResolver,
+		featuredCrew: ShowCrewResolver,
 		recommendations: ShowRecommendationsResolver,
 		keywords: ShowKeywordResolver,
 		social: ShowSocialResolver,
