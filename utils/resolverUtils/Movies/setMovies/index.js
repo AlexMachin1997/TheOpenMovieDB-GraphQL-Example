@@ -54,7 +54,7 @@ const setMovies = (movies) => {
 	// Loop through each movie and created a new custom object which matches the Movies schema
 	movies.forEach(
 		/**
-		 * @param {IncomingMovieObject}
+		 * @param {IncomingMovieObject} movie
 		 */
 
 		(movie) => {

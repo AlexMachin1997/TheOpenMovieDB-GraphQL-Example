@@ -1,42 +1,21 @@
 const axios = require('axios');
-const { has, forEach } = require('lodash');
 
 const generatePopularEndpoint = require('../../utils/generateEndpoints/Popular');
-const generateAbsolutePath = require('../../utils/images/generateAbsolutePath');
-const replaceObjectKey = require('../../utils/objects/replaceKey');
-const setValue = require('../../utils/objects/setValue');
-const toPercentage = require('../../utils/maths/toPercentage');
+const setPeople = require('../../utils/resolverUtils/People/setPeople');
 
 // eslint-disable-next-line no-unused-vars
 const PopularPeopleResolver = async (parent, args, context, info) => {
 	try {
 		const response = await axios.get(generatePopularEndpoint('person'));
 
-		forEach(response.data.results, (person) => {
-			if (has(person, 'profile_path') === true) {
-				person.profile_path = generateAbsolutePath(person.profile_path);
-			}
+		const { data } = response;
+		const { results } = data;
 
-			if (has(person, 'known_for') === true) {
-				forEach(person.known_for, (role) => {
-					if (has(role, 'backdrop_path') === true) {
-						setValue(role, 'backdrop_path', generateAbsolutePath(role.backdrop_path));
-					}
+		const People = setPeople(results);
 
-					if (has(role, 'poster_path') === true) {
-						setValue(role, 'poster_path', generateAbsolutePath(role.poster_path));
-					}
+		return People;
 
-					if (has(role, 'vote_average') === true) {
-						setValue(role, 'vote_avergage', toPercentage(role.vote_average));
-					}
-
-					replaceObjectKey(role, 'original_name', 'title');
-				});
-			}
-		});
-
-		return response.data.results;
+		// return response.data.results;
 	} catch (err) {
 		console.log(err);
 		console.log('The /tv/popular endpoint failed');
