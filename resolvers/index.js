@@ -14,7 +14,7 @@ const { MovieRecommendationsResolver, ShowRecommendationsResolver } = require('.
 const { MovieKeywordResolver, ShowKeywordResolver } = require('./Keywords');
 
 // Social resolver
-const { MovieSocialResolver, ShowSocialResolver } = require('./Social');
+const { MovieSocialResolver, ShowSocialResolver, PersonSocialResolver } = require('./Social');
 
 // Search for a movie/show resolvers
 const {
@@ -69,7 +69,8 @@ const resolvers = {
 
 	// Additional data for the single person object
 	Person: {
-		credits: CreditsResolver
+		credits: CreditsResolver,
+		social: PersonSocialResolver
 	},
 
 	// Root query

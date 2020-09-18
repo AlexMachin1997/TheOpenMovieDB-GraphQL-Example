@@ -3,7 +3,7 @@
  * A Crew Member
  * @typedef {Object} Crew
  * @property {string} name - The name for the crew member e.g. Patty Jenkins
- * @property {any} roles - Stores the combined roles for the crew member
+ * @property {string} roles - Stores the combined roles for the crew member
  */
 
 /**
@@ -28,13 +28,16 @@ const setCrew = (crew) => {
 	 * @type {IncomingCrew[]}
 	 * @description Stores the filtered crew members
 	 */
-	const Crew = crew.filter(
+	let Crew = crew.filter(
 		(member) =>
 			member.job === 'Director' ||
 			member.job === 'Screenplay' ||
 			member.job === 'Writer' ||
 			member.job === 'Story'
 	);
+
+	// Show only the first 6 crew members
+	Crew = Crew.slice(0, 6);
 
 	/**
 	 * @type {Crew[]}
@@ -64,18 +67,20 @@ const setCrew = (crew) => {
 				 */
 				const newCrewMember = {
 					name: member.name ?? '',
-					roles: []
+					roles: ''
 				};
 
-				// When the length isn't 0
+				const roles = [];
+
+				// Check to see if the crew members has any roles
 				if (CurrentCrewMembersRoles.length !== 0) {
-					// For each role of the current crew member push the job to the roles array
+					// Push each role to the new roles array
 					CurrentCrewMembersRoles.forEach((duplicateCrewMember) =>
-						newCrewMember.roles.push(duplicateCrewMember.job)
+						roles.push(duplicateCrewMember.job)
 					);
 
-					// Turn the array into a string to form something like "directory, story"
-					newCrewMember.roles = newCrewMember.roles.join(', ');
+					// Join the array items to form a string e.g. "Story, Producer, Editor"
+					newCrewMember.roles = roles.join(', ');
 				}
 
 				NewCrewMembers.push(newCrewMember);

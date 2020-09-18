@@ -21,23 +21,20 @@ const SearchForAPersonResolver = async (parent, args, context, info) => {
 
 			const { data } = SinglePersonResponse;
 
-			if (has(data, 'gender') === true) {
-				setValue(data, 'gender', data.gender === 0 ? 'Male' : 'Female');
-			}
+			const Person = {
+				id: String(data.id) ? data.id : 0,
+				birthday: generateBirthdayDate(data.birthday) ?? '',
+				knownForDepartment: data.known_for_department ?? '',
+				name: data.name ?? '',
+				alsoKnownAs: data.also_known_as,
+				gender: data.gender === 2 ? 'Male' : 'Female',
+				overview: data.overview ?? '',
+				placeOfBirth: data.place_of_birth,
+				posterUrl: generateAbsolutePath(data.profile_path) ?? '',
+				homepage: data.homepage ?? ''
+			};
 
-			if (has(data, 'birthday') === true) {
-				setValue(data, 'birthday', generateBirthdayDate(data.birthday));
-			}
-
-			if (has(data, 'popularity') === true) {
-				setValue(data, 'popularity', data.popularity.toFixed(2));
-			}
-
-			if (has(data, 'profile_path') === true) {
-				setValue(data, 'profile_path', generateAbsolutePath(data.profile_path));
-			}
-
-			return data;
+			return Person;
 		} catch (err) {
 			console.log(`The /Person endpoint failed`);
 			return err.response;

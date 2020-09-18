@@ -6,7 +6,7 @@ describe('setSocialLinks', () => {
 		describe('facebook', () => {
 			it('The url should exist', () => {
 				// Arrange and act
-				const response = setSocialLinks({ facebook_id: 1234 });
+				const response = setSocialLinks({ facebook_id: '1234' });
 				const output = 'https://www.facebook.com/1234';
 
 				// Assertion
@@ -26,7 +26,7 @@ describe('setSocialLinks', () => {
 		describe('instagram', () => {
 			it('The url should exist', () => {
 				// Arrange and act
-				const response = setSocialLinks({ facebook_id: 1234 });
+				const response = setSocialLinks({ facebook_id: '1234' });
 				const output = 'https://www.instagram.com/1234';
 
 				// Assertion
@@ -48,7 +48,7 @@ describe('setSocialLinks', () => {
 	describe('twitter link', () => {
 		it('The url should exist', () => {
 			// Arrange and act
-			const response = setSocialLinks({ twitter_id: 1234 });
+			const response = setSocialLinks({ twitter_id: '1234' });
 			const output = 'https://www.twitter.com/1234';
 
 			// Assertion
@@ -83,6 +83,45 @@ describe('setSocialLinks', () => {
 
 			// Assertion
 			expect(response.homepage).toBe(output);
+		});
+	});
+
+	describe('resolverType === person', () => {
+		const socials = setSocialLinks(
+			{
+				twitter_id: 'therock',
+				facebook_id: 'DwayneJohnson',
+				instagram_id: 'therock',
+				homepage: ''
+			},
+			'person'
+		);
+
+		it('twitter id should match', () => {
+			// Arrange and act
+			const response = socials.twitter;
+			const output = 'https://www.twitter.com/therock';
+
+			// Assertion
+			expect(response).toBe(output);
+		});
+
+		it('instagram id should match', () => {
+			// Arrange and act
+			const response = socials.instagram;
+			const output = 'https://www.instagram.com/therock';
+
+			// Assertion
+			expect(response).toBe(output);
+		});
+
+		it('homepage should match', () => {
+			// Arrange and act
+			const response = socials.homepage;
+			const output = '';
+
+			// Assertion
+			expect(response).toBe(output);
 		});
 	});
 });

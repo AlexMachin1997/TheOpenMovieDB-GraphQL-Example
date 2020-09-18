@@ -1,5 +1,4 @@
 const axios = require('axios');
-const { has } = require('lodash');
 
 const generateSocialLinksEndpoint = require('../../utils/generateEndpoints/Social');
 const setSocialLinks = require('../../utils/resolverUtils/Social/setSocialLinks');
