@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { find, has, isEmpty } = require('lodash');
+const { find, has } = require('lodash');
 
 const generateSingleItemLookupEndpoint = require('../../utils/generateEndpoints/SingleItemLookup');
 const generateSearchEndpoint = require('../../utils/generateEndpoints/Search');
@@ -21,53 +21,52 @@ const SearchForAMovieResolver = async (parent, args, context, info) => {
 
 			const { data } = SingleMovieResponse;
 
-			const Movie = {};
+			const releaseDate = generateYear(data.release_date);
+			const voteAverage = toPercentage(data.vote_average);
 
-			// ID
-			if (has(data, 'id') === true) {
-				Movie.id = data.id;
-			}
+			const Movie = {
+				id: String(data.id) ? data.id : 0,
+				name: data.title ?? '',
+				overview: data.overview ?? '',
+				backgroundUrl: generateAbsolutePath(data.backdrop_path) ?? '',
+				posterUrl: generateAbsolutePath(data.poster_path) ?? '',
+				genres: data.genres.length !== 0 ? data.genres : [],
+				homepage: data.homepage ?? '',
+				originalLanguage: data.original_language,
+				productionCompanies: [],
+				releaseDate: releaseDate !== '-' ? releaseDate : '',
+				voteAverage: String(voteAverage) ? voteAverage : '',
+				status: data.status ?? '',
+				tagline: data.tagline ?? '',
+				belongsToCollection: {
+					id: 0,
+					name: '',
+					backgroundUrl: '',
+					posterUrl: ''
+				},
+				runtime: data.runtime ?? '',
+
+				// Movie Specific fields
+				budget: data.budget ? `$${data.budget.toLocaleString()}` : '-',
+				revenue: data.revenue ? `$${data.revenue.toLocaleString()}` : '-'
+			};
 
 			// Name
-			if (has(data, 'title') === true) {
-				Movie.name = data.title;
-			} else {
+			if (Movie.name === '') {
 				Movie.name = data.original_title;
-			}
-
-			// Overview
-			if (has(data, 'overview') === true) {
-				Movie.overview = data.overview;
-			}
-
-			// Background url
-			if (has(data, 'backdrop_path') === true) {
-				Movie.backgroundUrl = generateAbsolutePath(data.backdrop_path);
-			}
-
-			// Poster url
-			if (has(data, 'poster_path') === true) {
-				Movie.posterUrl = generateAbsolutePath(data.poster_path);
-			}
-
-			// Genres
-			if (has(data, 'genres') === true) {
-				Movie.genres = data.genres;
-			}
-
-			// Homepage
-			if (has(data, 'homepage') === true) {
-				Movie.homepage = data.homepage;
 			}
 
 			// Original language
 			if (
-				has(data, 'original_language') === true &&
+				Movie.originalLanguage !== '' &&
 				has(data, 'spoken_languages') === true &&
 				data.spoken_languages.length !== 0
 			) {
 				// Finds the first language which matches the original_Language assigned to the movie
 				const language = data.spoken_languages.find(
+					/**
+					 * @param {Object} el
+					 */
 					(el) => el.iso_639_1 === data.original_language
 				);
 
@@ -75,20 +74,16 @@ const SearchForAMovieResolver = async (parent, args, context, info) => {
 			}
 
 			// Production companies
+			// When the production company is available and there isn't 0 companies
 			if (has(data, 'production_companies') === true) {
 				const productionCompanies = [];
 
 				data.production_companies.forEach((singleCompany) => {
 					const company = {
-						id: singleCompany.id ?? '',
-						logo: singleCompany.logo_path ?? '',
+						id: String(singleCompany.id) ? singleCompany.id : 0,
+						logo: generateAbsolutePath(singleCompany.logo_path) ?? '',
 						name: singleCompany.name ?? ''
 					};
-
-					// Check if the logo path is not empty
-					if (isEmpty(company.logo) === false) {
-						company.logo = generateAbsolutePath(company.logo);
-					}
 
 					// Push the new production company object to the productionCompanies array
 					productionCompanies.push(company);
@@ -97,75 +92,45 @@ const SearchForAMovieResolver = async (parent, args, context, info) => {
 				Movie.productionCompanies = productionCompanies;
 			}
 
-			// Release rate
-			if (has(data, 'release_date') === true) {
-				Movie.releaseDate = generateYear(data.release_date);
-			}
-
-			// Vote average
-			if (has(data, 'vote_average') === true) {
-				Movie.voteAverage = toPercentage(data.vote_average);
-			}
-
-			// Status
-			if (has(data, 'status') === true) {
-				Movie.status = data.status;
-			}
-
-			// Tagline
-			if (has(data, 'tagline') === true) {
-				Movie.tagline = data.tagline;
-			}
-
 			// Show Collections
+			// When the belongs_to_collection is available update the default values
 			if (has(data, 'belongs_to_collection') === true) {
-				const belongsToCollection = {
-					id: 0,
-					name: '',
-					backgroundUrl: '',
-					posterUrl: ''
-				};
-
+				// eslint-disable-next-line camelcase
 				const { belongs_to_collection } = data;
 
-				if (has(belongsToCollection, 'id') === true) {
-					belongsToCollection.id = belongs_to_collection.id;
-				}
+				/*
 
-				if (has(belongsToCollection, 'name') === true) {
-					belongsToCollection.name = belongs_to_collection.name;
-				}
+				Setting the collection values:
 
-				if (has(belongsToCollection, 'backdrop_path') === true) {
-					belongsToCollection.backgroundUrl = generateAbsolutePath(
-						belongs_to_collection.backdrop_path
-					);
-				}
+				- Numbers are converted to string to check to see if they are truthy or false value
 
-				if (has(belongsToCollection, 'poster_path') === true) {
-					belongsToCollection.posterUrl = generateAbsolutePath(belongs_to_collection.poster_path);
-				}
+				- When a number has been converted make sure to return it as a number
+
+				*/
+
+				// Sets the collection id
+				Movie.belongsToCollection.id = String(belongs_to_collection.id)
+					? belongs_to_collection.id
+					: '';
+
+				// Sets the collection name
+				Movie.belongsToCollection.name = belongs_to_collection.name ?? '';
+
+				// Sets the backgroundUrl (Used as the background for the collection card)
+				Movie.belongsToCollection.backgroundUrl =
+					generateAbsolutePath(belongs_to_collection.backdrop_path) ?? '';
+
+				// Sets the posterUrl (Not used in the collection card, but it could be eventually)
+				Movie.belongsToCollection.posterUrl =
+					generateAbsolutePath(belongs_to_collection.poster_path) ?? '';
 			}
 
 			// Runtime
-			if (has(data, 'runtime') === true) {
+			// When the runtime is available overwrite with a movie/show length e.g. 1hr 2min
+			if (Movie.runtime !== '') {
 				const hours = Math.floor(data.runtime / 60);
 				const minutes = data.runtime % 60;
 				Movie.runtime = `${hours}h ${minutes}m`;
-			}
-
-			/*
-				Movie Specific fields
-			*/
-
-			// Budget
-			if (has(data, 'budget') === true) {
-				Movie.budget = `$${data.budget.toLocaleString()}`;
-			}
-
-			// Revenue
-			if (has(data, 'revenue') === true) {
-				Movie.revenue = `$${data.revenue.toLocaleString()}`;
 			}
 
 			return Movie;

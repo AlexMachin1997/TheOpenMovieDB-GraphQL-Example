@@ -12,7 +12,6 @@ const BelowsToCollection = require('./models/BelongsToCollection');
 
 // Person Models
 const People = require('./models/People');
-const KnownFor = require('./models/People/KnownFor');
 const Person = require('./models/People/Person');
 const Credits = require('./models/People/Credits');
 
@@ -48,7 +47,6 @@ const stuff = makeExecutableSchema({
 		Movie,
 		Video,
 		Person,
-		KnownFor,
 		Movie,
 		Movies,
 		People,

@@ -11,7 +11,7 @@ const typeDef = gql`
 		overview: String # Biography
 		placeOfBirth: String
 		posterUrl: String # profile_path
-		credits: [PeopleCredits]
+		credits: PeopleCredits
 		social: Social
 		homepage: String
 	}

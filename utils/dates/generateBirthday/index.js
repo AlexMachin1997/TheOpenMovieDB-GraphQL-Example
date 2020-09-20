@@ -1,6 +1,10 @@
 const { isEmpty } = require('lodash');
 const moment = require('moment');
 
+/**
+ * @param {string} date
+ * @returns {string}
+ */
 const generateBirthdayDate = (date) => {
 	const birthdayDate = moment(date).format('DD/MM/YYYY');
 

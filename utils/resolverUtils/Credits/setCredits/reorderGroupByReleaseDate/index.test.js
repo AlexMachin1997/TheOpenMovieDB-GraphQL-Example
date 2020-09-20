@@ -3,30 +3,30 @@ const reorderGroupByReleaseDate = require('./index');
 describe('reorderGroupByReleaseDate', () => {
 	const data = [
 		{
-			release_date: '05/05/2020',
+			releaseDate: '05/05/2020',
 			name: 'Devs'
 		},
 		{
-			release_date: '-',
+			releaseDate: '-',
 			name: 'Westworld'
 		},
 		{
-			release_date: '05/05/2010',
+			releaseDate: '05/05/2010',
 			name: 'The Walking Dead'
 		}
 	];
 
 	const expectedResult = [
 		{
-			release_date: '-',
+			releaseDate: '-',
 			name: 'Westworld'
 		},
 		{
-			release_date: '05/05/2020',
+			releaseDate: '05/05/2020',
 			name: 'Devs'
 		},
 		{
-			release_date: '05/05/2010',
+			releaseDate: '05/05/2010',
 			name: 'The Walking Dead'
 		}
 	];

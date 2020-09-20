@@ -35,12 +35,13 @@ describe('setFeaturedVideo', () => {
 	];
 
 	describe('id', () => {
-		it('Should be a blank id', () => {
+		it('Should not exist', () => {
 			// Arrange and act
 			const response = setFeaturedVideo([]);
 
 			// Assertion
-			expect(response.id).toBe('');
+			expect(response.id).toBeFalsy();
+			// expect(true).toBe(true);
 		});
 
 		it('Should not be a blank id', () => {
@@ -54,13 +55,13 @@ describe('setFeaturedVideo', () => {
 	});
 
 	describe('name', () => {
-		it('Should be a blank name', () => {
+		it('Should not exist', () => {
 			// Arrange and act
 			const response = setFeaturedVideo([]);
 			const output = '';
 
 			// Assertion
-			expect(response.name).toBe(output);
+			expect(response.name).toBeFalsy();
 		});
 
 		it('Should not be a blank name', () => {
@@ -74,13 +75,13 @@ describe('setFeaturedVideo', () => {
 	});
 
 	describe('url', () => {
-		it('Should be a blank url', () => {
+		it('Should not exist', () => {
 			// Arrange and act
 			const response = setFeaturedVideo([]);
 			const output = '';
 
 			// Assertion
-			expect(response.url).toBe(output);
+			expect(response.url).toBeFalsy();
 		});
 
 		it('Should not be a blank url', () => {
@@ -94,9 +95,17 @@ describe('setFeaturedVideo', () => {
 	});
 
 	describe('type', () => {
-		it('Should be of type Trailer', () => {
+		it('Should not exist', () => {
 			// Arrange and act
 			const response = setFeaturedVideo([]);
+
+			// Assertion
+			expect(response.type).toBeFalsy();
+		});
+
+		it('Should not be a blank type', () => {
+			// Arrange and act
+			const response = setFeaturedVideo(billAndTedVideos);
 			const output = 'Trailer';
 
 			// Assertion
@@ -105,9 +114,17 @@ describe('setFeaturedVideo', () => {
 	});
 
 	describe('site', () => {
-		it('Should be of site YouTube', () => {
+		it('Should not exist', () => {
 			// Arrange and act
 			const response = setFeaturedVideo([]);
+
+			// Assertion
+			expect(response.site).toBeFalsy();
+		});
+
+		it('Should not be a blank site', () => {
+			// Arrange and act
+			const response = setFeaturedVideo(billAndTedVideos);
 			const output = 'YouTube';
 
 			// Assertion

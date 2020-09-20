@@ -1,23 +1,28 @@
 const reorderGroupByReleaseDate = require('../reorderGroupByReleaseDate');
 const orderGroupByYear = require('../reorderGroupByYear');
-const filterGroupByMediaType = require('../filterGroupByMediaType');
-const replaceKeys = require('../replaceKeys');
 const setValues = require('../setValues');
 
-const formatGroup = (singleGroup, mediaType) => {
+/**
+ * @typedef {Object} Credit
+ * @property {string} releaseDate
+ * @property {number | null} episodeCount
+ * @property {string} title
+ * @property {string} mediaType
+ */
+
+/**
+ *
+ * @param {Object[]} singleGroup
+ * @returns {Credit[]}
+ */
+const formatGroup = (singleGroup) => {
 	// Stores the initial credits
 	let group = singleGroup;
 
 	if (group.length === 0) return [];
 
-	// Replace any specified keys
-	group = replaceKeys(group);
-
 	// Replace any specified values
 	group = setValues(group);
-
-	// Conditional filtering (based on the mediaType which is ALL, MOVIE or TV. Default is ALL)
-	group = filterGroupByMediaType(mediaType, group);
 
 	// Sort the group by release_date
 	group = orderGroupByYear(group);

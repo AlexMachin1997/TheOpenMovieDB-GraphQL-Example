@@ -1,11 +1,10 @@
 const axios = require('axios');
-const { find, has } = require('lodash');
+const { find } = require('lodash');
 
 const generateAbsolutePath = require('../../utils/images/generateAbsolutePath');
 const generateSearchEndpoint = require('../../utils/generateEndpoints/Search');
 const generateSingleItemLookupEndpoint = require('../../utils/generateEndpoints/SingleItemLookup');
 const generateBirthdayDate = require('../../utils/dates/generateBirthday');
-const setValue = require('../../utils/objects/setValue');
 
 // eslint-disable-next-line no-unused-vars
 const SearchForAPersonResolver = async (parent, args, context, info) => {

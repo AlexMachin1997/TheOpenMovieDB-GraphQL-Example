@@ -1,6 +1,10 @@
 const { isEmpty } = require('lodash');
 const moment = require('moment');
 
+/**
+ * @param {string} date
+ * @returns {string}
+ */
 const generateYear = (date) => {
 	let newYear = moment(date).format('YYYY');
 

@@ -42,7 +42,7 @@ const { TopRatedMoviesResolver, TopRatedShowsResolver } = require('./TopRated');
 const { MovieVideoResolver, ShowVideoResolver } = require('./Videos');
 
 // Credits resolver
-const { CreditsResolver, FilteredCreditsResolver } = require('./Credits');
+const { CreditsResolver } = require('./Credits');
 
 const resolvers = {
 	// Additional data for the single movie object
@@ -99,10 +99,7 @@ const resolvers = {
 
 		// Top rated resolvers
 		TopRatedMovies: TopRatedMoviesResolver,
-		TopRatedShows: TopRatedShowsResolver,
-
-		// Credits resolver (Single endpoint to provide filtering capabilities)
-		FilterCredits: FilteredCreditsResolver
+		TopRatedShows: TopRatedShowsResolver
 	}
 };
 

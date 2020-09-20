@@ -6,9 +6,6 @@ describe('setShows', () => {
 			original_name: 'Lucifer',
 			genre_ids: [80, 10765],
 			name: 'Lucifer',
-			popularity: 1294.034,
-			origin_country: ['US'],
-			vote_count: 5050,
 			first_air_date: '2016-01-25',
 			backdrop_path: '/ta5oblpMlEcIPIS2YGcq9XEkWK2.jpg',
 			original_language: 'en',
@@ -16,7 +13,11 @@ describe('setShows', () => {
 			vote_average: 8.5,
 			overview:
 				"Bored and unhappy as the Lord of Hell, Lucifer Morningstar abandoned his throne and retired to Los Angeles, where he has teamed up with LAPD detective Chloe Decker to take down criminals. But the longer he's away from the underworld, the greater the threat that the worst of humanity could escape.",
-			poster_path: '/4EYPN5mVIhKLfxGruy7Dy41dTVn.jpg'
+			poster_path: '/4EYPN5mVIhKLfxGruy7Dy41dTVn.jpg',
+			vote_count: 40,
+			popularity: 20000,
+			video: true,
+			adult: true
 		}
 	]);
 
@@ -63,12 +64,9 @@ describe('setShows', () => {
 			// Arrange and act
 			const response = setShows([
 				{
+					// name: 'Lucifer', - The name is commented out so the name attribute uses the original_name instead
 					original_name: 'Lucifer',
 					genre_ids: [80, 10765],
-					// name: 'Lucifer',
-					popularity: 1294.034,
-					origin_country: ['US'],
-					vote_count: 5050,
 					first_air_date: '2016-01-25',
 					backdrop_path: '/ta5oblpMlEcIPIS2YGcq9XEkWK2.jpg',
 					original_language: 'en',

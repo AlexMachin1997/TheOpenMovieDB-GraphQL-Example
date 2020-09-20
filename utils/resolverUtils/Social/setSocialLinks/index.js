@@ -1,21 +1,21 @@
 /**
  * @typedef {Object} IncomingSocialLinks
- * @property {string} facebook_id
- * @property {string} twitter_id
- * @property {string} [homepage]
- * @property {string} [instagram_id]
+ * @property {string} [facebook_id] Stores the facebook id
+ * @property {string} [twitter_id] Stores the twitter id
+ * @property {string} [homepage] Stores the homepage
+ * @property {string} [instagram_id] Stores the instagram id
  */
 
 /**
  * @typedef {Object} SocialLinks
- * @property {string} facebook
- * @property {string} twitter
- * @property {string} homepage
- * @property {string} instagram
+ * @property {string} facebook Stores the absolute facebook path for a person, show or movie
+ * @property {string} twitter Stores the absolute twitter path for a person, show or movie
+ * @property {string} homepage Stores the homepage for a person, show or movie
+ * @property {string} instagram Stores the absolute instagram path for a person, show or movie
  */
 
 /**
- *
+ * @description Creates an object which stores references to a person's, show's or movie's social profiles (The object properties must match the Social model)
  * @param {IncomingSocialLinks} data
  * @param {string} resolverType
  * @returns {SocialLinks}
@@ -23,6 +23,7 @@
 const setSocialLinks = (data, resolverType = 'entertainment') => {
 	/**
 	 * @type {SocialLinks}
+	 * @description Stores the social media references. They are are absolute paths which the front-end will use to link to the persons social profiles.
 	 */
 	const SocialLinks = {
 		facebook: data.facebook_id ?? '',

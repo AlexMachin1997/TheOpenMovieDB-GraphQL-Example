@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { find, has, isEmpty } = require('lodash');
+const { find, has } = require('lodash');
 
 const generateSingleItemLookupEndpoint = require('../../utils/generateEndpoints/SingleItemLookup');
 const generateAbsolutePath = require('../../utils/images/generateAbsolutePath');
@@ -20,28 +20,21 @@ const SearchForAShowResolver = async (parent, args, context, info) => {
 
 			const { data } = SingleItemLookupResponse;
 
-			/*
+			const releaseDate = generateYear(data.first_air_date);
+			const voteAverage = toPercentage(data.vote_average);
 
-			Default SHow Object:
-
-			- Passes in any default values or values which are just being assigned to the object
-
-			- If any of the properties need overwriting they can be done so below e.g. releaseDate
-
-			- If any of the properties aren't available then use the defaults e.g. '', 0, []
-
-			*/
 			const Show = {
-				id: String(data.id) ?? '',
+				id: String(data.id) ? data.id : 0,
 				name: data.name ?? '',
 				overview: data.overview ?? '',
-				backgroundUrl: data.backdrop_path ?? '',
-				posterUrl: data.poster_path ?? '',
+				backgroundUrl: generateAbsolutePath(data.backdrop_path) ?? '',
+				posterUrl: generateAbsolutePath(data.poster_path) ?? '',
 				genres: data.genres.length !== 0 ? data.genres : [],
+				homepage: data.homepage ?? '',
 				originalLanguage: data.original_language,
 				productionCompanies: [],
-				releaseDate: data.first_air_date ?? '',
-				voteAverage: String(data.vote_average) ?? '',
+				releaseDate: releaseDate !== '-' ? releaseDate : '',
+				voteAverage: String(voteAverage) ? voteAverage : '',
 				status: data.status ?? '',
 				tagline: data.tagline ?? '',
 				belongsToCollection: {
@@ -50,7 +43,7 @@ const SearchForAShowResolver = async (parent, args, context, info) => {
 					backgroundUrl: '',
 					posterUrl: ''
 				},
-				runtime: '',
+				runtime: data.episode_run_time ?? '',
 
 				// Show Specific fields
 				type: data.type ?? '',
@@ -67,20 +60,8 @@ const SearchForAShowResolver = async (parent, args, context, info) => {
 
 			// Name
 			// When the name isn't available try to use the
-			if (has(data, 'name') === false) {
+			if (Show.name === '') {
 				Show.name = data.original_name;
-			}
-
-			// Background url
-			// Overwrite the existing backgroundUrl with an absolute image path
-			if (has(data, 'backdrop_path') === true) {
-				Show.backgroundUrl = generateAbsolutePath(data.backdrop_path);
-			}
-
-			// Poster url
-			// Overwrite the existing posterUrl with an absolute image path
-			if (has(data, 'poster_path') === true) {
-				Show.posterUrl = generateAbsolutePath(data.poster_path);
 			}
 
 			// Original language
@@ -97,20 +78,16 @@ const SearchForAShowResolver = async (parent, args, context, info) => {
 			}
 
 			// Production companies
-			if (has(data, 'production_companies') === true) {
+			// When the production company is available and there isn't 0 companies
+			if (has(data, 'production_companies') === true && data.production_companies.length !== 0) {
 				const productionCompanies = [];
 
 				data.production_companies.forEach((singleCompany) => {
 					const company = {
-						id: String(singleCompany.id) ?? 0,
-						logo: singleCompany.logo_path ?? '',
+						id: String(singleCompany.id) ? singleCompany.id : 0,
+						logo: generateAbsolutePath(singleCompany.logo_path) ?? '',
 						name: singleCompany.name ?? ''
 					};
-
-					// Check if the logo path is not empty
-					if (isEmpty(company.logo) === false) {
-						company.logo = generateAbsolutePath(company.logo);
-					}
 
 					// Push the new production company object to the productionCompanies array
 					productionCompanies.push(company);
@@ -119,31 +96,42 @@ const SearchForAShowResolver = async (parent, args, context, info) => {
 				Show.productionCompanies = productionCompanies;
 			}
 
-			// Release rate
-			if (has(data, 'first_air_date') === true) {
-				Show.releaseDate = generateYear(data.first_air_date);
-			}
-
-			// Vote average
-			if (has(data, 'vote_average') === true) {
-				Show.voteAverage = toPercentage(data.vote_average);
-			}
-
 			// Show Collections
+			// When the belongs_to_collection is available update the default values
 			if (has(data, 'belongs_to_collection') === true) {
+				// eslint-disable-next-line camelcase
 				const { belongs_to_collection } = data;
 
-				Show.belongsToCollection.id = String(belongs_to_collection.id) ?? '';
+				/*
+
+				Setting the collection values:
+
+				- Numbers are converted to string to check to see if they are truthy or false value
+
+				- When a number has been converted make sure to return it as a number
+
+				*/
+
+				// Sets the collection id
+				Show.belongsToCollection.id = String(belongs_to_collection.id)
+					? belongs_to_collection.id
+					: '';
+
+				// Sets the collection name
 				Show.belongsToCollection.name = belongs_to_collection.name ?? '';
+
+				// Sets the backgroundUrl (Used as the background for the collection card)
 				Show.belongsToCollection.backgroundUrl =
 					generateAbsolutePath(belongs_to_collection.backdrop_path) ?? '';
+
+				// Sets the posterUrl (Not used in the collection card, but it could be eventually)
 				Show.belongsToCollection.posterUrl =
 					generateAbsolutePath(belongs_to_collection.poster_path) ?? '';
 			}
 
 			// Runtime
-			// When the episode_run_time is avaliable overwrite with a movie/show length e.g. 1hr 2min
-			if (has(data, 'episode_run_time') === true) {
+			// When the runtime is available overwrite with a movie/show length e.g. 1hr 2min
+			if (Show.runtime !== '') {
 				// Select the longest runtime
 				const runtime = Math.max(...data.episode_run_time);
 
@@ -159,12 +147,15 @@ const SearchForAShowResolver = async (parent, args, context, info) => {
 			*/
 
 			if (has(data, 'last_episode_to_air') === true && has(data, 'seasons') === true) {
+				// eslint-disable-next-line camelcase
 				const { last_episode_to_air, seasons } = data;
 
 				Show.CurrentSeason.backgroundUrl =
 					generateAbsolutePath(last_episode_to_air.still_path) ?? '';
 
-				Show.CurrentSeason.seasonNumber = String(last_episode_to_air.season_number) ?? '';
+				Show.CurrentSeason.seasonNumber = String(last_episode_to_air.season_number)
+					? last_episode_to_air.season_number
+					: 0;
 
 				Show.CurrentSeason.year = generateYear(last_episode_to_air.air_date) ?? '';
 

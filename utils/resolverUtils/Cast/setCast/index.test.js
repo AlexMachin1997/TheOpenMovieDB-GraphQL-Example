@@ -24,7 +24,7 @@ describe('setCast', () => {
 	describe('character property', () => {
 		it('When the character is empty it should be 0', async () => {
 			// Arrange and act
-			const response = await setCast([{ character: null, order: 8 }]);
+			const response = await setCast([{ character: undefined, order: 8 }]);
 
 			// Assertion
 			expect(response[0].character).toBe('');
@@ -89,7 +89,7 @@ describe('setCast', () => {
 	describe('episodeCount property', () => {
 		it('When the episodeCount is empty it should be 0', async () => {
 			// Arrange and act
-			const response = await setCast([{ episodeCount: null, order: 8 }]);
+			const response = await setCast([{ episode_count: undefined, order: 8 }]);
 
 			// Assertion
 			expect(response[0].episodeCount).toBe(0);
@@ -97,10 +97,10 @@ describe('setCast', () => {
 
 		it('When the episodeCount is not empty it should return 2', async () => {
 			// Arrange and act
-			const response = await setCast([{ episodeCount: 2, order: 8 }]);
+			const response = await setCast([{ episode_count: 0, order: 8 }]);
 
 			// Assertion
-			expect(response[0].episodeCount).toBe(2);
+			expect(response[0].episodeCount).toBe(0);
 		});
 	});
 });
