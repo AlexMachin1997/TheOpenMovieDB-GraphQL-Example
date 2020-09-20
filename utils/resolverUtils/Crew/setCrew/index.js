@@ -18,15 +18,15 @@
 
 /**
  * @description This utility is currently only used for the credits resolver, it created a featured crew for a tv series or movie.
- * @param {IncomingCrew[]} crew
+ * @param {IncomingCrew[]} data
  * @return {Crew[]} Returns an array of cast members which are used to display the featured cast
  */
-const setCrew = (crew) => {
+const setCrew = (data) => {
 	/**
 	 * @type {IncomingCrew[]}
 	 * @description Stores the filtered crew members
 	 */
-	let Crew = crew.filter(
+	let crew = data.filter(
 		(member) =>
 			member.job === 'Director' ||
 			member.job === 'Screenplay' ||
@@ -35,31 +35,31 @@ const setCrew = (crew) => {
 	);
 
 	// Check to see if there are any crew members
-	if (Crew.length === 0) return [];
+	if (crew.length === 0) return [];
 
 	// Show only the first 6 crew members
-	Crew = Crew.slice(0, 6);
+	crew = crew.slice(0, 6);
 
 	/**
 	 * @type {Crew[]}
 	 * @description Will store the new crew members once they have been created
 	 */
-	const NewCrewMembers = [];
+	const newCrewMembers = [];
 
-	Crew.forEach((member) => {
+	data.forEach((member) => {
 		// Check to see if the crew member already exists in the array
-		if (NewCrewMembers.find((element) => element.name === member.name) === undefined) {
+		if (newCrewMembers.find((element) => element.name === member.name) === undefined) {
 			/**
 			 * @type {IncomingCrew[]}
 			 * @description Stores all occurrences of the current crew member
 			 */
-			const CurrentCrewMembersRoles = Crew.filter((i) => i.id === member.id);
+			const CurrentCrewMembersRoles = data.filter((i) => i.id === member.id);
 
 			/**
 			 * @type {Crew}
 			 * @description Stores the new crew members details e.g. name, roles (Joined array)
 			 */
-			const newCrewMember = {
+			const Member = {
 				name: member.name ?? '',
 				roles: ''
 			};
@@ -78,15 +78,15 @@ const setCrew = (crew) => {
 				);
 
 				// Join the array items to form a string e.g. "Story, Producer, Editor"
-				newCrewMember.roles = roles.join(', ');
+				Member.roles = roles.join(', ');
 			}
 
 			// Push the new crew member to the NewCrewMembers array
-			NewCrewMembers.push(newCrewMember);
+			newCrewMembers.push(Member);
 		}
 	});
 
-	return NewCrewMembers;
+	return newCrewMembers;
 };
 
 module.exports = setCrew;

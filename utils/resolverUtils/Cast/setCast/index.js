@@ -42,7 +42,7 @@ const setCast = async (castMembers) => {
 		 * @description Store the cast members details
 		 * @type {CastMember}
 		 */
-		const castMember = {
+		const CastMember = {
 			id: cast.id ? cast.id : 0,
 			character: cast.character ?? '',
 			profileImageUrl: cast.profile_path ?? '',
@@ -51,19 +51,19 @@ const setCast = async (castMembers) => {
 		};
 
 		// Profile image url
-		if (castMember.profileImageUrl !== '') {
-			castMember.profileImageUrl = generateAbsolutePath(cast.profile_path);
+		if (CastMember.profileImageUrl !== '') {
+			CastMember.profileImageUrl = generateAbsolutePath(cast.profile_path);
 		}
 
 		// Gender
-		if (castMember.gender !== '') {
-			castMember.gender = castMember.gender === 0 ? 'Male' : 'Female';
+		if (CastMember.gender !== '') {
+			CastMember.gender = CastMember.gender === 0 ? 'Male' : 'Female';
 		}
 
 		// Perform API Request to get the episode count - https://trello.com/c/RyPuIPSc/42-extra-tv-show-functionality-episode-count
 
 		// Push the new castMember to the updatedFeaturedCast array
-		updatedFeaturedCast.push(castMember);
+		updatedFeaturedCast.push(CastMember);
 	});
 
 	return updatedFeaturedCast;

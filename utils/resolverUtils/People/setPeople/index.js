@@ -84,6 +84,7 @@ const setPeople = (people) => {
 				roles.push(name);
 			}
 
+			// Create a string from the array of roles
 			Person.roles = roles.join(', ');
 		});
 

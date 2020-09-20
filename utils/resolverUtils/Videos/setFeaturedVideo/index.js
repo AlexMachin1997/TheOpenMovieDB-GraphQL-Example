@@ -1,6 +1,6 @@
 /**
  * @typedef {Object} InputVideos
- * @property {string} id Stores the id for the video
+ * @property {number} id Stores the id for the video
  * @property {string} iso_639_1 Stores something, not exactly sure though..
  * @property {string} iso_3166_1 Stores something, not exactly sure though..
  * @property {string} key Stores a video key, this can be used to create the embedded youtube video url
