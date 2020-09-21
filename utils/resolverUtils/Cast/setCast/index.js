@@ -1,3 +1,4 @@
+const axios = require('axios');
 const generateAbsolutePath = require('../../../images/generateAbsolutePath');
 
 /**
@@ -47,7 +48,8 @@ const setCast = async (castMembers) => {
 			character: cast.character ?? '',
 			profileImageUrl: cast.profile_path ?? '',
 			gender: cast.gender ?? '',
-			episodeCount: 0
+			episodeCount: 0,
+			creditId: cast.credit_id ? cast.credit_id : 0
 		};
 
 		// Profile image url
@@ -57,16 +59,30 @@ const setCast = async (castMembers) => {
 
 		// Gender
 		if (CastMember.gender !== '') {
-			CastMember.gender = CastMember.gender === 0 ? 'Male' : 'Female';
+			CastMember.gender = CastMember.gender === 2 ? 'Male' : 'Female';
 		}
-
-		// Perform API Request to get the episode count - https://trello.com/c/RyPuIPSc/42-extra-tv-show-functionality-episode-count
 
 		// Push the new castMember to the updatedFeaturedCast array
 		updatedFeaturedCast.push(CastMember);
 	});
 
-	return updatedFeaturedCast;
+	const res = updatedFeaturedCast.map(async (data, index) => {
+		if (data.creditId === 0) return data;
+
+		const response = await axios.get(
+			`https://api.themoviedb.org/3/credit/${data.creditId}?api_key=1b5adf76a72a13bad99b8fc0c68cb085`
+		);
+
+		response.data.media.seasons.forEach((season) => {
+			if (season.name !== 'Specials') {
+				data.episodeCount += season.episode_count;
+			}
+		});
+
+		return data;
+	});
+
+	return Promise.all(res);
 };
 
 module.exports = setCast;
