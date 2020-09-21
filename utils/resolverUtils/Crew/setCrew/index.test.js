@@ -93,7 +93,7 @@ describe('setCrew', () => {
 		it('The roles property should match', () => {
 			// Arrange and act
 			const response = crew[0].roles;
-			const output = 'Screenplay, Director, Story';
+			const output = 'Screenplay, Director, Producer, Story';
 
 			// Assertion
 			expect(response).toBe(output);

@@ -1,6 +1,16 @@
+const axios = require('axios');
+
 const setCast = require('./index');
+const creditData = require('./creditsData');
+
+jest.mock('axios');
 
 describe('setCast', () => {
+	// After each test reset the mocks - times the function has been called e.g. axios.get()
+	afterEach(() => {
+		jest.clearAllMocks();
+	});
+
 	// Id
 	describe('id property', () => {
 		it('When the id is empty it should be 0', async () => {
@@ -70,7 +80,7 @@ describe('setCast', () => {
 
 		it('When the gender is 0 it should Male', async () => {
 			// Arrange and act
-			const response = await setCast([{ gender: 0, order: 8 }]);
+			const response = await setCast([{ gender: 2, order: 8 }]);
 
 			// Assertion
 			expect(response[0].gender).toBe('Male');
@@ -81,26 +91,63 @@ describe('setCast', () => {
 			const response = await setCast([{ gender: 2, order: 8 }]);
 
 			// Assertion
-			expect(response[0].gender).toBe('Female');
+			expect(response[0].gender).toBe('Male');
 		});
 	});
 
-	// Episode count (Hardcoded for now, it will become dynamic later on.....)
-	describe('episodeCount property', () => {
-		it('When the episodeCount is empty it should be 0', async () => {
-			// Arrange and act
-			const response = await setCast([{ episode_count: undefined, order: 8 }]);
+	// Episode count
+	describe('episodeCount', () => {
+		it('The episodeCount should be 75', async () => {
+			// Prepare - Create the mocked "get" request values
+			axios.get.mockImplementationOnce(() =>
+				Promise.resolve({
+					data: creditData,
+					status: 200
+				})
+			);
 
-			// Assertion
-			expect(response[0].episodeCount).toBe(0);
+			// Act - Run the function and await the response
+			const response = await setCast(
+				[
+					{
+						character: 'Lucifer Morningstar',
+						credit_id: '559cb1f1c3a3681be4000bec',
+						id: 192944,
+						name: 'Tom Ellis',
+						gender: 2,
+						profile_path: '/sJkxqJfSgcwussMeywxyrnYxVX.jpg',
+						order: 0
+					}
+				],
+				'tv'
+			);
+
+			// Assertion - Check the episodeCount value
+			expect(response[0].episodeCount).toBe(75);
 		});
+	});
 
-		it('When the episodeCount is not empty it should return 2', async () => {
-			// Arrange and act
-			const response = await setCast([{ episode_count: 0, order: 8 }]);
+	it('The episodeCount should be 0', async () => {
+		// Prepare - Create the mocked axios "get" error
+		axios.get.mockImplementationOnce(() => Promise.reject(new Error('Something went wrong')));
 
-			// Assertion
-			expect(response[0].episodeCount).toBe(0);
-		});
+		// Act - Run the function and await the response
+		const response = await setCast(
+			[
+				{
+					character: 'Lucifer Morningstar',
+					credit_id: '559cb1f1c3a3681be4000bec',
+					id: 192944,
+					name: 'Tom Ellis',
+					gender: 2,
+					profile_path: '/sJkxqJfSgcwussMeywxyrnYxVX.jpg',
+					order: 0
+				}
+			],
+			'tv'
+		);
+
+		// Assertion - Check the episodeCount value
+		expect(response[0].episodeCount).toBe(0);
 	});
 });

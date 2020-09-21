@@ -1,14 +1,18 @@
 const axios = require('axios');
+
 const generateAbsolutePath = require('../../../images/generateAbsolutePath');
+const generateCreditURLEndpoint = require('../../../generateEndpoints/Credit');
 
 /**
  * @typedef {Object} IncomingCastMembers
  * @property {number} [order] The original cast members order
  * @property {number} [id] The original cast members id
+ * @property {string} [name] Stores the name of the cast member
  * @property {string} [character] The original cast members character
  * @property {string} [profile_path] The original cast members profile path (profile image)
  * @property {number} [gender] The original cast members gender (Stored in a number format for some reason)
  * @property {number} [episode_count] The original cast members episode count (Only needed for tv episodes)
+ * @property {string} [credit_id] Stores the credit id for the cast member
  */
 
 /**
@@ -18,6 +22,7 @@ const generateAbsolutePath = require('../../../images/generateAbsolutePath');
  * @property {string} profileImageUrl Stores an absolute path to the cast members profile image
  * @property {string | number} gender Stores a string format representation of the cast members gender e.g. 0 -> Male
  * @property {number} episodeCount Stores the total number of appearances in a particular show (Only applicable for shows)
+ * @property {string} creditId Stores the cast members credit. This is used to perform the tv credits episodeCount functionality
  */
 
 /**
@@ -25,11 +30,21 @@ const generateAbsolutePath = require('../../../images/generateAbsolutePath');
  * @param {IncomingCastMembers[]} castMembers
  * @async
  * @returns {Promise<CastMember[]>} Returns an array of featured cast members
+ * @throws {string}
  */
 
-const setCast = async (castMembers) => {
-	let featuredCast = castMembers.sort((a, b) => (a.order > b.order ? 1 : -1));
+const setCast = async (castMembers, resolverType = 'movie') => {
+	// Check the length of the array
+	if (castMembers.length === 0) return [];
 
+	// Order the cast by the order property
+	let featuredCast = castMembers;
+
+	if (castMembers.length > 0) {
+		featuredCast = castMembers.sort((a, b) => (a.order > b.order ? 1 : -1));
+	}
+
+	// Get the first 9 cast members
 	featuredCast = featuredCast.slice(0, 9);
 
 	/**
@@ -38,6 +53,7 @@ const setCast = async (castMembers) => {
 	 */
 	const updatedFeaturedCast = [];
 
+	// Create the new cast objects
 	featuredCast.forEach((cast) => {
 		/**
 		 * @description Store the cast members details
@@ -49,7 +65,7 @@ const setCast = async (castMembers) => {
 			profileImageUrl: cast.profile_path ?? '',
 			gender: cast.gender ?? '',
 			episodeCount: 0,
-			creditId: cast.credit_id ? cast.credit_id : 0
+			creditId: cast.credit_id ? cast.credit_id : ''
 		};
 
 		// Profile image url
@@ -66,23 +82,30 @@ const setCast = async (castMembers) => {
 		updatedFeaturedCast.push(CastMember);
 	});
 
-	const res = updatedFeaturedCast.map(async (data, index) => {
-		if (data.creditId === 0) return data;
+	// When the resolverType is tv
+	if (resolverType === 'tv') {
+		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of
+		for await (const item of updatedFeaturedCast) {
+			if (item.creditId === '') return;
 
-		const response = await axios.get(
-			`https://api.themoviedb.org/3/credit/${data.creditId}?api_key=1b5adf76a72a13bad99b8fc0c68cb085`
-		);
+			try {
+				const response = await axios.get(generateCreditURLEndpoint(item.creditId));
 
-		response.data.media.seasons.forEach((season) => {
-			if (season.name !== 'Specials') {
-				data.episodeCount += season.episode_count;
+				if (response.status !== 200) throw Error('Something went wrong');
+
+				response.data.media.seasons.forEach((season) => {
+					// Don't include special episodes, only include the core seasons
+					if (season.name !== 'Specials') {
+						item.episodeCount += season.episode_count;
+					}
+				});
+			} catch (err) {
+				console.log(err.message);
 			}
-		});
+		}
+	}
 
-		return data;
-	});
-
-	return Promise.all(res);
+	return updatedFeaturedCast;
 };
 
 module.exports = setCast;

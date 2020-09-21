@@ -11,7 +11,7 @@ const TVCastResolver = async (parent, args, context, info) => {
 		const { data } = response;
 		const { cast } = data;
 
-		const Cast = await setCast(cast);
+		const Cast = await setCast(cast, 'tv');
 
 		return Cast;
 	} catch (err) {
