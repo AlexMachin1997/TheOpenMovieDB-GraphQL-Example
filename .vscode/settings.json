@@ -42,6 +42,8 @@
 
 	"eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
 
+	"javascript.implicitProjectConfig.checkJs": true,
+
 	"breadcrumbs.enabled": true,
 	"grunt.autoDetect": "off",
 	"npm.runSilent": true,

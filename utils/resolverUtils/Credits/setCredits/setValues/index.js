@@ -11,6 +11,8 @@ const generateYear = require('../../../../dates/generateYear');
  * @property {number} episode_count
  * @property {string} [release_date]
  * @property {string} media_type
+ * @property {string} character
+ * @property {string} job
  */
 
 /**
@@ -19,6 +21,7 @@ const generateYear = require('../../../../dates/generateYear');
  * @property {string} title
  * @property {number} episodeCount
  * @property {string} mediaType
+ * @property {string} role
  */
 
 /**
@@ -43,7 +46,8 @@ const setValues = (group) => {
 			releaseDate: '',
 			title: '',
 			episodeCount: 0,
-			mediaType: data.media_type
+			mediaType: data.media_type,
+			role: data.character ?? data.job
 		};
 
 		// The movie and tv series use different object properties, so to get the correct values the media_type checks

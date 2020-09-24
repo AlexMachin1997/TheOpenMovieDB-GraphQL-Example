@@ -6,6 +6,7 @@ const typeDef = gql`
 		title: String
 		episodeCount: String
 		mediaType: String
+		role: String
 	}
 `;
 
