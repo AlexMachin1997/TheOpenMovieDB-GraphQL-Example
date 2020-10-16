@@ -46,7 +46,7 @@ const setCrew = (data) => {
 	 */
 	const newCrewMembers = [];
 
-	data.forEach((member) => {
+	crew.forEach((member) => {
 		// Check to see if the crew member already exists in the array
 		if (newCrewMembers.find((element) => element.name === member.name) === undefined) {
 			/**

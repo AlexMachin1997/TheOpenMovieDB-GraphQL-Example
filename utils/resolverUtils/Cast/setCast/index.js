@@ -26,13 +26,18 @@ const generateCreditURLEndpoint = require('../../../generateEndpoints/Credit');
  */
 
 /**
+ * @typedef {Object} Season
+ * @property {number} episode_count
+ * @property {string} name
+ */
+
+/**
  * @description This function is currently used in the cast resolver, it creates a featured cast for a particular movie or tv series.
  * @param {IncomingCastMembers[]} castMembers
  * @async
  * @returns {Promise<CastMember[]>} Returns an array of featured cast members
  * @throws {string}
  */
-
 const setCast = async (castMembers, resolverType = 'movie') => {
 	// Check the length of the array
 	if (castMembers.length === 0) return [];
@@ -85,22 +90,30 @@ const setCast = async (castMembers, resolverType = 'movie') => {
 	// When the resolverType is tv
 	if (resolverType === 'tv') {
 		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of
-		for await (const item of updatedFeaturedCast) {
-			if (item.creditId === '') return;
+		for await (const cast of updatedFeaturedCast) {
+			if (cast.creditId === '') return;
 
 			try {
-				const response = await axios.get(generateCreditURLEndpoint(item.creditId));
+				// Get the cast members credit information via the creditId
+				const response = await axios.get(generateCreditURLEndpoint(cast.creditId));
 
+				// Check to see if the status is not 200, if it's not throw an error
 				if (response.status !== 200) throw Error('Something went wrong');
 
-				response.data.media.seasons.forEach((season) => {
-					// Don't include special episodes, only include the core seasons
-					if (season.name !== 'Specials') {
-						item.episodeCount += season.episode_count;
+				// Calculate the episodeCount for each cast member
+				response.data.media.seasons.forEach(
+					/**
+					 * @param {Season} season
+					 */
+					(season) => {
+						// Don't include special episodes, only include the core seasons
+						if (season.name !== 'Specials') {
+							cast.episodeCount += season.episode_count;
+						}
 					}
-				});
+				);
 			} catch (err) {
-				console.log(err.message);
+				return updatedFeaturedCast;
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 const reorderGroupByReleaseDate = require('../reorderGroupByReleaseDate');
 const orderGroupByYear = require('../reorderGroupByYear');
 const setValues = require('../setValues');
+const organizeGroup = require('../organizeGroup');
 
 /**
  * @typedef {Object} Credit
@@ -11,9 +12,14 @@ const setValues = require('../setValues');
  */
 
 /**
- *
+ * @typedef {Object} FormattedGroup
+ * @property {string} year
+ * @property {Credit[]} credits
+ */
+
+/**
  * @param {Object[]} singleGroup
- * @returns {Credit[]}
+ * @returns {FormattedGroup[]}
  */
 const formatGroup = (singleGroup) => {
 	// Stores the initial credits
@@ -29,6 +35,8 @@ const formatGroup = (singleGroup) => {
 
 	// Taking all the release_dates which have - and making them the first elements
 	group = reorderGroupByReleaseDate(group);
+
+	group = organizeGroup(group);
 
 	return group;
 };

@@ -4,7 +4,7 @@
 	"description": "A GraphQL service to handle incoming requests from the apollo-client, it's purpose is to find movies, shows, actors and provide various filtering capabilites",
 	"main": "index.js",
 	"scripts": {
-		"test": "jest --silent",
+		"test": "jest",
 		"start": "node index.js",
 		"server": "nodemon index.js",
 		"lint": "eslint --fix . --ext .js",

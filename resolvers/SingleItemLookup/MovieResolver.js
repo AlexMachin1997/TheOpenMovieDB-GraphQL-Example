@@ -25,7 +25,7 @@ const SearchForAMovieResolver = async (parent, args, context, info) => {
 			const voteAverage = toPercentage(data.vote_average);
 
 			const Movie = {
-				id: String(data.id) ? data.id : 0,
+				id: data.id ? data.id : 0,
 				name: data.title ?? '',
 				overview: data.overview ?? '',
 				backgroundUrl: generateAbsolutePath(data.backdrop_path) ?? '',
@@ -93,8 +93,8 @@ const SearchForAMovieResolver = async (parent, args, context, info) => {
 			}
 
 			// Show Collections
-			// When the belongs_to_collection is available update the default values
-			if (has(data, 'belongs_to_collection') === true) {
+			// When the belongs_to_collection is available and the collection is not null update the default values
+			if (has(data, 'belongs_to_collection') === true && data.belongs_to_collection !== null) {
 				// eslint-disable-next-line camelcase
 				const { belongs_to_collection } = data;
 
@@ -136,7 +136,7 @@ const SearchForAMovieResolver = async (parent, args, context, info) => {
 			return Movie;
 		} catch (err) {
 			console.log(`The /Movie endpoint failed`);
-			console.log(err.message);
+			console.log(err);
 
 			return err.response;
 		}
