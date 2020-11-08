@@ -1,13 +1,25 @@
 const { isEmpty } = require('lodash');
 
+/**
+ * @typedef {Object} Arguments
+ * @property {string} sortBy
+ * @property {string} genres
+ * @property {string} certifications
+ * @property {string} userscore
+ * @property {string} runtime
+ */
+
+/**
+ * @description This utility creates the discover endpoint url
+ * @param {string} discoverURL
+ * @param {Arguments} args
+ * @returns {string}
+ */
 const generateQueryParameter = (discoverURL, args) => {
 	// Query parameters supported within TheOpenMovieDB Discover endpoint
-	const { sortBy } = args;
-	const { genres } = args;
-	const { certifications } = args;
-	const { userscore } = args;
-	const { runtime } = args;
+	const { sortBy, genres, certifications, userscore, runtime } = args;
 
+	// Base Url
 	let url = discoverURL;
 
 	// Sort by query

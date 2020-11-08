@@ -5,7 +5,6 @@ const typeDef = gql`
 		id: Int
 		logo: String
 		name: String
-		origin_country: String
 	}
 `;
 

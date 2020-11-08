@@ -2,13 +2,13 @@
 name: Application Linting
 
 # When the to run the greeting
-on: [pull_request]
+on: [pull_request, push]
 
 # Jobs to run for the action (You can have multiple actions in one file)
 jobs:
   run-linters:
     # Job display name
-    name: Linting Action
+    name: Running the eslint checks
 
     # Runs on a Linux based OS
     runs-on: ubuntu-latest
@@ -49,7 +49,7 @@ jobs:
 
       # Installs all the project dependencies e.g. prettier, eslint etc via a custom project script
       - name: Install Node.js dependencies
-        run: npm run all-dependencies
+        run: npm run allDependencies
 
       # Run the linting action
       - name: Run linters

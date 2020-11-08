@@ -7,14 +7,14 @@ const { MovieCastResolver, ShowCastResolver } = require('./Cast');
 // Crew resolvers
 const { MovieCrewResolver, ShowCrewResolver } = require('./Crew');
 
-// Reccomendation resolvers
-const { MovieRecomendationsResolver, ShowRecomendationsResolver } = require('./Recomendations');
+// Recommendation resolvers
+const { MovieRecommendationsResolver, ShowRecommendationsResolver } = require('./Recommendations');
 
 // Keyword resolver
 const { MovieKeywordResolver, ShowKeywordResolver } = require('./Keywords');
 
 // Social resolver
-const { MovieSocialResolver, ShowSocialResolver } = require('./Social');
+const { MovieSocialResolver, ShowSocialResolver, PersonSocialResolver } = require('./Social');
 
 // Search for a movie/show resolvers
 const {
@@ -42,34 +42,35 @@ const { TopRatedMoviesResolver, TopRatedShowsResolver } = require('./TopRated');
 const { MovieVideoResolver, ShowVideoResolver } = require('./Videos');
 
 // Credits resolver
-const { CreditsResolver, FilteredCreditsResolver } = require('./Credits');
+const { CreditsResolver } = require('./Credits');
 
 const resolvers = {
 	// Additional data for the single movie object
 	Movie: {
 		reviews: MovieReviewResolver,
-		cast: MovieCastResolver,
-		crew: MovieCrewResolver,
-		recomendations: MovieRecomendationsResolver,
+		featuredCast: MovieCastResolver,
+		featuredCrew: MovieCrewResolver,
+		recommendations: MovieRecommendationsResolver,
 		keywords: MovieKeywordResolver,
 		social: MovieSocialResolver,
-		videos: MovieVideoResolver
+		featuredVideo: MovieVideoResolver
 	},
 
 	// Additional data for the single show object
 	Show: {
 		reviews: ShowReviewResolver,
-		cast: ShowCastResolver,
-		crew: ShowCrewResolver,
-		recomendations: ShowRecomendationsResolver,
+		featuredCast: ShowCastResolver,
+		featuredCrew: ShowCrewResolver,
+		recommendations: ShowRecommendationsResolver,
 		keywords: ShowKeywordResolver,
 		social: ShowSocialResolver,
-		videos: ShowVideoResolver
+		featuredVideo: ShowVideoResolver
 	},
 
 	// Additional data for the single person object
 	Person: {
-		credits: CreditsResolver
+		credits: CreditsResolver,
+		social: PersonSocialResolver
 	},
 
 	// Root query
@@ -98,10 +99,7 @@ const resolvers = {
 
 		// Top rated resolvers
 		TopRatedMovies: TopRatedMoviesResolver,
-		TopRatedShows: TopRatedShowsResolver,
-
-		// Credits resolver (Single endpoint to provide filtering capabilites)
-		FilterCredits: FilteredCreditsResolver
+		TopRatedShows: TopRatedShowsResolver
 	}
 };
 

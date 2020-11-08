@@ -1,30 +1,30 @@
 const toPercentage = require('./');
 
-describe("generateYear unit test's", () => {
+describe('maths -> toPercentage', () => {
 	test('It should return 40', () => {
-		// Data
-		const input = toPercentage(6.4);
-		const expectedOutput = 64;
+		// Arrange and act
+		const response = toPercentage(6.4);
+		const output = 64;
 
-		// Test
-		expect(input).toBe(expectedOutput);
+		// Assertion
+		expect(response).toBe(output);
 	});
 
 	test('It should return 50', () => {
-		// Data
-		const input = toPercentage(5);
-		const expectedOutput = 50;
+		// Arrange and act
+		const response = toPercentage(5);
+		const output = 50;
 
-		// Test
-		expect(input).toBe(expectedOutput);
+		// Assertion
+		expect(response).toBe(output);
 	});
 
 	test('It should return 10', () => {
-		// Data
-		const input = toPercentage(1);
-		const expectedOutput = 10;
+		// Arrange and act
+		const response = toPercentage(1);
+		const output = 10;
 
-		// Test
-		expect(input).toBe(expectedOutput);
+		// Assertion
+		expect(response).toBe(output);
 	});
 });

@@ -1,26 +1,19 @@
 const axios = require('axios');
-const { has, filter, forEach } = require('lodash');
 
 const generateCastURLEndpoint = require('../../utils/generateEndpoints/Cast');
-const generateAbsolutePath = require('../../utils/images/generateAbsolutePath');
-const setValue = require('../../utils/objects/setValue');
-const replaceKey = require('../../utils/objects/replaceKey');
+const setCast = require('../../utils/resolverUtils/Cast/setCast');
 
 // eslint-disable-next-line no-unused-vars
 const MovieCastResolver = async (parent, args, context, info) => {
 	try {
 		const response = await axios.get(generateCastURLEndpoint(parent.id, 'movie'));
 
-		const featuredCast = filter(response.data.cast, (member) => member.order < 7);
+		const { data } = response;
+		const { cast } = data;
 
-		forEach(featuredCast, (member) => {
-			if (has(member, 'profile_path')) {
-				replaceKey(member, 'profile_path', 'image');
-				setValue(member, 'image', generateAbsolutePath(member.image));
-			}
-		});
+		const Cast = setCast(cast);
 
-		return featuredCast;
+		return Cast;
 	} catch (err) {
 		console.log('The /credits (Cast) endpoint failed');
 		return err.response;

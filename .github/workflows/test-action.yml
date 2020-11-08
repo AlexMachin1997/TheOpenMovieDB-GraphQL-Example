@@ -1,14 +1,14 @@
 # Job name
-name: Intergration and Unit Tests
+name: Integration and Unit Tests
 
 # When the to run the greeting
-on: [pull_request]
+on: [pull_request, push]
 
 # Jobs to run for the action (You can have multiple actions in one file)
 jobs:
   test:
     # Job display name
-    name: Running React-Testing-Library and Jest tests
+    name: Running the jest tests
 
     # Runs on a Linux based OS
     runs-on: ubuntu-latest
@@ -20,7 +20,7 @@ jobs:
 
     # Steps involved for this particular task
     steps:
-      # Checks out the reporsitoy and enables the use of commands made avaliable in the project ie npm run
+      # Checks out the repository and enables the use of commands made available in the project ie npm run
       - name: Check out Git repository
         uses: actions/checkout@v2
 
@@ -54,7 +54,7 @@ jobs:
 
       # Installs all the project dependencies e.g. prettier, eslint etc via a custom project script
       - name: Install Node.js dependencies
-        run: npm run all-dependencies
+        run: npm run allDependencies
 
       # Run the react-testing-library tests
       - name: Run all tests

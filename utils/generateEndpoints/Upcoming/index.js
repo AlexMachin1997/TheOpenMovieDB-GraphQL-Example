@@ -1,5 +1,9 @@
 const { API_URI, API_VERSION, API_KEY } = require('../../../config');
 
+/**
+ * @param {string} resolverType
+ * @returns {string}
+ */
 const generateUpcomingEndpoint = (resolverType) => {
 	switch (resolverType) {
 		case 'tv':

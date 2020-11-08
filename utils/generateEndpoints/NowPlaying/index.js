@@ -1,6 +1,10 @@
 const { API_URI, API_VERSION, API_KEY } = require('../../../config');
 
-const genereateNowPlayingEndpoint = (resolverType) => {
+/**
+ * @param {string} resolverType
+ * @returns {string}
+ */
+const generateNowPlayingEndpoint = (resolverType) => {
 	switch (resolverType) {
 		case 'tv': {
 			return `${API_URI}/${API_VERSION}/${resolverType}/airing_today?api_key=${API_KEY}&page=1`;
@@ -11,4 +15,4 @@ const genereateNowPlayingEndpoint = (resolverType) => {
 	}
 };
 
-module.exports = genereateNowPlayingEndpoint;
+module.exports = generateNowPlayingEndpoint;

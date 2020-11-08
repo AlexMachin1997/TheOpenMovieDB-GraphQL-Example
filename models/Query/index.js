@@ -34,8 +34,6 @@ const Query = gql`
 
 		TopRatedMovies: [Movies]
 		TopRatedShows: [Shows]
-
-		FilterCredits(id: Int!, mediaType: String!): PeopleCredits
 	}
 `;
 

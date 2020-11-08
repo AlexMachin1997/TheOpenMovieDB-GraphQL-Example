@@ -1,21 +1,21 @@
-const generateYear = require('./');
+const generateYear = require('./index');
 
 describe("generateYear unit test's", () => {
-	test('It should return 2020', () => {
-		// Data
-		const input = generateYear('2020-04-25');
-		const exepectedOutput = '2020';
+	test('The result should be 2020', () => {
+		// Arrange and act
+		const response = generateYear('2020-04-25');
+		const output = '2020';
 
-		// Test
-		expect(input).toBe(exepectedOutput);
+		// Assertion
+		expect(response).toBe(output);
 	});
 
-	test('It should return -', () => {
-		// Data
-		const input = generateYear('');
-		const exepectedOutput = '-';
+	test('The result should be a dash e.g. -', () => {
+		// Arrange and act
+		const response = generateYear('');
+		const output = '-';
 
-		// Test
-		expect(input).toBe(exepectedOutput);
+		// Assertion
+		expect(response).toBe(output);
 	});
 });

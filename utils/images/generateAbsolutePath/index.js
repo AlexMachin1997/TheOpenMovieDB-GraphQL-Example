@@ -3,7 +3,7 @@ const { isEmpty } = require('lodash');
 const generateAbsolutePath = (imageName) => {
 	// Empty image check
 	if (isEmpty(imageName) === true) {
-		return 'Please provide a relative path';
+		return '';
 	}
 
 	// Return the absolute path
