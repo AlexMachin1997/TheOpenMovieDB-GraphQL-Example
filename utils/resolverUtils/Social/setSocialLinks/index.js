@@ -26,10 +26,10 @@ const setSocialLinks = (data, resolverType = 'entertainment') => {
 	 * @description Stores the social media references. They are are absolute paths which the front-end will use to link to the persons social profiles.
 	 */
 	const SocialLinks = {
-		facebook: data.facebook_id ?? '',
-		twitter: data.twitter_id ?? '',
-		instagram: data.instagram_id ?? '',
-		homepage: data.homepage ?? ''
+		facebook: data.facebook_id || '',
+		twitter: data.twitter_id || '',
+		instagram: data.instagram_id || '',
+		homepage: data.homepage || ''
 	};
 
 	// facebook and instagram

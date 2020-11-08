@@ -26,25 +26,25 @@ const SearchForAMovieResolver = async (parent, args, context, info) => {
 
 			const Movie = {
 				id: data.id ? data.id : 0,
-				name: data.title ?? '',
-				overview: data.overview ?? '',
-				backgroundUrl: generateAbsolutePath(data.backdrop_path) ?? '',
-				posterUrl: generateAbsolutePath(data.poster_path) ?? '',
+				name: data.title || '',
+				overview: data.overview || '',
+				backgroundUrl: generateAbsolutePath(data.backdrop_path) || '',
+				posterUrl: generateAbsolutePath(data.poster_path) || '',
 				genres: data.genres.length !== 0 ? data.genres : [],
-				homepage: data.homepage ?? '',
+				homepage: data.homepage || '',
 				originalLanguage: data.original_language,
 				productionCompanies: [],
 				releaseDate: releaseDate !== '-' ? releaseDate : '',
 				voteAverage: String(voteAverage) ? voteAverage : '',
-				status: data.status ?? '',
-				tagline: data.tagline ?? '',
+				status: data.status || '',
+				tagline: data.tagline || '',
 				belongsToCollection: {
 					id: 0,
 					name: '',
 					backgroundUrl: '',
 					posterUrl: ''
 				},
-				runtime: data.runtime ?? '',
+				runtime: data.runtime || '',
 
 				// Movie Specific fields
 				budget: data.budget ? `$${data.budget.toLocaleString()}` : '-',
@@ -81,8 +81,8 @@ const SearchForAMovieResolver = async (parent, args, context, info) => {
 				data.production_companies.forEach((singleCompany) => {
 					const company = {
 						id: String(singleCompany.id) ? singleCompany.id : 0,
-						logo: generateAbsolutePath(singleCompany.logo_path) ?? '',
-						name: singleCompany.name ?? ''
+						logo: generateAbsolutePath(singleCompany.logo_path) || '',
+						name: singleCompany.name || ''
 					};
 
 					// Push the new production company object to the productionCompanies array
@@ -114,15 +114,15 @@ const SearchForAMovieResolver = async (parent, args, context, info) => {
 					: '';
 
 				// Sets the collection name
-				Movie.belongsToCollection.name = belongs_to_collection.name ?? '';
+				Movie.belongsToCollection.name = belongs_to_collection.name || '';
 
 				// Sets the backgroundUrl (Used as the background for the collection card)
 				Movie.belongsToCollection.backgroundUrl =
-					generateAbsolutePath(belongs_to_collection.backdrop_path) ?? '';
+					generateAbsolutePath(belongs_to_collection.backdrop_path) || '';
 
 				// Sets the posterUrl (Not used in the collection card, but it could be eventually)
 				Movie.belongsToCollection.posterUrl =
-					generateAbsolutePath(belongs_to_collection.poster_path) ?? '';
+					generateAbsolutePath(belongs_to_collection.poster_path) || '';
 			}
 
 			// Runtime

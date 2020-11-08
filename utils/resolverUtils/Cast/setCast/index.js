@@ -66,9 +66,9 @@ const setCast = async (castMembers, resolverType = 'movie') => {
 		 */
 		const CastMember = {
 			id: cast.id ? cast.id : 0,
-			character: cast.character ?? '',
-			profileImageUrl: cast.profile_path ?? '',
-			gender: cast.gender ?? '',
+			character: cast.character || '',
+			profileImageUrl: cast.profile_path || '',
+			gender: cast.gender || '',
 			episodeCount: 0,
 			creditId: cast.credit_id ? cast.credit_id : ''
 		};

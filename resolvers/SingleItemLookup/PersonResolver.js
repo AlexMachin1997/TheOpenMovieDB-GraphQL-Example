@@ -22,15 +22,15 @@ const SearchForAPersonResolver = async (parent, args, context, info) => {
 
 			const Person = {
 				id: String(data.id) ? data.id : 0,
-				birthday: generateBirthdayDate(data.birthday) ?? '',
-				knownForDepartment: data.known_for_department ?? '',
-				name: data.name ?? '',
+				birthday: generateBirthdayDate(data.birthday) || '',
+				knownForDepartment: data.known_for_department || '',
+				name: data.name || '',
 				alsoKnownAs: data.also_known_as,
 				gender: data.gender === 2 ? 'Male' : 'Female',
-				overview: data.overview ?? '',
+				overview: data.overview || '',
 				placeOfBirth: data.place_of_birth,
-				posterUrl: generateAbsolutePath(data.profile_path) ?? '',
-				homepage: data.homepage ?? ''
+				posterUrl: generateAbsolutePath(data.profile_path) || '',
+				homepage: data.homepage || ''
 			};
 
 			return Person;

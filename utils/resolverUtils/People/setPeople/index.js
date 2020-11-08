@@ -45,8 +45,8 @@ const setPeople = (people) => {
 		 */
 		const Person = {
 			id: person.id ? person.id : 0,
-			name: person.name ?? '',
-			posterUrl: generateAbsolutePath(person.profile_path) ?? '',
+			name: person.name || '',
+			posterUrl: generateAbsolutePath(person.profile_path) || '',
 			roles: ''
 		};
 
@@ -60,11 +60,11 @@ const setPeople = (people) => {
 		person.known_for.forEach((role) => {
 			// Checks to see if the media_type is tv (Uses different attributes for the name e.g. original_name or name)
 			if (role.media_type === 'tv') {
-				let name = role.name ?? '';
+				let name = role.name || '';
 
 				// When the title isn't available try to use the original_name
 				if (name === '') {
-					name = role.original_name ?? '';
+					name = role.original_name || '';
 				}
 
 				// Add the tv to the roles array
@@ -73,11 +73,11 @@ const setPeople = (people) => {
 
 			// Checks to see if the media_type is movie (Uses different attributes for the name e.g. original_title or title)
 			if (role.media_type === 'movie') {
-				let name = role.title ?? '';
+				let name = role.title || '';
 
 				// When the title isn't available try to use the original_title
 				if (name === '') {
-					name = role.original_title ?? '';
+					name = role.original_title || '';
 				}
 
 				// Add the movie to the roles array

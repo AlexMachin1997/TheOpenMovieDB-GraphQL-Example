@@ -45,8 +45,8 @@ const setFeaturedVideo = (videos) => {
 	 * @description Stores the new featured video properties
 	 */
 	const Video = {
-		id: selectedVideo.id ?? 0,
-		name: selectedVideo.name ?? '',
+		id: selectedVideo.id || 0,
+		name: selectedVideo.name || '',
 		url: selectedVideo.key ? `https://www.youtube.com/watch?v=${selectedVideo.key}` : '',
 		type: 'Trailer',
 		site: 'YouTube'

@@ -25,30 +25,30 @@ const SearchForAShowResolver = async (parent, args, context, info) => {
 
 			const Show = {
 				id: String(data.id) ? data.id : 0,
-				name: data.name ?? '',
-				overview: data.overview ?? '',
-				backgroundUrl: generateAbsolutePath(data.backdrop_path) ?? '',
-				posterUrl: generateAbsolutePath(data.poster_path) ?? '',
+				name: data.name || '',
+				overview: data.overview || '',
+				backgroundUrl: generateAbsolutePath(data.backdrop_path) || '',
+				posterUrl: generateAbsolutePath(data.poster_path) || '',
 				genres: data.genres.length !== 0 ? data.genres : [],
-				homepage: data.homepage ?? '',
+				homepage: data.homepage || '',
 				originalLanguage: data.original_language,
 				productionCompanies: [],
 				releaseDate: releaseDate !== '-' ? releaseDate : '',
 				voteAverage: String(voteAverage) ? voteAverage : '',
-				status: data.status ?? '',
-				tagline: data.tagline ?? '',
+				status: data.status || '',
+				tagline: data.tagline || '',
 				belongsToCollection: {
 					id: 0,
 					name: '',
 					backgroundUrl: '',
 					posterUrl: ''
 				},
-				runtime: data.episode_run_time ?? '',
+				runtime: data.episode_run_time || '',
 
 				// Show Specific fields
-				type: data.type ?? '',
-				numberOfEpisodes: String(data.number_of_episodes) ?? 0,
-				numberOfSeasons: String(data.number_of_seasons) ?? 0,
+				type: data.type || '',
+				numberOfEpisodes: String(data.number_of_episodes) || 0,
+				numberOfSeasons: String(data.number_of_seasons) || 0,
 				CurrentSeason: {
 					backgroundUrl: '',
 					seasonNumber: 0,
@@ -85,8 +85,8 @@ const SearchForAShowResolver = async (parent, args, context, info) => {
 				data.production_companies.forEach((singleCompany) => {
 					const company = {
 						id: String(singleCompany.id) ? singleCompany.id : 0,
-						logo: generateAbsolutePath(singleCompany.logo_path) ?? '',
-						name: singleCompany.name ?? ''
+						logo: generateAbsolutePath(singleCompany.logo_path) || '',
+						name: singleCompany.name || ''
 					};
 
 					// Push the new production company object to the productionCompanies array
@@ -118,15 +118,15 @@ const SearchForAShowResolver = async (parent, args, context, info) => {
 					: '';
 
 				// Sets the collection name
-				Show.belongsToCollection.name = belongs_to_collection.name ?? '';
+				Show.belongsToCollection.name = belongs_to_collection.name || '';
 
 				// Sets the backgroundUrl (Used as the background for the collection card)
 				Show.belongsToCollection.backgroundUrl =
-					generateAbsolutePath(belongs_to_collection.backdrop_path) ?? '';
+					generateAbsolutePath(belongs_to_collection.backdrop_path) || '';
 
 				// Sets the posterUrl (Not used in the collection card, but it could be eventually)
 				Show.belongsToCollection.posterUrl =
-					generateAbsolutePath(belongs_to_collection.poster_path) ?? '';
+					generateAbsolutePath(belongs_to_collection.poster_path) || '';
 			}
 
 			// Runtime
@@ -151,13 +151,13 @@ const SearchForAShowResolver = async (parent, args, context, info) => {
 				const { last_episode_to_air, seasons } = data;
 
 				Show.CurrentSeason.backgroundUrl =
-					generateAbsolutePath(last_episode_to_air.still_path) ?? '';
+					generateAbsolutePath(last_episode_to_air.still_path) || '';
 
 				Show.CurrentSeason.seasonNumber = String(last_episode_to_air.season_number)
 					? last_episode_to_air.season_number
 					: 0;
 
-				Show.CurrentSeason.year = generateYear(last_episode_to_air.air_date) ?? '';
+				Show.CurrentSeason.year = generateYear(last_episode_to_air.air_date) || '';
 
 				/*
 

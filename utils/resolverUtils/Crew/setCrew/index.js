@@ -60,7 +60,7 @@ const setCrew = (data) => {
 			 * @description Stores the new crew members details e.g. name, roles (Joined array)
 			 */
 			const Member = {
-				name: member.name ?? '',
+				name: member.name || '',
 				roles: ''
 			};
 

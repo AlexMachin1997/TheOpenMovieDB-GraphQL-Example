@@ -55,14 +55,14 @@ const setMovies = (movies) => {
 	movies.forEach((movie) => {
 		const Movie = {
 			id: movie.id ? movie.id : 0, // Id is cast to a string to perform truthy/falsy checks
-			name: movie.title ?? '',
-			overview: movie.overview ?? '',
-			backgroundUrl: generateAbsolutePath(movie.backdrop_path) ?? '',
-			posterUrl: generateAbsolutePath(movie.poster_path) ?? '',
+			name: movie.title || '',
+			overview: movie.overview || '',
+			backgroundUrl: generateAbsolutePath(movie.backdrop_path) || '',
+			posterUrl: generateAbsolutePath(movie.poster_path) || '',
 			genres: movie.genre_ids.length !== 0 ? movie.genre_ids : [], // The array length is checked, an array is not a falsy value
-			releaseDate: formatDate(movie.release_date, 'MMMM Do, YYYY') ?? '',
-			originalLanguage: movie.original_language ?? '',
-			voteAverage: toPercentage(movie.vote_average) ?? 0
+			releaseDate: formatDate(movie.release_date, 'MMMM Do, YYYY') || '',
+			originalLanguage: movie.original_language || '',
+			voteAverage: toPercentage(movie.vote_average) || 0
 		};
 
 		// When the name is blank

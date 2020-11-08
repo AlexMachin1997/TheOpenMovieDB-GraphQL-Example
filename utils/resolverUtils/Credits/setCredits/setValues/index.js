@@ -47,17 +47,17 @@ const setValues = (group) => {
 			title: '',
 			episodeCount: 0,
 			mediaType: data.media_type,
-			role: data.character ?? data.job
+			role: data.character || data.job
 		};
 
 		// The movie and tv series use different object properties, so to get the correct values the media_type checks
 		if (data.media_type === 'tv') {
-			updatedGroup.releaseDate = generateYear(data.first_air_date) ?? '';
-			updatedGroup.title = data.name ?? data.original_name;
-			updatedGroup.episodeCount = data.episode_count ?? 0;
+			updatedGroup.releaseDate = generateYear(data.first_air_date) || '';
+			updatedGroup.title = data.name || data.original_name;
+			updatedGroup.episodeCount = data.episode_count || 0;
 		} else {
-			updatedGroup.releaseDate = generateYear(data.release_date) ?? '';
-			updatedGroup.title = data.title ?? data.original_title ?? '';
+			updatedGroup.releaseDate = generateYear(data.release_date) || '';
+			updatedGroup.title = data.title || data.original_title || '';
 		}
 
 		// Once the new object has been created push it to the newGroup
