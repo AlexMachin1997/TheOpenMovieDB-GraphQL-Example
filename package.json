@@ -30,7 +30,7 @@
 	"author": "Alex Machin",
 	"license": "MIT",
 	"dependencies": {
-		"apollo-server": "^2.17.0",
+		"apollo-server": "^2.25.3",
 		"axios": "^0.19.2",
 		"dotenv": "^8.2.0",
 		"lodash": "^4.17.20",
