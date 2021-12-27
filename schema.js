@@ -1,4 +1,4 @@
-const { makeExecutableSchema } = require('apollo-server');
+const { makeExecutableSchema } = require('@graphql-tools/schema');
 
 // Generic models for specific sets of data e.g. Cast, Genre etc
 const Cast = require('./models/Cast');
