@@ -31,7 +31,7 @@
 	"license": "MIT",
 	"dependencies": {
 		"@graphql-tools/schema": "^8.3.1",
-		"apollo-server": "^2.17.0",
+		"apollo-server": "^2.25.4",
 		"apollo-server-core": "^3.5.0",
 		"axios": "^0.19.2",
 		"dotenv": "^8.2.0",
