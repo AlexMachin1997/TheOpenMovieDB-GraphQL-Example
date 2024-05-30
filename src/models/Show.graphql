@@ -1,0 +1,47 @@
+type CurrentSeason {
+	backgroundUrl: String
+	seasonNumber: Int
+	year: String
+	episodeCount: Int
+	overview: String
+}
+
+type Network {
+	name: String
+	id: Int
+	logoUrl: String
+	originCountry: String
+}
+
+type Show {
+	id: Int
+	name: String
+	overview: String
+	backgroundUrl: String
+	posterUrl: String
+	genres: [Genre]
+	homepage: String
+	originalLanguage: String
+	productionCompanies: [Company]
+	releaseDate: String
+	voteAverage: Float
+	status: String
+	reviews: [Review]
+	recommendations: [EntertainmentRecommendation]
+	keywords: [Keyword]
+	social: Social
+	featuredCast: [Cast]
+	featuredCrew: [Crew]
+	featuredVideo: Video
+	belongsToCollection: BelongsToCollection
+	tagline: String
+	runtime: String
+
+	Network: [Network]
+	numberOfSeasons: Int
+	numberOfEpisodes: Int
+	originCountry: [String]
+	company: [Company]
+	currentSeason: CurrentSeason
+	type: String
+}

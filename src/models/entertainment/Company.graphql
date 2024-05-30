@@ -1,0 +1,5 @@
+type Company {
+	id: Int
+	logo: String
+	name: String
+}

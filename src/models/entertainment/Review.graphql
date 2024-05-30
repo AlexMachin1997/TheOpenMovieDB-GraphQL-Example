@@ -1,0 +1,6 @@
+type Review {
+	author: String
+	content: String
+	id: String
+	url: String
+}

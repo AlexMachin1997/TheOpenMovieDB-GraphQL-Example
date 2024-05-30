@@ -1,0 +1,6 @@
+type BelongsToCollection {
+	id: Int
+	name: String
+	backgroundUrl: String
+	posterUrl: String
+}
