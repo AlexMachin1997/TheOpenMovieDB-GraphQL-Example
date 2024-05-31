@@ -4,7 +4,7 @@ import { join } from 'path';
 
 const definitionsFactory = new GraphQLDefinitionsFactory();
 
-const typeDefinitionOutput = join(process.cwd(), 'graphql.ts');
+const typeDefinitionOutput = join(process.cwd(), 'graphql.schema.ts');
 
 const typeDefinitionOutputFormat = 'interface';
 
@@ -15,7 +15,9 @@ const schemas = [
 	// Individual resource schemas
 	'./models/Show.graphql',
 	'./models/Movie.graphql',
-	'./models/Person.graphql'
+	'./models/Person.graphql',
+
+	'./models/Query.graphql'
 ];
 
 definitionsFactory

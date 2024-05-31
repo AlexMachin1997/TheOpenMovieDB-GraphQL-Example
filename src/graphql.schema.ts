@@ -74,6 +74,11 @@ export interface Person {
 	homepage?: Nullable<string>;
 }
 
+export interface IQuery {
+	__typename?: 'IQuery';
+	movie(id: number): Nullable<Movie> | Promise<Nullable<Movie>>;
+}
+
 export interface CurrentSeason {
 	__typename?: 'CurrentSeason';
 	backgroundUrl?: Nullable<string>;

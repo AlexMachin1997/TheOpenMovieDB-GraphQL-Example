@@ -26,10 +26,13 @@
 	"dependencies": {
 		"@apollo/server": "^4.10.4",
 		"@nestjs/apollo": "^12.1.0",
+		"@nestjs/axios": "^3.0.2",
 		"@nestjs/common": "^10.0.0",
 		"@nestjs/core": "^10.0.0",
 		"@nestjs/graphql": "^12.1.1",
+		"@nestjs/mapped-types": "*",
 		"@nestjs/platform-express": "^10.0.0",
+		"axios": "^1.7.2",
 		"graphql": "^16.8.1",
 		"reflect-metadata": "^0.1.13",
 		"rxjs": "^7.8.1",
