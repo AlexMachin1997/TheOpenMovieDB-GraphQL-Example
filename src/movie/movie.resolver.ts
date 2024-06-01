@@ -1,7 +1,7 @@
-import { Resolver, Query } from '@nestjs/graphql';
+import { Resolver, Query, ResolveField } from '@nestjs/graphql';
 
 import { MovieService } from './movie.service';
-import { Movie } from '../graphql.schema';
+import { Movie, Review } from '../graphql.schema';
 
 @Resolver('Movie')
 export class MovieResolver {
@@ -10,5 +10,12 @@ export class MovieResolver {
 	@Query('movie')
 	async getMovie(): Promise<Movie> {
 		return this.movieService.findMovie();
+	}
+
+	// Attach the review to the Movie response, requires an external lookup as the data
+	// isn't apart of the original /movie/:id query response
+	@ResolveField()
+	async review(): Promise<Review | null> {
+		return this.movieService.findMovieReview();
 	}
 }

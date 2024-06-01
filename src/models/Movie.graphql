@@ -11,7 +11,7 @@ type Movie {
 	releaseDate: String
 	voteAverage: Float
 	status: String
-	reviews: [Review]
+	review: Review
 	recommendations: [EntertainmentRecommendation]
 	keywords: [Keyword]
 	social: Social

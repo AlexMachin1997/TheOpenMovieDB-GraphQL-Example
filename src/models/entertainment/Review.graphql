@@ -1,6 +1,13 @@
+type Author {
+	name: String
+	username: String
+	avatarUrl: String
+	rating: String
+}
+
 type Review {
-	author: String
+	author: Author
+	isFeatured: Boolean
 	content: String
-	id: String
-	url: String
+	createdOn: String
 }

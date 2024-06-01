@@ -2,8 +2,8 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 
-import { TheOpenMovieDatabaseMovie } from './movie';
-import { BelongsToCollection, Movie } from '../graphql.schema';
+import { TheOpenMovieDatabaseMovie, TheOpenMovieDatabaseMovieReview } from './movie';
+import { BelongsToCollection, Movie, Review } from '../graphql.schema';
 
 @Injectable()
 export class MovieService {
@@ -95,5 +95,52 @@ export class MovieService {
 		};
 
 		return movie;
+	}
+
+	async findMovieReview(): Promise<Review | null> {
+		const convertToPercentage = (number: number, highestValueProvided: number): `${number}%` => {
+			return `${number * highestValueProvided}%`;
+		};
+
+		const { data } = await firstValueFrom(
+			this.httpService.get<{
+				id: number;
+				page: number;
+				results: TheOpenMovieDatabaseMovieReview[];
+			}>('https://api.themoviedb.org/3/movie/19995/reviews?language=en-U', {
+				headers: {
+					Accept: 'application/json',
+					Authorization:
+						// eslint-disable-next-line max-len
+						'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1NDMwNWQxNmE1ZThkN2E3ZWMwZmM2NTk5MzZiY2EzMCIsInN1YiI6IjViMzE0MjQ1OTI1MTQxM2M5MTAwNTIwNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.iqdLKFCSgeWG3SYso7Rqj297FORviPf9hDdn2kKygTA'
+				}
+			})
+		);
+
+		// Get the first review with a rating
+		// TODO: Add additional logic around this so if there isn't one page through the data until one is found
+		const selectedReview = data.results.find((el) => el.author_details.rating !== null);
+
+		// For now if there is no rating available don't return the review
+		if (typeof selectedReview === 'undefined') {
+			return null;
+		}
+
+		return {
+			author: {
+				name: selectedReview.author_details.name,
+				username: selectedReview.author_details.username,
+				avatarUrl: selectedReview.author_details.avatar_path,
+				rating:
+					selectedReview.author_details.rating !== null
+						? convertToPercentage(selectedReview.author_details.rating, 10)
+						: null
+			},
+			isFeatured: false, // Not sure how to work this out yet...
+			content: selectedReview.content,
+			createdOn: new Intl.DateTimeFormat('en-GB', {
+				dateStyle: 'medium'
+			}).format(new Date(selectedReview.created_at))
+		};
 	}
 }
