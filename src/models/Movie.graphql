@@ -15,7 +15,7 @@ type Movie {
 	recommendations: [EntertainmentRecommendation]
 	keywords: [Keyword]
 	social: Social
-	featuredCast: [Cast]
+	topBilledCast: [Cast]
 	featuredCrew: [Crew]
 	featuredVideo: Video
 	belongsToCollection: BelongsToCollection

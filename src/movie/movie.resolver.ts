@@ -1,7 +1,7 @@
 import { Resolver, Query, ResolveField } from '@nestjs/graphql';
 
 import { MovieService } from './movie.service';
-import { Movie, Review } from '../graphql.schema';
+import { Cast, Movie, Review } from '../graphql.schema';
 
 @Resolver('Movie')
 export class MovieResolver {
@@ -17,5 +17,12 @@ export class MovieResolver {
 	@ResolveField()
 	async review(): Promise<Review | null> {
 		return this.movieService.findMovieReview();
+	}
+
+	// Attach the top billed cast to the Movie response, requires an external lookup as the data
+	// isn't apart of the original /movie/:id query response
+	@ResolveField()
+	async topBilledCast(): Promise<Cast[] | null> {
+		return this.movieService.findTopBilledCast();
 	}
 }

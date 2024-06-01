@@ -8,6 +8,26 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export enum GENDER {
+    MALE = "MALE",
+    FEMALE = "FEMALE"
+}
+
+export enum MEDIA_TYPE {
+    MOVIE = "MOVIE",
+    TV = "TV",
+    PERSON = "PERSON"
+}
+
+export enum RESOURCE_TYPE {
+    TOP_RATED = "TOP_RATED",
+    POPULAR = "POPULAR",
+    NOW_PLAYING = "NOW_PLAYING",
+    UPCOMING = "UPCOMING",
+    AIRING_TODAY = "AIRING_TODAY",
+    ON_THE_AIR = "ON_THE_AIR"
+}
+
 export interface Movie {
     __typename?: 'Movie';
     id?: Nullable<number>;
@@ -26,7 +46,7 @@ export interface Movie {
     recommendations?: Nullable<Nullable<EntertainmentRecommendation>[]>;
     keywords?: Nullable<Nullable<Keyword>[]>;
     social?: Nullable<Social>;
-    featuredCast?: Nullable<Nullable<Cast>[]>;
+    topBilledCast?: Nullable<Nullable<Cast>[]>;
     featuredCrew?: Nullable<Nullable<Crew>[]>;
     featuredVideo?: Nullable<Video>;
     belongsToCollection?: Nullable<BelongsToCollection>;
@@ -144,7 +164,7 @@ export interface Cast {
     id?: Nullable<number>;
     character?: Nullable<string>;
     profileImageUrl?: Nullable<string>;
-    gender?: Nullable<string>;
+    gender?: Nullable<GENDER>;
     episodeCount?: Nullable<number>;
 }
 

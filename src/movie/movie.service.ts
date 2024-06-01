@@ -2,8 +2,12 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 
-import { TheOpenMovieDatabaseMovie, TheOpenMovieDatabaseMovieReview } from './movie';
-import { BelongsToCollection, Movie, Review } from '../graphql.schema';
+import {
+	TheOpenMovieDatabaseMovie,
+	TheOpenMovieDatabaseMovieCast,
+	TheOpenMovieDatabaseMovieReview
+} from './movie';
+import { BelongsToCollection, Cast, Movie, Review, GENDER } from '../graphql.schema';
 
 @Injectable()
 export class MovieService {
@@ -142,5 +146,32 @@ export class MovieService {
 				dateStyle: 'medium'
 			}).format(new Date(selectedReview.created_at))
 		};
+	}
+
+	async findTopBilledCast(): Promise<Cast[] | null> {
+		const { data } = await firstValueFrom(
+			this.httpService.get<{ id: number; cast: TheOpenMovieDatabaseMovieCast[] }>(
+				'https://api.themoviedb.org/3/movie/19995/credits?language=en-U',
+				{
+					headers: {
+						Accept: 'application/json',
+						Authorization:
+							// eslint-disable-next-line max-len
+							'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1NDMwNWQxNmE1ZThkN2E3ZWMwZmM2NTk5MzZiY2EzMCIsInN1YiI6IjViMzE0MjQ1OTI1MTQxM2M5MTAwNTIwNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.iqdLKFCSgeWG3SYso7Rqj297FORviPf9hDdn2kKygTA'
+					}
+				}
+			)
+		);
+
+		// Should already be in the correct order but just to be safe sort it ourselves
+		const sortedCastByOrder = data.cast.sort((a, b) => (a.order > b.order ? 1 : -1));
+
+		// Return the first 9 cast members
+		return sortedCastByOrder.slice(0, 9).map((el) => ({
+			id: el.id,
+			character: el.character,
+			profileImageUrl: el.profile_path,
+			gender: el.gender === 2 ? GENDER.MALE : GENDER.FEMALE
+		}));
 	}
 }

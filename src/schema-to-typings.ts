@@ -26,8 +26,7 @@ definitionsFactory
 		path: typeDefinitionOutput,
 		outputAs: typeDefinitionOutputFormat,
 		watch: false,
-		emitTypenameField: true,
-		enumsAsTypes: true
+		emitTypenameField: true
 	})
 	.catch((err: unknown) => {
 		console.log('Failed to generate the type definitions from the graphql schemas', err);
