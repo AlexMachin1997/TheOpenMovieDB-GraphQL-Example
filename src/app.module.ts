@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 
 import { MovieModule } from './movie/movie.module';
+import { UtilsModule } from './utils/utils.module';
 
 @Module({
 	controllers: [],
@@ -24,7 +25,8 @@ import { MovieModule } from './movie/movie.module';
 				'./src/models/Query.graphql'
 			]
 		}),
-		MovieModule
+		MovieModule,
+		UtilsModule
 	]
 })
 export class AppModule {}

@@ -1,6 +1,8 @@
+/* eslint-disable import/extensions */
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
+import { UtilsService } from 'src/utils/utils.service';
 
 import {
 	TheOpenMovieDatabaseMovie,
@@ -11,7 +13,10 @@ import { BelongsToCollection, Cast, Movie, Review, GENDER } from '../graphql.sch
 
 @Injectable()
 export class MovieService {
-	constructor(private readonly httpService: HttpService) {}
+	constructor(
+		private readonly httpService: HttpService,
+		private readonly utilService: UtilsService
+	) {}
 
 	async findMovie(): Promise<Movie> {
 		const { data } = await firstValueFrom(
@@ -50,20 +55,10 @@ export class MovieService {
 			return data.original_language;
 		};
 
-		const convertValueToLocalCurrency = (value: number) => {
-			return value.toLocaleString('en-gb', {
-				// The budget is a form of currency e.g. 10000
-				style: 'currency',
-
-				// TODO: Read the users current country code and output it in their format
-				currency: 'GBP'
-			});
-		};
-
 		const getCollection = (): BelongsToCollection | null => {
 			if (data.belongs_to_collection !== null) {
 				return {
-					backgroundUrl: data.belongs_to_collection.backdrop,
+					backgroundUrl: this.utilService.getFullImageUrlPath(data.belongs_to_collection.backdrop),
 					id: data.belongs_to_collection.id,
 					name: data.belongs_to_collection.name,
 					posterUrl: data.belongs_to_collection.poster_path
@@ -77,14 +72,14 @@ export class MovieService {
 			id: data.id,
 			name: data.title === '' || data.title.length === 0 ? data.original_title : data.title,
 			overview: data.overview,
-			backgroundUrl: data.backdrop_path,
-			posterUrl: data.poster_path,
+			backgroundUrl: this.utilService.getFullImageUrlPath(data.backdrop_path),
+			posterUrl: this.utilService.getFullImageUrlPath(data.poster_path),
 			genres: data.genres,
 			homepage: data.homepage,
 			originalLanguage: getOriginalLanguage(),
 			productionCompanies: data.production_companies.map((productionCompany) => ({
 				id: productionCompany.id,
-				logo: productionCompany.logo_path,
+				logo: this.utilService.getFullImageUrlPath(productionCompany.logo_path),
 				name: productionCompany.name
 			})),
 			releaseDate: data.release_date,
@@ -94,18 +89,14 @@ export class MovieService {
 			belongsToCollection: getCollection(),
 			runtime: getRunTime(),
 
-			budget: convertValueToLocalCurrency(data.budget),
-			revenue: convertValueToLocalCurrency(data.revenue)
+			budget: this.utilService.convertNumberToLocalCurrency(data.budget),
+			revenue: this.utilService.convertNumberToLocalCurrency(data.revenue)
 		};
 
 		return movie;
 	}
 
 	async findMovieReview(): Promise<Review | null> {
-		const convertToPercentage = (number: number, highestValueProvided: number): `${number}%` => {
-			return `${number * highestValueProvided}%`;
-		};
-
 		const { data } = await firstValueFrom(
 			this.httpService.get<{
 				id: number;
@@ -134,11 +125,8 @@ export class MovieService {
 			author: {
 				name: selectedReview.author_details.name,
 				username: selectedReview.author_details.username,
-				avatarUrl: selectedReview.author_details.avatar_path,
-				rating:
-					selectedReview.author_details.rating !== null
-						? convertToPercentage(selectedReview.author_details.rating, 10)
-						: null
+				avatarUrl: this.utilService.getFullImageUrlPath(selectedReview.author_details.avatar_path),
+				rating: this.utilService.getNumberAsPercentage(selectedReview.author_details.rating, 10)
 			},
 			isFeatured: false, // Not sure how to work this out yet...
 			content: selectedReview.content,
@@ -170,7 +158,7 @@ export class MovieService {
 		return sortedCastByOrder.slice(0, 9).map((el) => ({
 			id: el.id,
 			character: el.character,
-			profileImageUrl: el.profile_path,
+			profileImageUrl: this.utilService.getFullImageUrlPath(el.profile_path),
 			gender: el.gender === 2 ? GENDER.MALE : GENDER.FEMALE
 		}));
 	}
