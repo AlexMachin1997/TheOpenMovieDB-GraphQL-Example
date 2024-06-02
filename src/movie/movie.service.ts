@@ -9,9 +9,19 @@ import {
 	TheOpenMovieDatabaseMovieCast,
 	TheOpenMovieDatabaseMovieCrew,
 	TheOpenMovieDatabaseMovieKeywords,
-	TheOpenMovieDatabaseMovieReview
+	TheOpenMovieDatabaseMovieReview,
+	TheOpenMovieDatbaseExternalIds
 } from './movie';
-import { BelongsToCollection, Cast, Movie, Review, GENDER, Crew, Keyword } from '../graphql.schema';
+import {
+	BelongsToCollection,
+	Cast,
+	Movie,
+	Review,
+	GENDER,
+	Crew,
+	Keyword,
+	Social
+} from '../graphql.schema';
 
 @Injectable()
 export class MovieService {
@@ -20,7 +30,7 @@ export class MovieService {
 		private readonly utilService: UtilsService
 	) {}
 
-	async findMovie(): Promise<Movie> {
+	async getMovie(): Promise<Movie> {
 		const { data } = await firstValueFrom(
 			this.httpService.get<TheOpenMovieDatabaseMovie>(
 				'https://api.themoviedb.org/3/movie/19995?language=en-U',
@@ -98,7 +108,7 @@ export class MovieService {
 		return movie;
 	}
 
-	async findMovieReview(): Promise<Review | null> {
+	async getReview(): Promise<Review | null> {
 		const { data } = await firstValueFrom(
 			this.httpService.get<{
 				id: number;
@@ -138,7 +148,7 @@ export class MovieService {
 		};
 	}
 
-	async findTopBilledCast(): Promise<Cast[] | null> {
+	async getTopBilledCast(): Promise<Cast[] | null> {
 		const { data } = await firstValueFrom(
 			this.httpService.get<{ id: number; cast: TheOpenMovieDatabaseMovieCast[] }>(
 				'https://api.themoviedb.org/3/movie/19995/credits?language=en-U',
@@ -165,7 +175,7 @@ export class MovieService {
 		}));
 	}
 
-	async findFeaturedCrewMembers(): Promise<Crew[] | null> {
+	async getFeaturedCrewMembers(): Promise<Crew[] | null> {
 		const { data } = await firstValueFrom(
 			this.httpService.get<{ id: number; crew: TheOpenMovieDatabaseMovieCrew[] }>(
 				'https://api.themoviedb.org/3/movie/19995/credits?language=en-U',
@@ -223,7 +233,7 @@ export class MovieService {
 		return featuredCrewMembers;
 	}
 
-	async findKeywords(): Promise<Keyword[] | null> {
+	async getKeywords(): Promise<Keyword[] | null> {
 		const { data } = await firstValueFrom(
 			this.httpService.get<TheOpenMovieDatabaseMovieKeywords>(
 				'https://api.themoviedb.org/3/movie/19995/keywords?language=en-U',
@@ -239,5 +249,28 @@ export class MovieService {
 		);
 
 		return data.keywords;
+	}
+
+	async getSocials(): Promise<Social> {
+		const { data } = await firstValueFrom(
+			this.httpService.get<TheOpenMovieDatbaseExternalIds>(
+				'https://api.themoviedb.org/3/movie/19995/external_ids?language=en-U',
+				{
+					headers: {
+						Accept: 'application/json',
+						Authorization:
+							// eslint-disable-next-line max-len
+							'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1NDMwNWQxNmE1ZThkN2E3ZWMwZmM2NTk5MzZiY2EzMCIsInN1YiI6IjViMzE0MjQ1OTI1MTQxM2M5MTAwNTIwNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.iqdLKFCSgeWG3SYso7Rqj297FORviPf9hDdn2kKygTA'
+					}
+				}
+			)
+		);
+
+		return {
+			facebook: `https://www.facebook.com/${data.facebook_id}`,
+			homepage: ``,
+			instagram: `https://www.instagram.com/${data.facebook_id}`.toLowerCase(),
+			twitter: `https://www.twitter.com/${data.twitter_id}`
+		};
 	}
 }
