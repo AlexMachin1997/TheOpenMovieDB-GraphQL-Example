@@ -9,8 +9,20 @@ const typeDefinitionOutput = join(process.cwd(), 'graphql.schema.ts');
 const typeDefinitionOutputFormat = 'interface';
 
 const schemas = [
+	// Enums used by all the graphql schemas
+	'./models/enum.graphql',
+
 	// Entertainment specific models, used for the Movie and Show schemas
-	'./models/entertainment/*.graphql',
+	'./models/entertainment/BelongsToCollection.graphql',
+	'./models/entertainment/Cast.graphql',
+	'./models/entertainment/Company.graphql',
+	'./models/entertainment/Crew.graphql',
+	'./models/entertainment/Genre.graphql',
+	'./models/entertainment/Keyword.graphql',
+	'./models/entertainment/Recommendation.graphql',
+	'./models/entertainment/Review.graphql',
+	'./models/entertainment/Social.graphql',
+	'./models/entertainment/Video.graphql',
 
 	// Individual resource schemas
 	'./models/Show.graphql',

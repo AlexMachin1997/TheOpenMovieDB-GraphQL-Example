@@ -12,7 +12,7 @@ type Movie {
 	voteAverage: Float
 	status: String
 	review: Review
-	recommendations: [EntertainmentRecommendation]
+	recommendations: [Recommendation]
 	keywords: [Keyword]
 	social: Social
 	topBilledCast: [Cast]

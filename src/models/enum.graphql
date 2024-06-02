@@ -3,10 +3,9 @@ enum GENDER {
 	FEMALE
 }
 
-enum MEDIA_TYPE {
+enum ENTERTAINMENT_TYPES {
 	MOVIE
 	TV
-	PERSON
 }
 
 enum RESOURCE_TYPE {

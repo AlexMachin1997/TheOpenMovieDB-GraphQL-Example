@@ -1,4 +1,4 @@
-type EntertainmentRecommendation {
+type Recommendation {
 	name: String
 	releaseDate: String
 	backgroundUrl: String

@@ -27,7 +27,7 @@ type Show {
 	voteAverage: Float
 	status: String
 	reviews: [Review]
-	recommendations: [EntertainmentRecommendation]
+	recommendations: [Recommendation]
 	keywords: [Keyword]
 	social: Social
 	featuredCast: [Cast]
