@@ -2,32 +2,18 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
+import { EntertainmentService } from 'src/entertainment/entertainment.service';
 import { UtilsService } from 'src/utils/utils.service';
 
-import {
-	TheOpenMovieDatabaseMovie,
-	TheOpenMovieDatabaseMovieCast,
-	TheOpenMovieDatabaseMovieCrew,
-	TheOpenMovieDatabaseMovieKeywords,
-	TheOpenMovieDatabaseMovieReview,
-	TheOpenMovieDatbaseExternalIds
-} from './movie';
-import {
-	BelongsToCollection,
-	Cast,
-	Movie,
-	Review,
-	GENDER,
-	Crew,
-	Keyword,
-	Social
-} from '../graphql.schema';
+import { TheOpenMovieDatabaseMovie } from './movie';
+import { BelongsToCollection, Cast, Movie, Review, Crew, Keyword, Social } from '../graphql.schema';
 
 @Injectable()
 export class MovieService {
 	constructor(
 		private readonly httpService: HttpService,
-		private readonly utilService: UtilsService
+		private readonly utilService: UtilsService,
+		private readonly entertainmentLookupService: EntertainmentService
 	) {}
 
 	async getMovie(): Promise<Movie> {
@@ -81,6 +67,7 @@ export class MovieService {
 		};
 
 		const movie: Movie = {
+			// Common "entertainment" properties
 			id: data.id,
 			name: data.title === '' || data.title.length === 0 ? data.original_title : data.title,
 			overview: data.overview,
@@ -98,9 +85,10 @@ export class MovieService {
 			voteAverage: data.vote_average,
 			status: data.status,
 			tagline: data.tagline,
+
+			// Movie specific properties
 			belongsToCollection: getCollection(),
 			runtime: getRunTime(),
-
 			budget: this.utilService.convertNumberToLocalCurrency(data.budget),
 			revenue: this.utilService.convertNumberToLocalCurrency(data.revenue)
 		};
@@ -109,168 +97,22 @@ export class MovieService {
 	}
 
 	async getReview(): Promise<Review | null> {
-		const { data } = await firstValueFrom(
-			this.httpService.get<{
-				id: number;
-				page: number;
-				results: TheOpenMovieDatabaseMovieReview[];
-			}>('https://api.themoviedb.org/3/movie/19995/reviews?language=en-U', {
-				headers: {
-					Accept: 'application/json',
-					Authorization:
-						// eslint-disable-next-line max-len
-						'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1NDMwNWQxNmE1ZThkN2E3ZWMwZmM2NTk5MzZiY2EzMCIsInN1YiI6IjViMzE0MjQ1OTI1MTQxM2M5MTAwNTIwNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.iqdLKFCSgeWG3SYso7Rqj297FORviPf9hDdn2kKygTA'
-				}
-			})
-		);
-
-		// Get the first review with a rating
-		// TODO: Add additional logic around this so if there isn't one page through the data until one is found
-		const selectedReview = data.results.find((el) => el.author_details.rating !== null);
-
-		// For now if there is no rating available don't return the review
-		if (typeof selectedReview === 'undefined') {
-			return null;
-		}
-
-		return {
-			author: {
-				name: selectedReview.author_details.name,
-				username: selectedReview.author_details.username,
-				avatarUrl: this.utilService.getFullImageUrlPath(selectedReview.author_details.avatar_path),
-				rating: this.utilService.getNumberAsPercentage(selectedReview.author_details.rating, 10)
-			},
-			isFeatured: false, // Not sure how to work this out yet...
-			content: selectedReview.content,
-			createdOn: new Intl.DateTimeFormat('en-GB', {
-				dateStyle: 'medium'
-			}).format(new Date(selectedReview.created_at))
-		};
+		return this.entertainmentLookupService.getReview();
 	}
 
 	async getTopBilledCast(): Promise<Cast[] | null> {
-		const { data } = await firstValueFrom(
-			this.httpService.get<{ id: number; cast: TheOpenMovieDatabaseMovieCast[] }>(
-				'https://api.themoviedb.org/3/movie/19995/credits?language=en-U',
-				{
-					headers: {
-						Accept: 'application/json',
-						Authorization:
-							// eslint-disable-next-line max-len
-							'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1NDMwNWQxNmE1ZThkN2E3ZWMwZmM2NTk5MzZiY2EzMCIsInN1YiI6IjViMzE0MjQ1OTI1MTQxM2M5MTAwNTIwNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.iqdLKFCSgeWG3SYso7Rqj297FORviPf9hDdn2kKygTA'
-					}
-				}
-			)
-		);
-
-		// Should already be in the correct order but just to be safe sort it ourselves
-		const sortedCastByOrder = data.cast.sort((a, b) => (a.order > b.order ? 1 : -1));
-
-		// Return the first 9 cast members
-		return sortedCastByOrder.slice(0, 9).map((el) => ({
-			id: el.id,
-			character: el.character,
-			profileImageUrl: this.utilService.getFullImageUrlPath(el.profile_path),
-			gender: el.gender === 2 ? GENDER.MALE : GENDER.FEMALE
-		}));
+		return this.entertainmentLookupService.getTopBilledCast();
 	}
 
 	async getFeaturedCrewMembers(): Promise<Crew[] | null> {
-		const { data } = await firstValueFrom(
-			this.httpService.get<{ id: number; crew: TheOpenMovieDatabaseMovieCrew[] }>(
-				'https://api.themoviedb.org/3/movie/19995/credits?language=en-U',
-				{
-					headers: {
-						Accept: 'application/json',
-						Authorization:
-							// eslint-disable-next-line max-len
-							'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1NDMwNWQxNmE1ZThkN2E3ZWMwZmM2NTk5MzZiY2EzMCIsInN1YiI6IjViMzE0MjQ1OTI1MTQxM2M5MTAwNTIwNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.iqdLKFCSgeWG3SYso7Rqj297FORviPf9hDdn2kKygTA'
-					}
-				}
-			)
-		);
-
-		// Get the the crew members we are interested in and only get the first 6
-		const filteredCrewByJob = data.crew
-			.filter((crew) => {
-				return (
-					crew.job === 'Director' ||
-					crew.job === 'Screenplay' ||
-					crew.job === 'Writer' ||
-					crew.job === 'Story'
-				);
-			})
-			.slice(0, 6);
-
-		const featuredCrewMembers: Crew[] = [];
-
-		/*
-
-		******************************************
-		Creating the featured crew members:
-		******************************************
-
-		- The filteredCrewByJob can contain duplicate crew
-
-		- For each "job" assigned to the crew member it has it's own entry added
-
-		- To ensure we only display one crew member at a time we created a new object and that has a "roles" property which
-			gets all the roles for that user and joins them together e.g. "Writer, Directory, Story"
-
-		*/
-
-		filteredCrewByJob.forEach((member) => {
-			if (featuredCrewMembers.find((element) => element.name === member.name) === undefined) {
-				featuredCrewMembers.push({
-					name: member.name,
-					roles: [
-						...new Set([...filteredCrewByJob.filter((i) => i.id === member.id).map((el) => el.job)])
-					].join(', ')
-				});
-			}
-		});
-
-		return featuredCrewMembers;
+		return this.entertainmentLookupService.getFeaturedCrewMembers();
 	}
 
 	async getKeywords(): Promise<Keyword[] | null> {
-		const { data } = await firstValueFrom(
-			this.httpService.get<TheOpenMovieDatabaseMovieKeywords>(
-				'https://api.themoviedb.org/3/movie/19995/keywords?language=en-U',
-				{
-					headers: {
-						Accept: 'application/json',
-						Authorization:
-							// eslint-disable-next-line max-len
-							'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1NDMwNWQxNmE1ZThkN2E3ZWMwZmM2NTk5MzZiY2EzMCIsInN1YiI6IjViMzE0MjQ1OTI1MTQxM2M5MTAwNTIwNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.iqdLKFCSgeWG3SYso7Rqj297FORviPf9hDdn2kKygTA'
-					}
-				}
-			)
-		);
-
-		return data.keywords;
+		return this.entertainmentLookupService.getKeywords();
 	}
 
 	async getSocials(): Promise<Social> {
-		const { data } = await firstValueFrom(
-			this.httpService.get<TheOpenMovieDatbaseExternalIds>(
-				'https://api.themoviedb.org/3/movie/19995/external_ids?language=en-U',
-				{
-					headers: {
-						Accept: 'application/json',
-						Authorization:
-							// eslint-disable-next-line max-len
-							'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1NDMwNWQxNmE1ZThkN2E3ZWMwZmM2NTk5MzZiY2EzMCIsInN1YiI6IjViMzE0MjQ1OTI1MTQxM2M5MTAwNTIwNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.iqdLKFCSgeWG3SYso7Rqj297FORviPf9hDdn2kKygTA'
-					}
-				}
-			)
-		);
-
-		return {
-			facebook: `https://www.facebook.com/${data.facebook_id}`,
-			homepage: ``,
-			instagram: `https://www.instagram.com/${data.facebook_id}`.toLowerCase(),
-			twitter: `https://www.twitter.com/${data.twitter_id}`
-		};
+		return this.entertainmentLookupService.getSocials();
 	}
 }

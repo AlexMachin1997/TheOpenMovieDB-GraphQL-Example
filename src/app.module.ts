@@ -2,6 +2,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 
+import { EntertainmentModule } from './entertainment/entertainment.module';
 import { MovieModule } from './movie/movie.module';
 import { UtilsModule } from './utils/utils.module';
 
@@ -39,7 +40,8 @@ import { UtilsModule } from './utils/utils.module';
 			]
 		}),
 		MovieModule,
-		UtilsModule
+		UtilsModule,
+		EntertainmentModule
 	]
 })
 export class AppModule {}
