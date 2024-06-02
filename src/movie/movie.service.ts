@@ -7,9 +7,11 @@ import { UtilsService } from 'src/utils/utils.service';
 import {
 	TheOpenMovieDatabaseMovie,
 	TheOpenMovieDatabaseMovieCast,
+	TheOpenMovieDatabaseMovieCrew,
+	TheOpenMovieDatabaseMovieKeywords,
 	TheOpenMovieDatabaseMovieReview
 } from './movie';
-import { BelongsToCollection, Cast, Movie, Review, GENDER } from '../graphql.schema';
+import { BelongsToCollection, Cast, Movie, Review, GENDER, Crew, Keyword } from '../graphql.schema';
 
 @Injectable()
 export class MovieService {
@@ -161,5 +163,81 @@ export class MovieService {
 			profileImageUrl: this.utilService.getFullImageUrlPath(el.profile_path),
 			gender: el.gender === 2 ? GENDER.MALE : GENDER.FEMALE
 		}));
+	}
+
+	async findFeaturedCrewMembers(): Promise<Crew[] | null> {
+		const { data } = await firstValueFrom(
+			this.httpService.get<{ id: number; crew: TheOpenMovieDatabaseMovieCrew[] }>(
+				'https://api.themoviedb.org/3/movie/19995/credits?language=en-U',
+				{
+					headers: {
+						Accept: 'application/json',
+						Authorization:
+							// eslint-disable-next-line max-len
+							'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1NDMwNWQxNmE1ZThkN2E3ZWMwZmM2NTk5MzZiY2EzMCIsInN1YiI6IjViMzE0MjQ1OTI1MTQxM2M5MTAwNTIwNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.iqdLKFCSgeWG3SYso7Rqj297FORviPf9hDdn2kKygTA'
+					}
+				}
+			)
+		);
+
+		// Get the the crew members we are interested in and only get the first 6
+		const filteredCrewByJob = data.crew
+			.filter((crew) => {
+				return (
+					crew.job === 'Director' ||
+					crew.job === 'Screenplay' ||
+					crew.job === 'Writer' ||
+					crew.job === 'Story'
+				);
+			})
+			.slice(0, 6);
+
+		const featuredCrewMembers: Crew[] = [];
+
+		/*
+
+		******************************************
+		Creating the featured crew members:
+		******************************************
+
+		- The filteredCrewByJob can contain duplicate crew
+
+		- For each "job" assigned to the crew member it has it's own entry added
+
+		- To ensure we only display one crew member at a time we created a new object and that has a "roles" property which
+			gets all the roles for that user and joins them together e.g. "Writer, Directory, Story"
+
+		*/
+
+		filteredCrewByJob.forEach((member) => {
+			if (featuredCrewMembers.find((element) => element.name === member.name) === undefined) {
+				featuredCrewMembers.push({
+					name: member.name,
+					roles: [
+						...new Set([...filteredCrewByJob.filter((i) => i.id === member.id).map((el) => el.job)])
+					].join(', ')
+				});
+			}
+		});
+
+		return featuredCrewMembers;
+	}
+
+	async findKeywords(): Promise<Keyword[] | null> {
+		const { data } = await firstValueFrom(
+			this.httpService.get<TheOpenMovieDatabaseMovieKeywords>(
+				'https://api.themoviedb.org/3/movie/19995/keywords?language=en-U',
+				{
+					headers: {
+						Accept: 'application/json',
+						Authorization:
+							// eslint-disable-next-line max-len
+							'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1NDMwNWQxNmE1ZThkN2E3ZWMwZmM2NTk5MzZiY2EzMCIsInN1YiI6IjViMzE0MjQ1OTI1MTQxM2M5MTAwNTIwNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.iqdLKFCSgeWG3SYso7Rqj297FORviPf9hDdn2kKygTA'
+					}
+				}
+			)
+		);
+
+		return data.keywords;
 	}
 }

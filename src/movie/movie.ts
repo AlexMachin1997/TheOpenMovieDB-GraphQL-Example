@@ -1,4 +1,4 @@
-import { Genre } from '../graphql.schema';
+import { Genre, Keyword } from '../graphql.schema';
 
 export interface TheOpenMovieDatabaseMovie {
 	adult: boolean;
@@ -44,7 +44,7 @@ export interface TheOpenMovieDatabaseMovieReview {
 	url: string;
 }
 
-export interface TheOpenMovieDatabaseMovieCast {
+export interface TheOpenMovieDatabaseMovieCastAndCrew {
 	adult: boolean;
 	gender: number;
 	id: number;
@@ -53,8 +53,21 @@ export interface TheOpenMovieDatabaseMovieCast {
 	original_name: string;
 	popularity: number;
 	profile_path: string;
+	credit_id: string;
+}
+
+export interface TheOpenMovieDatabaseMovieCast extends TheOpenMovieDatabaseMovieCastAndCrew {
 	cast_id: number;
 	character: string;
-	credit_id: string;
 	order: number;
+}
+
+export interface TheOpenMovieDatabaseMovieCrew extends TheOpenMovieDatabaseMovieCastAndCrew {
+	department: string;
+	job: string;
+}
+
+export interface TheOpenMovieDatabaseMovieKeywords {
+	id: number;
+	keywords: Keyword[];
 }
