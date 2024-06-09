@@ -62,3 +62,21 @@ export interface IExternalIdsQueryResponse {
 	instagram_id: string;
 	twitter_id: string;
 }
+
+export interface IVideosQueryResult {
+	iso_639_1: string;
+	iso_3166_1: string;
+	name: string;
+	key: string;
+	site: string;
+	size: number;
+	type: string;
+	official: boolean;
+	published_at: string;
+	id: string;
+}
+
+export interface IVdoesQueryResponse {
+	id: number;
+	results: IVideosQueryResult[];
+}

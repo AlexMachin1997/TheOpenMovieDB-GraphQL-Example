@@ -17,7 +17,7 @@ type Movie {
 	social: Social
 	topBilledCast: [Cast]
 	featuredCrew: [Crew]
-	featuredVideo: Video
+	trailerUrl: String
 	belongsToCollection: BelongsToCollection
 	tagline: String
 	runtime: String

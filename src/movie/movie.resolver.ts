@@ -12,36 +12,26 @@ export class MovieResolver {
 		return this.movieService.getMovie();
 	}
 
-	// Attach the review to the Movie response, requires an external lookup as the data
-	// isn't apart of the original /movie/:id query response
 	@ResolveField()
 	async review(): Promise<Review | null> {
 		return this.movieService.getReview();
 	}
 
-	// Attach the top billed cast to the Movie response, requires an external lookup as the data
-	// isn't apart of the original /movie/:id query response
 	@ResolveField()
 	async topBilledCast(): Promise<Cast[] | null> {
 		return this.movieService.getTopBilledCast();
 	}
 
-	// Attach the featured crew to the Movie response, requires an external lookup as the data
-	// isn't apart of the original /movie/:id query response
 	@ResolveField()
 	async featuredCrew(): Promise<Crew[] | null> {
 		return this.movieService.getFeaturedCrewMembers();
 	}
 
-	// Attach the keywords to the Movie response, requires an external lookup as the data
-	// isn't apart of the original /movie/:id query response
 	@ResolveField()
 	async keywords(): Promise<Keyword[] | null> {
 		return this.movieService.getKeywords();
 	}
 
-	// Attach the social to the Movie response, requires an external lookup as the data
-	// isn't apart of the original /movie/:id query response
 	@ResolveField()
 	async social(@Parent() movie: Movie): Promise<Social | null> {
 		// Get the external social url (The homepage isn't set here as it's already apart of the original Movie query)
@@ -49,7 +39,14 @@ export class MovieResolver {
 
 		return {
 			...socials,
+
+			// Since the homepage is apart of the original query append it to the homepage property
 			homepage: movie.homepage
 		};
+	}
+
+	@ResolveField()
+	async trailerUrl(): Promise<string | null> {
+		return this.movieService.getTrailerUrl();
 	}
 }

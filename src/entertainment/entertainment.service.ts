@@ -21,7 +21,8 @@ import {
 	ICreditsQueryResponse,
 	IExternalIdsQueryResponse,
 	IKeywordsQueryResponse,
-	IReviewQuery
+	IReviewQuery,
+	IVdoesQueryResponse
 } from './entertainment';
 
 @Injectable()
@@ -232,4 +233,32 @@ export class EntertainmentService {
 
 		return originalLanguage;
 	};
+
+	async getTrailerUrl(): Promise<string | null> {
+		const { data } = await firstValueFrom(
+			this.httpService.get<IVdoesQueryResponse>(
+				'https://api.themoviedb.org/3/movie/19995/videos?language=en-U',
+				{
+					headers: {
+						Accept: 'application/json',
+						Authorization:
+							// eslint-disable-next-line max-len
+							'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1NDMwNWQxNmE1ZThkN2E3ZWMwZmM2NTk5MzZiY2EzMCIsInN1YiI6IjViMzE0MjQ1OTI1MTQxM2M5MTAwNTIwNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.iqdLKFCSgeWG3SYso7Rqj297FORviPf9hDdn2kKygTA'
+					}
+				}
+			)
+		);
+
+		if (data.results.length === 0) return null;
+
+		// Get the first video which is a "YouTube" and has a type of "Trailer"
+		const youtubeTrailerVideos = data.results.find(
+			(el) => el.site === 'YouTube' && el.type === 'Trailer'
+		);
+
+		// If there is no trailer just return null
+		if (typeof youtubeTrailerVideos === 'undefined') return null;
+
+		return `https://www.youtube.com/watch?v=${youtubeTrailerVideos.key}`;
+	}
 }

@@ -89,4 +89,8 @@ export class MovieService {
 	async getSocials(): Promise<Social> {
 		return this.entertainmentService.getSocials();
 	}
+
+	async getTrailerUrl(): Promise<string | null> {
+		return this.entertainmentService.getTrailerUrl();
+	}
 }
