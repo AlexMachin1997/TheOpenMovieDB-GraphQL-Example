@@ -6,15 +6,21 @@ import { EntertainmentService } from 'src/entertainment/entertainment.service';
 import { UtilsService } from 'src/utils/utils.service';
 
 import { TheOpenMovieDatabaseMovie } from './movie';
-import { BelongsToCollection, Cast, Movie, Review, Crew, Keyword, Social } from '../graphql.schema';
+import { Cast, Movie, Review, Crew, Keyword, Social } from '../graphql.schema';
 
 @Injectable()
 export class MovieService {
 	constructor(
 		private readonly httpService: HttpService,
 		private readonly utilService: UtilsService,
-		private readonly entertainmentLookupService: EntertainmentService
+		private readonly entertainmentService: EntertainmentService
 	) {}
+
+	private getMovieRunTime(runtime: number): `${number}h ${number}m` {
+		const numberOfHours = Math.floor(runtime / 60);
+		const numberOfMinutes = runtime % 60;
+		return `${numberOfHours}h ${numberOfMinutes}m`;
+	}
 
 	async getMovie(): Promise<Movie> {
 		const { data } = await firstValueFrom(
@@ -31,41 +37,6 @@ export class MovieService {
 			)
 		);
 
-		const getRunTime = (): `${number}h ${number}m` => {
-			const numberOfHours = Math.floor(data.runtime / 60);
-			const numberOfMinutes = data.runtime % 60;
-			return `${numberOfHours}h ${numberOfMinutes}m`;
-		};
-
-		const getOriginalLanguage = () => {
-			if (data.original_language.length !== 0 && data.spoken_languages.length === 0) {
-				const foundFriendlyLanguage = data.spoken_languages.find(
-					(el) => el.iso_639_1 === data.original_language
-				);
-
-				if (typeof foundFriendlyLanguage !== 'undefined') {
-					return foundFriendlyLanguage.name;
-				}
-
-				return data.original_language;
-			}
-
-			return data.original_language;
-		};
-
-		const getCollection = (): BelongsToCollection | null => {
-			if (data.belongs_to_collection !== null) {
-				return {
-					backgroundUrl: this.utilService.getFullImageUrlPath(data.belongs_to_collection.backdrop),
-					id: data.belongs_to_collection.id,
-					name: data.belongs_to_collection.name,
-					posterUrl: data.belongs_to_collection.poster_path
-				};
-			}
-
-			return data.belongs_to_collection;
-		};
-
 		const movie: Movie = {
 			// Common "entertainment" properties
 			id: data.id,
@@ -75,7 +46,10 @@ export class MovieService {
 			posterUrl: this.utilService.getFullImageUrlPath(data.poster_path),
 			genres: data.genres,
 			homepage: data.homepage,
-			originalLanguage: getOriginalLanguage(),
+			originalLanguage: this.entertainmentService.getOriginalLanguage({
+				originalLanguage: data.original_language,
+				spokenLanguages: data.spoken_languages
+			}),
 			productionCompanies: data.production_companies.map((productionCompany) => ({
 				id: productionCompany.id,
 				logo: this.utilService.getFullImageUrlPath(productionCompany.logo_path),
@@ -85,10 +59,10 @@ export class MovieService {
 			voteAverage: data.vote_average,
 			status: data.status,
 			tagline: data.tagline,
+			belongsToCollection: this.entertainmentService.getCollection(data.belongs_to_collection),
 
 			// Movie specific properties
-			belongsToCollection: getCollection(),
-			runtime: getRunTime(),
+			runtime: this.getMovieRunTime(data.runtime),
 			budget: this.utilService.convertNumberToLocalCurrency(data.budget),
 			revenue: this.utilService.convertNumberToLocalCurrency(data.revenue)
 		};
@@ -97,22 +71,22 @@ export class MovieService {
 	}
 
 	async getReview(): Promise<Review | null> {
-		return this.entertainmentLookupService.getReview();
+		return this.entertainmentService.getReview();
 	}
 
 	async getTopBilledCast(): Promise<Cast[] | null> {
-		return this.entertainmentLookupService.getTopBilledCast();
+		return this.entertainmentService.getTopBilledCast();
 	}
 
 	async getFeaturedCrewMembers(): Promise<Crew[] | null> {
-		return this.entertainmentLookupService.getFeaturedCrewMembers();
+		return this.entertainmentService.getFeaturedCrewMembers();
 	}
 
 	async getKeywords(): Promise<Keyword[] | null> {
-		return this.entertainmentLookupService.getKeywords();
+		return this.entertainmentService.getKeywords();
 	}
 
 	async getSocials(): Promise<Social> {
-		return this.entertainmentLookupService.getSocials();
+		return this.entertainmentService.getSocials();
 	}
 }

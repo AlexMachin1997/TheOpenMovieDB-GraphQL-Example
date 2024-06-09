@@ -1,9 +1,22 @@
 import { Genre, Keyword } from '../graphql.schema';
 
+export interface TheOpenMovieDatabaseBelongsToCollection {
+	id: number;
+	name: string;
+	poster_path: string;
+	backdrop: string;
+}
+
+export interface TheOpenMovieDatabaseSpokenLanguages {
+	english_name: string;
+	iso_639_1: string;
+	name: string;
+}
+
 export interface TheOpenMovieDatabaseMovie {
 	adult: boolean;
 	backdrop_path: string;
-	belongs_to_collection: { id: number; name: string; poster_path: string; backdrop: string } | null;
+	belongs_to_collection: TheOpenMovieDatabaseBelongsToCollection | null;
 	budget: number;
 	genres: Genre[];
 	homepage: string;
@@ -20,7 +33,7 @@ export interface TheOpenMovieDatabaseMovie {
 	release_date: string;
 	revenue: number;
 	runtime: number;
-	spoken_languages: { english_name: string; iso_639_1: string; name: string }[];
+	spoken_languages: TheOpenMovieDatabaseSpokenLanguages[];
 	status: string;
 	tagline: string;
 	title: string;

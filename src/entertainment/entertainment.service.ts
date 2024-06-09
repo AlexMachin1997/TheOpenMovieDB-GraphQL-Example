@@ -2,7 +2,19 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
-import { Cast, Crew, GENDER, Keyword, Review, Social } from 'src/graphql.schema';
+import {
+	BelongsToCollection,
+	Cast,
+	Crew,
+	GENDER,
+	Keyword,
+	Review,
+	Social
+} from 'src/graphql.schema';
+import {
+	TheOpenMovieDatabaseBelongsToCollection,
+	TheOpenMovieDatabaseSpokenLanguages
+} from 'src/movie/movie';
 import { UtilsService } from 'src/utils/utils.service';
 
 import {
@@ -183,4 +195,41 @@ export class EntertainmentService {
 			twitter: `https://www.twitter.com/${data.twitter_id}`
 		};
 	}
+
+	getCollection = (
+		collection: null | TheOpenMovieDatabaseBelongsToCollection
+	): BelongsToCollection | null => {
+		if (collection !== null) {
+			return {
+				backgroundUrl: this.utilService.getFullImageUrlPath(collection.poster_path),
+				id: collection.id,
+				name: collection.name,
+				posterUrl: collection.poster_path
+			};
+		}
+
+		return collection;
+	};
+
+	getOriginalLanguage = ({
+		originalLanguage,
+		spokenLanguages
+	}: {
+		originalLanguage: string;
+		spokenLanguages: TheOpenMovieDatabaseSpokenLanguages[];
+	}) => {
+		if (originalLanguage.length !== 0 && spokenLanguages.length === 0) {
+			const foundFriendlyLanguage = spokenLanguages.find(
+				(spokenLanguage) => spokenLanguage.iso_639_1 === originalLanguage
+			);
+
+			if (typeof foundFriendlyLanguage !== 'undefined') {
+				return foundFriendlyLanguage.name;
+			}
+
+			return originalLanguage;
+		}
+
+		return originalLanguage;
+	};
 }
