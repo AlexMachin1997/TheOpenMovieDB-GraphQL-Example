@@ -5,16 +5,7 @@ import { firstValueFrom } from 'rxjs';
 
 import { TheOpenMovieDatabaseShow } from './show';
 import { EntertainmentService } from '../entertainment/entertainment.service';
-import {
-	Cast,
-	Crew,
-	CurrentSeason,
-	ENTERTAINMENT_TYPES,
-	Keyword,
-	Review,
-	Show,
-	Social
-} from '../graphql.schema';
+import { CurrentSeason, ENTERTAINMENT_TYPES } from '../graphql.schema';
 import { UtilsService } from '../utils/utils.service';
 
 @Injectable()
@@ -46,7 +37,7 @@ export class ShowService {
 		};
 	}
 
-	async getShow(showId: number): Promise<Show> {
+	async getShow(showId: number) {
 		const { data } = await firstValueFrom(
 			this.httpService.get<TheOpenMovieDatabaseShow>(
 				`https://api.themoviedb.org/3/tv/${showId}?language=en-U`,
@@ -61,7 +52,7 @@ export class ShowService {
 			)
 		);
 
-		const show: Show = {
+		return {
 			// Common "entertainment" properties
 			id: data.id,
 			name: data.name.length === 0 ? data.original_name : data.name,
@@ -89,47 +80,45 @@ export class ShowService {
 				seasons: data.seasons
 			})
 		};
-
-		return show;
 	}
 
-	async getReview(showId: number): Promise<Review | null> {
+	async getReview(showId: number) {
 		return this.entertainmentService.getReview({
 			entertainmentId: showId,
 			entertainmentType: ENTERTAINMENT_TYPES.TV
 		});
 	}
 
-	async getTopBilledCast(showId: number): Promise<Cast[] | null> {
+	async getTopBilledCast(showId: number) {
 		return this.entertainmentService.getTopBilledCast({
 			entertainmentId: showId,
 			entertainmentType: ENTERTAINMENT_TYPES.TV
 		});
 	}
 
-	async getFeaturedCrewMembers(showId: number): Promise<Crew[] | null> {
+	async getFeaturedCrewMembers(showId: number) {
 		return this.entertainmentService.getFeaturedCrewMembers({
 			entertainmentId: showId,
 			entertainmentType: ENTERTAINMENT_TYPES.TV
 		});
 	}
 
-	async getKeywords(showId: number): Promise<Keyword[] | null> {
+	async getKeywords(showId: number) {
 		return this.entertainmentService.getKeywords({
 			entertainmentId: showId,
 			entertainmentType: ENTERTAINMENT_TYPES.TV
 		});
 	}
 
-	async getSocials(showId: number): Promise<Social> {
+	async getSocials(showId: number) {
 		return this.entertainmentService.getSocials({
 			entertainmentId: showId,
 			entertainmentType: ENTERTAINMENT_TYPES.TV
 		});
 	}
 
-	async getTrailerUrl(showId: number): Promise<string | null> {
-		return this.entertainmentService.getTrailerUrl({
+	async getYouTubeVideo(showId: number) {
+		return this.entertainmentService.getYouTubeVideo({
 			entertainmentId: showId,
 			entertainmentType: ENTERTAINMENT_TYPES.TV
 		});

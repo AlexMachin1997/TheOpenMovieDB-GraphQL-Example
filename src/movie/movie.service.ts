@@ -2,11 +2,11 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
-import { EntertainmentService } from 'src/entertainment/entertainment.service';
-import { UtilsService } from 'src/utils/utils.service';
 
 import { TheOpenMovieDatabaseMovie } from './movie';
-import { Cast, Movie, Review, Crew, Keyword, Social, ENTERTAINMENT_TYPES } from '../graphql.schema';
+import { EntertainmentService } from '../entertainment/entertainment.service';
+import { ENTERTAINMENT_TYPES } from '../graphql.schema';
+import { UtilsService } from '../utils/utils.service';
 
 @Injectable()
 export class MovieService {
@@ -22,7 +22,7 @@ export class MovieService {
 		return `${numberOfHours}h ${numberOfMinutes}m`;
 	}
 
-	async getMovie(movieId: number): Promise<Movie> {
+	async getMovie(movieId: number) {
 		const { data } = await firstValueFrom(
 			this.httpService.get<TheOpenMovieDatabaseMovie>(
 				`https://api.themoviedb.org/3/movie/${movieId}?language=en-U`,
@@ -37,7 +37,7 @@ export class MovieService {
 			)
 		);
 
-		const movie: Movie = {
+		return {
 			// Common "entertainment" properties
 			id: data.id,
 			name: data.title === '' || data.title.length === 0 ? data.original_title : data.title,
@@ -66,47 +66,45 @@ export class MovieService {
 			budget: this.utilService.convertNumberToLocalCurrency(data.budget),
 			revenue: this.utilService.convertNumberToLocalCurrency(data.revenue)
 		};
-
-		return movie;
 	}
 
-	async getReview(movieId: number): Promise<Review | null> {
+	async getReview(movieId: number) {
 		return this.entertainmentService.getReview({
 			entertainmentId: movieId,
 			entertainmentType: ENTERTAINMENT_TYPES.MOVIE
 		});
 	}
 
-	async getTopBilledCast(movieId: number): Promise<Cast[] | null> {
+	async getTopBilledCast(movieId: number) {
 		return this.entertainmentService.getTopBilledCast({
 			entertainmentId: movieId,
 			entertainmentType: ENTERTAINMENT_TYPES.MOVIE
 		});
 	}
 
-	async getFeaturedCrewMembers(movieId: number): Promise<Crew[] | null> {
+	async getFeaturedCrewMembers(movieId: number) {
 		return this.entertainmentService.getFeaturedCrewMembers({
 			entertainmentId: movieId,
 			entertainmentType: ENTERTAINMENT_TYPES.MOVIE
 		});
 	}
 
-	async getKeywords(movieId: number): Promise<Keyword[] | null> {
+	async getKeywords(movieId: number) {
 		return this.entertainmentService.getKeywords({
 			entertainmentId: movieId,
 			entertainmentType: ENTERTAINMENT_TYPES.MOVIE
 		});
 	}
 
-	async getSocials(movieId: number): Promise<Social> {
+	async getSocials(movieId: number) {
 		return this.entertainmentService.getSocials({
 			entertainmentId: movieId,
 			entertainmentType: ENTERTAINMENT_TYPES.MOVIE
 		});
 	}
 
-	async getTrailerUrl(movieId: number): Promise<string | null> {
-		return this.entertainmentService.getTrailerUrl({
+	async getYouTubeVideo(movieId: number) {
+		return this.entertainmentService.getYouTubeVideo({
 			entertainmentId: movieId,
 			entertainmentType: ENTERTAINMENT_TYPES.MOVIE
 		});

@@ -32,7 +32,7 @@ type Show {
 	social: Social
 	topBilledCast: [Cast]
 	featuredCrew: [Crew]
-	trailerUrl: String
+	youtubeVideo: Video
 	belongsToCollection: BelongsToCollection
 	tagline: String
 	runtime: String

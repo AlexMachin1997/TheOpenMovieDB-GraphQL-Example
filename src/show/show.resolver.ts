@@ -1,39 +1,39 @@
-import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Resolver, Query, ResolveField, Parent, Args } from '@nestjs/graphql';
 
 import { ShowService } from './show.service';
-import { Cast, Crew, Keyword, Review, Show, Social } from '../graphql.schema';
+import { Show } from '../graphql.schema';
 
-@Resolver()
+@Resolver('Show')
 export class ShowResolver {
 	constructor(private readonly showService: ShowService) {}
 
 	@Query()
-	async show(@Args('id') showId: number): Promise<Show> {
+	async show(@Args('id') showId: number) {
 		return this.showService.getShow(showId);
 	}
 
 	@ResolveField()
-	async review(@Parent() show: Show): Promise<Review | null> {
+	async review(@Parent() show: Show) {
 		return this.showService.getReview(show.id ?? 0);
 	}
 
 	@ResolveField()
-	async topBilledCast(@Parent() show: Show): Promise<Cast[] | null> {
+	async topBilledCast(@Parent() show: Show) {
 		return this.showService.getTopBilledCast(show.id ?? 0);
 	}
 
 	@ResolveField()
-	async featuredCrew(@Parent() show: Show): Promise<Crew[] | null> {
+	async featuredCrew(@Parent() show: Show) {
 		return this.showService.getFeaturedCrewMembers(show.id ?? 0);
 	}
 
 	@ResolveField()
-	async keywords(@Parent() show: Show): Promise<Keyword[] | null> {
+	async keywords(@Parent() show: Show) {
 		return this.showService.getKeywords(show.id ?? 0);
 	}
 
 	@ResolveField()
-	async social(@Parent() show: Show): Promise<Social | null> {
+	async social(@Parent() show: Show) {
 		// Get the external social url (The homepage isn't set here as it's already apart of the original Show query)
 		const socials = await this.showService.getSocials(show.id ?? 0);
 
@@ -46,7 +46,7 @@ export class ShowResolver {
 	}
 
 	@ResolveField()
-	async trailerUrl(@Parent() show: Show): Promise<string | null> {
-		return this.showService.getTrailerUrl(show.id ?? 0);
+	async youtubeVideo(@Parent() show: Show) {
+		return this.showService.getYouTubeVideo(show.id ?? 0);
 	}
 }

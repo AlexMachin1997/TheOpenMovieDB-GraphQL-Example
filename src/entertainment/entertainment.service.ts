@@ -10,7 +10,8 @@ import {
 	GENDER,
 	Keyword,
 	Review,
-	Social
+	Social,
+	Video
 } from 'src/graphql.schema';
 import {
 	TheOpenMovieDatabaseBelongsToCollection,
@@ -256,10 +257,10 @@ export class EntertainmentService {
 		return originalLanguage;
 	};
 
-	async getTrailerUrl({
+	async getYouTubeVideo({
 		entertainmentType,
 		entertainmentId
-	}: IEntertainmentCommonArguments): Promise<string | null> {
+	}: IEntertainmentCommonArguments): Promise<Video | null> {
 		const { data } = await firstValueFrom(
 			this.httpService.get<IVdoesQueryResponse>(
 				`https://api.themoviedb.org/3/${entertainmentType.toLowerCase()}/${entertainmentId}/videos?language=en-U`,
@@ -276,14 +277,39 @@ export class EntertainmentService {
 
 		if (data.results.length === 0) return null;
 
-		// Get the first video which is a "YouTube" and has a type of "Trailer"
-		const youtubeTrailerVideos = data.results.find(
-			(el) => el.site === 'YouTube' && el.type === 'Trailer'
-		);
+		// Since the user-interface will be displaying this via an iframe limit the video to "YouTube" clips
+		const youtubeVideos = data.results.filter((video) => video.site === 'YouTube');
 
-		// If there is no trailer just return null
-		if (typeof youtubeTrailerVideos === 'undefined') return null;
+		// Get all the first "Trailer" available
+		const trailer = youtubeVideos.find((youtubeVideo) => youtubeVideo.type === 'Trailer');
 
-		return `https://www.youtube.com/watch?v=${youtubeTrailerVideos.key}`;
+		// Get all the first "Clip" available
+		const clip = youtubeVideos.find((youtubeVideo) => youtubeVideo.type === 'Clip');
+
+		// Get the most recent Opening Credits (Works well for shows such as "One Piece")
+		const openingCredit = youtubeVideos
+			.filter((el) => el.type === 'Opening Credits')
+			.sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime())[0];
+
+		const getYoutubeVideoUrl = (key: string) => {
+			return `https://www.youtube.com/watch?v=${key}`;
+		};
+
+		// If there is a "Trailer" use that..
+		if (typeof trailer !== 'undefined') {
+			return { ...trailer, url: getYoutubeVideoUrl(trailer.key) };
+		}
+
+		// If there is a "Clip" use that....
+		if (typeof clip !== 'undefined') {
+			return { ...clip, url: getYoutubeVideoUrl(clip.key) };
+		}
+
+		// If there is an "Opening Credit" use that...
+		if (typeof openingCredit !== 'undefined') {
+			return { ...openingCredit, url: getYoutubeVideoUrl(openingCredit.key) };
+		}
+
+		return null;
 	}
 }

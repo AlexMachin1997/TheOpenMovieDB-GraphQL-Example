@@ -47,7 +47,7 @@ export interface Movie {
     social?: Nullable<Social>;
     topBilledCast?: Nullable<Nullable<Cast>[]>;
     featuredCrew?: Nullable<Nullable<Crew>[]>;
-    trailerUrl?: Nullable<string>;
+    youtubeVideo?: Nullable<Video>;
     belongsToCollection?: Nullable<BelongsToCollection>;
     tagline?: Nullable<string>;
     runtime?: Nullable<string>;
@@ -98,6 +98,7 @@ export interface Person {
 export interface IQuery {
     __typename?: 'IQuery';
     movie(id: number): Nullable<Movie> | Promise<Nullable<Movie>>;
+    show(id: number): Nullable<Show> | Promise<Nullable<Show>>;
 }
 
 export interface CurrentSeason {
@@ -137,7 +138,7 @@ export interface Show {
     social?: Nullable<Social>;
     topBilledCast?: Nullable<Nullable<Cast>[]>;
     featuredCrew?: Nullable<Nullable<Crew>[]>;
-    trailerUrl?: Nullable<string>;
+    youtubeVideo?: Nullable<Video>;
     belongsToCollection?: Nullable<BelongsToCollection>;
     tagline?: Nullable<string>;
     runtime?: Nullable<string>;
