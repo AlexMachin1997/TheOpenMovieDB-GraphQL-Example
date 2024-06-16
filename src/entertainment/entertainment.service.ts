@@ -17,11 +17,11 @@ import {
 	TheOpenMovieDatabaseBelongsToCollection,
 	TheOpenMovieDatabaseSpokenLanguages
 } from 'src/movie/movie';
+import { SocialsService } from 'src/socials/socials.service';
 import { UtilsService } from 'src/utils/utils.service';
 
 import {
 	ICreditsQueryResponse,
-	IExternalIdsQueryResponse,
 	IKeywordsQueryResponse,
 	IReviewQuery,
 	IVdoesQueryResponse
@@ -37,7 +37,8 @@ interface IEntertainmentCommonArguments {
 export class EntertainmentService {
 	constructor(
 		private readonly httpService: HttpService,
-		private readonly utilService: UtilsService
+		private readonly utilService: UtilsService,
+		private readonly socialsService: SocialsService
 	) {}
 
 	async getReview({
@@ -198,26 +199,10 @@ export class EntertainmentService {
 		entertainmentType,
 		entertainmentId
 	}: IEntertainmentCommonArguments): Promise<Social> {
-		const { data } = await firstValueFrom(
-			this.httpService.get<IExternalIdsQueryResponse>(
-				`https://api.themoviedb.org/3/${entertainmentType.toLowerCase()}/${entertainmentId}/external_ids?language=en-U`,
-				{
-					headers: {
-						Accept: 'application/json',
-						Authorization:
-							// eslint-disable-next-line max-len
-							'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1NDMwNWQxNmE1ZThkN2E3ZWMwZmM2NTk5MzZiY2EzMCIsInN1YiI6IjViMzE0MjQ1OTI1MTQxM2M5MTAwNTIwNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.iqdLKFCSgeWG3SYso7Rqj297FORviPf9hDdn2kKygTA'
-					}
-				}
-			)
-		);
-
-		return {
-			facebook: `https://www.facebook.com/${data.facebook_id}`,
-			homepage: ``,
-			instagram: `https://www.instagram.com/${data.facebook_id}`.toLowerCase(),
-			twitter: `https://www.twitter.com/${data.twitter_id}`
-		};
+		return this.socialsService.getSocials({
+			resourceId: entertainmentId,
+			resourceType: entertainmentType
+		});
 	}
 
 	getCollection = (

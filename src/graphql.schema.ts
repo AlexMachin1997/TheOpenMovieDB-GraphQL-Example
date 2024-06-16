@@ -99,6 +99,7 @@ export interface IQuery {
     __typename?: 'IQuery';
     movie(id: number): Nullable<Movie> | Promise<Nullable<Movie>>;
     show(id: number): Nullable<Show> | Promise<Nullable<Show>>;
+    person(id: number): Nullable<Person> | Promise<Nullable<Person>>;
 }
 
 export interface CurrentSeason {
@@ -223,6 +224,7 @@ export interface Social {
     instagram?: Nullable<string>;
     twitter?: Nullable<string>;
     homepage?: Nullable<string>;
+    tiktok?: Nullable<string>;
 }
 
 export interface Video {

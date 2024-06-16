@@ -3,4 +3,5 @@ type Social {
 	instagram: String
 	twitter: String
 	homepage: String
+	tiktok: String
 }

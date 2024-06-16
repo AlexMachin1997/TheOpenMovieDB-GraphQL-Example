@@ -1,4 +1,5 @@
 type Query {
 	movie(id: Int!): Movie
 	show(id: Int!): Show
+	person(id: Int!): Person
 }

@@ -54,15 +54,6 @@ export interface IKeywordsQueryResponse {
 	keywords: Keyword[];
 }
 
-export interface IExternalIdsQueryResponse {
-	id: number;
-	imdb_id: string;
-	wikidata_id: string;
-	facebook_id: string;
-	instagram_id: string;
-	twitter_id: string;
-}
-
 export interface IVideosQueryResult {
 	iso_639_1: string;
 	iso_3166_1: string;

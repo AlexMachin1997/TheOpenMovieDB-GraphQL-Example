@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 
 import { TheOpenMovieDatabasePerson, TheOpenMovieDatabasePersonGender } from './person';
-import { Person, Social } from '../graphql.schema';
 import { SocialsService } from '../socials/socials.service';
 import { UtilsService } from '../utils/utils.service';
 
@@ -61,7 +60,7 @@ export class PersonService {
 		}
 	}
 
-	async getPerson(personId: number): Promise<Person> {
+	async getPerson(personId: number) {
 		const { data } = await firstValueFrom(
 			this.httpService.get<TheOpenMovieDatabasePerson>(
 				`https://api.themoviedb.org/3/person/${personId}?language=en-U`,
@@ -90,7 +89,7 @@ export class PersonService {
 		};
 	}
 
-	async getSocials(personId: number): Promise<Social> {
+	async getSocials(personId: number) {
 		return this.socialService.getSocials({
 			resourceId: personId,
 			resourceType: 'PERSON'

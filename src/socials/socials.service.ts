@@ -16,8 +16,6 @@ export class SocialsService {
 		resourceType: ENTERTAINMENT_TYPES | 'PERSON';
 		resourceId: number;
 	}): Promise<Social> {
-		console.log('getting socials..');
-
 		const { data } = await firstValueFrom(
 			this.httpService.get<IExternalIdsQueryResponse>(
 				`https://api.themoviedb.org/3/${resourceType.toLowerCase()}/${resourceId}/external_ids?language=en-U`,
@@ -32,12 +30,34 @@ export class SocialsService {
 			)
 		);
 
+		console.log('social', data);
+
+		let facebook = null;
+		let instagram = null;
+		let twitter = null;
+		let tiktok = null;
+
+		if (data.facebook_id) {
+			facebook = `https://www.facebook.com/${data.facebook_id}`;
+		}
+
+		if (data.instagram_id) {
+			instagram = `https://www.instagram.com/${data.instagram_id}`.toLowerCase();
+		}
+
+		if (data.twitter_id) {
+			twitter = `https://www.twitter.com/${data.twitter_id}`;
+		}
+
+		if (data.tiktok_id) {
+			tiktok = `https://www.tiktok.com/@${data.tiktok_id}/`;
+		}
+
 		return {
-			facebook: `https://www.facebook.com/${data.facebook_id}`,
-			homepage: ``,
-			instagram: `https://www.instagram.com/${data.instagram_id}`.toLowerCase(),
-			twitter: `https://www.twitter.com/${data.twitter_id}`
-			// tiktok: `https://www.tiktok.com/@${data.tiktok_id}/`
+			facebook,
+			instagram,
+			twitter,
+			tiktok
 		};
 	}
 }
