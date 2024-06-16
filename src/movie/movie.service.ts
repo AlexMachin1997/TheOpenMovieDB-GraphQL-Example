@@ -6,7 +6,7 @@ import { EntertainmentService } from 'src/entertainment/entertainment.service';
 import { UtilsService } from 'src/utils/utils.service';
 
 import { TheOpenMovieDatabaseMovie } from './movie';
-import { Cast, Movie, Review, Crew, Keyword, Social } from '../graphql.schema';
+import { Cast, Movie, Review, Crew, Keyword, Social, ENTERTAINMENT_TYPES } from '../graphql.schema';
 
 @Injectable()
 export class MovieService {
@@ -22,10 +22,10 @@ export class MovieService {
 		return `${numberOfHours}h ${numberOfMinutes}m`;
 	}
 
-	async getMovie(): Promise<Movie> {
+	async getMovie(movieId: number): Promise<Movie> {
 		const { data } = await firstValueFrom(
 			this.httpService.get<TheOpenMovieDatabaseMovie>(
-				'https://api.themoviedb.org/3/movie/19995?language=en-U',
+				`https://api.themoviedb.org/3/movie/${movieId}?language=en-U`,
 				{
 					headers: {
 						Accept: 'application/json',
@@ -70,27 +70,45 @@ export class MovieService {
 		return movie;
 	}
 
-	async getReview(): Promise<Review | null> {
-		return this.entertainmentService.getReview();
+	async getReview(movieId: number): Promise<Review | null> {
+		return this.entertainmentService.getReview({
+			entertainmentId: movieId,
+			entertainmentType: ENTERTAINMENT_TYPES.MOVIE
+		});
 	}
 
-	async getTopBilledCast(): Promise<Cast[] | null> {
-		return this.entertainmentService.getTopBilledCast();
+	async getTopBilledCast(movieId: number): Promise<Cast[] | null> {
+		return this.entertainmentService.getTopBilledCast({
+			entertainmentId: movieId,
+			entertainmentType: ENTERTAINMENT_TYPES.MOVIE
+		});
 	}
 
-	async getFeaturedCrewMembers(): Promise<Crew[] | null> {
-		return this.entertainmentService.getFeaturedCrewMembers();
+	async getFeaturedCrewMembers(movieId: number): Promise<Crew[] | null> {
+		return this.entertainmentService.getFeaturedCrewMembers({
+			entertainmentId: movieId,
+			entertainmentType: ENTERTAINMENT_TYPES.MOVIE
+		});
 	}
 
-	async getKeywords(): Promise<Keyword[] | null> {
-		return this.entertainmentService.getKeywords();
+	async getKeywords(movieId: number): Promise<Keyword[] | null> {
+		return this.entertainmentService.getKeywords({
+			entertainmentId: movieId,
+			entertainmentType: ENTERTAINMENT_TYPES.MOVIE
+		});
 	}
 
-	async getSocials(): Promise<Social> {
-		return this.entertainmentService.getSocials();
+	async getSocials(movieId: number): Promise<Social> {
+		return this.entertainmentService.getSocials({
+			entertainmentId: movieId,
+			entertainmentType: ENTERTAINMENT_TYPES.MOVIE
+		});
 	}
 
-	async getTrailerUrl(): Promise<string | null> {
-		return this.entertainmentService.getTrailerUrl();
+	async getTrailerUrl(movieId: number): Promise<string | null> {
+		return this.entertainmentService.getTrailerUrl({
+			entertainmentId: movieId,
+			entertainmentType: ENTERTAINMENT_TYPES.MOVIE
+		});
 	}
 }

@@ -131,13 +131,13 @@ export interface Show {
     releaseDate?: Nullable<string>;
     voteAverage?: Nullable<number>;
     status?: Nullable<string>;
-    reviews?: Nullable<Nullable<Review>[]>;
+    review?: Nullable<Review>;
     recommendations?: Nullable<Nullable<Recommendation>[]>;
     keywords?: Nullable<Nullable<Keyword>[]>;
     social?: Nullable<Social>;
-    featuredCast?: Nullable<Nullable<Cast>[]>;
+    topBilledCast?: Nullable<Nullable<Cast>[]>;
     featuredCrew?: Nullable<Nullable<Crew>[]>;
-    featuredVideo?: Nullable<Video>;
+    trailerUrl?: Nullable<string>;
     belongsToCollection?: Nullable<BelongsToCollection>;
     tagline?: Nullable<string>;
     runtime?: Nullable<string>;

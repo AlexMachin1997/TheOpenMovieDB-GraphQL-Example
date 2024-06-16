@@ -6,6 +6,7 @@ import {
 	BelongsToCollection,
 	Cast,
 	Crew,
+	ENTERTAINMENT_TYPES,
 	GENDER,
 	Keyword,
 	Review,
@@ -25,6 +26,12 @@ import {
 	IVdoesQueryResponse
 } from './entertainment';
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
+interface IEntertainmentCommonArguments {
+	entertainmentType: ENTERTAINMENT_TYPES;
+	entertainmentId: number;
+}
+
 @Injectable()
 export class EntertainmentService {
 	constructor(
@@ -32,10 +39,13 @@ export class EntertainmentService {
 		private readonly utilService: UtilsService
 	) {}
 
-	async getReview(): Promise<Review | null> {
+	async getReview({
+		entertainmentType,
+		entertainmentId
+	}: IEntertainmentCommonArguments): Promise<Review | null> {
 		const { data } = await firstValueFrom(
 			this.httpService.get<IReviewQuery>(
-				'https://api.themoviedb.org/3/movie/19995/reviews?language=en-U',
+				`https://api.themoviedb.org/3/${entertainmentType.toLowerCase()}/${entertainmentId}/reviews?language=en-U`,
 				{
 					headers: {
 						Accept: 'application/json',
@@ -71,10 +81,13 @@ export class EntertainmentService {
 		};
 	}
 
-	async getTopBilledCast(): Promise<Cast[] | null> {
+	async getTopBilledCast({
+		entertainmentType,
+		entertainmentId
+	}: IEntertainmentCommonArguments): Promise<Cast[] | null> {
 		const { data } = await firstValueFrom(
 			this.httpService.get<ICreditsQueryResponse>(
-				'https://api.themoviedb.org/3/movie/19995/credits?language=en-U',
+				`https://api.themoviedb.org/3/${entertainmentType.toLocaleLowerCase()}/${entertainmentId}/credits?language=en-U`,
 				{
 					headers: {
 						Accept: 'application/json',
@@ -98,10 +111,13 @@ export class EntertainmentService {
 		}));
 	}
 
-	async getFeaturedCrewMembers(): Promise<Crew[] | null> {
+	async getFeaturedCrewMembers({
+		entertainmentType,
+		entertainmentId
+	}: IEntertainmentCommonArguments): Promise<Crew[] | null> {
 		const { data } = await firstValueFrom(
 			this.httpService.get<ICreditsQueryResponse>(
-				'https://api.themoviedb.org/3/movie/19995/credits?language=en-U',
+				`https://api.themoviedb.org/3/${entertainmentType.toLowerCase()}/${entertainmentId}/credits?language=en-U`,
 				{
 					headers: {
 						Accept: 'application/json',
@@ -156,10 +172,13 @@ export class EntertainmentService {
 		return featuredCrewMembers;
 	}
 
-	async getKeywords(): Promise<Keyword[] | null> {
+	async getKeywords({
+		entertainmentType,
+		entertainmentId
+	}: IEntertainmentCommonArguments): Promise<Keyword[] | null> {
 		const { data } = await firstValueFrom(
 			this.httpService.get<IKeywordsQueryResponse>(
-				'https://api.themoviedb.org/3/movie/19995/keywords?language=en-U',
+				`https://api.themoviedb.org/3/${entertainmentType.toLocaleLowerCase()}/${entertainmentId}/keywords?language=en-U`,
 				{
 					headers: {
 						Accept: 'application/json',
@@ -174,10 +193,13 @@ export class EntertainmentService {
 		return data.keywords;
 	}
 
-	async getSocials(): Promise<Social> {
+	async getSocials({
+		entertainmentType,
+		entertainmentId
+	}: IEntertainmentCommonArguments): Promise<Social> {
 		const { data } = await firstValueFrom(
 			this.httpService.get<IExternalIdsQueryResponse>(
-				'https://api.themoviedb.org/3/movie/19995/external_ids?language=en-U',
+				`https://api.themoviedb.org/3/${entertainmentType.toLowerCase()}/${entertainmentId}/external_ids?language=en-U`,
 				{
 					headers: {
 						Accept: 'application/json',
@@ -198,7 +220,7 @@ export class EntertainmentService {
 	}
 
 	getCollection = (
-		collection: null | TheOpenMovieDatabaseBelongsToCollection
+		collection: undefined | null | TheOpenMovieDatabaseBelongsToCollection = null
 	): BelongsToCollection | null => {
 		if (collection !== null) {
 			return {
@@ -234,10 +256,13 @@ export class EntertainmentService {
 		return originalLanguage;
 	};
 
-	async getTrailerUrl(): Promise<string | null> {
+	async getTrailerUrl({
+		entertainmentType,
+		entertainmentId
+	}: IEntertainmentCommonArguments): Promise<string | null> {
 		const { data } = await firstValueFrom(
 			this.httpService.get<IVdoesQueryResponse>(
-				'https://api.themoviedb.org/3/movie/19995/videos?language=en-U',
+				`https://api.themoviedb.org/3/${entertainmentType.toLowerCase()}/${entertainmentId}/videos?language=en-U`,
 				{
 					headers: {
 						Accept: 'application/json',

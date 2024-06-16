@@ -26,13 +26,13 @@ type Show {
 	releaseDate: String
 	voteAverage: Float
 	status: String
-	reviews: [Review]
+	review: Review
 	recommendations: [Recommendation]
 	keywords: [Keyword]
 	social: Social
-	featuredCast: [Cast]
+	topBilledCast: [Cast]
 	featuredCrew: [Crew]
-	featuredVideo: Video
+	trailerUrl: String
 	belongsToCollection: BelongsToCollection
 	tagline: String
 	runtime: String

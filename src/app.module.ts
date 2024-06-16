@@ -4,11 +4,10 @@ import { GraphQLModule } from '@nestjs/graphql';
 
 import { EntertainmentModule } from './entertainment/entertainment.module';
 import { MovieModule } from './movie/movie.module';
+import { ShowModule } from './show/show.module';
 import { UtilsModule } from './utils/utils.module';
 
 @Module({
-	controllers: [],
-	providers: [],
 	imports: [
 		GraphQLModule.forRoot<ApolloDriverConfig>({
 			driver: ApolloDriver,
@@ -41,7 +40,8 @@ import { UtilsModule } from './utils/utils.module';
 		}),
 		MovieModule,
 		UtilsModule,
-		EntertainmentModule
+		EntertainmentModule,
+		ShowModule
 	]
 })
 export class AppModule {}

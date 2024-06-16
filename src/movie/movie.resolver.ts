@@ -1,4 +1,4 @@
-import { Resolver, Query, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, ResolveField, Parent, Args } from '@nestjs/graphql';
 
 import { MovieService } from './movie.service';
 import { Cast, Crew, Keyword, Movie, Review, Social } from '../graphql.schema';
@@ -8,34 +8,34 @@ export class MovieResolver {
 	constructor(private readonly movieService: MovieService) {}
 
 	@Query()
-	async movie(): Promise<Movie> {
-		return this.movieService.getMovie();
+	async movie(@Args('id') movieId: number): Promise<Movie> {
+		return this.movieService.getMovie(movieId);
 	}
 
 	@ResolveField()
-	async review(): Promise<Review | null> {
-		return this.movieService.getReview();
+	async review(@Parent() movie: Movie): Promise<Review | null> {
+		return this.movieService.getReview(movie.id ?? 0);
 	}
 
 	@ResolveField()
-	async topBilledCast(): Promise<Cast[] | null> {
-		return this.movieService.getTopBilledCast();
+	async topBilledCast(@Parent() movie: Movie): Promise<Cast[] | null> {
+		return this.movieService.getTopBilledCast(movie.id ?? 0);
 	}
 
 	@ResolveField()
-	async featuredCrew(): Promise<Crew[] | null> {
-		return this.movieService.getFeaturedCrewMembers();
+	async featuredCrew(@Parent() movie: Movie): Promise<Crew[] | null> {
+		return this.movieService.getFeaturedCrewMembers(movie.id ?? 0);
 	}
 
 	@ResolveField()
-	async keywords(): Promise<Keyword[] | null> {
-		return this.movieService.getKeywords();
+	async keywords(@Parent() movie: Movie): Promise<Keyword[] | null> {
+		return this.movieService.getKeywords(movie.id ?? 0);
 	}
 
 	@ResolveField()
 	async social(@Parent() movie: Movie): Promise<Social | null> {
 		// Get the external social url (The homepage isn't set here as it's already apart of the original Movie query)
-		const socials = await this.movieService.getSocials();
+		const socials = await this.movieService.getSocials(movie.id ?? 0);
 
 		return {
 			...socials,
@@ -46,7 +46,7 @@ export class MovieResolver {
 	}
 
 	@ResolveField()
-	async trailerUrl(): Promise<string | null> {
-		return this.movieService.getTrailerUrl();
+	async trailerUrl(@Parent() movie: Movie): Promise<string | null> {
+		return this.movieService.getTrailerUrl(movie.id ?? 0);
 	}
 }
