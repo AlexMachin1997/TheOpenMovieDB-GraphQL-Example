@@ -26,4 +26,9 @@ export class PersonResolver {
 			homepage: person.homepage
 		};
 	}
+
+	@ResolveField()
+	async credits(@Parent() person: Person) {
+		return this.personService.getCredits(person.id ?? 0);
+	}
 }

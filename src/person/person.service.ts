@@ -2,7 +2,13 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 
-import { TheOpenMovieDatabasePerson, TheOpenMovieDatabasePersonGender } from './person';
+import {
+	Group,
+	IGetGroupCredits,
+	TheOpenMovieDatabasePerson,
+	TheOpenMovieDatabasePersonCombinedCredits,
+	TheOpenMovieDatabasePersonGender
+} from './person';
 import { SocialsService } from '../socials/socials.service';
 import { UtilsService } from '../utils/utils.service';
 
@@ -94,5 +100,186 @@ export class PersonService {
 			resourceId: personId,
 			resourceType: 'PERSON'
 		});
+	}
+
+	private getGroupCredits(departmentCredits: IGetGroupCredits) {
+		const credits: Group[] = [];
+
+		departmentCredits.forEach((departmentCredit) => {
+			// Crew credit for a "movie"
+			if (departmentCredit.type === 'crew' && departmentCredit.media_type === 'movie') {
+				credits.push({
+					mediaType: 'movie',
+					character: departmentCredit.character,
+					title: departmentCredit.title || departmentCredit.original_title,
+					year: departmentCredit.release_date
+						? new Date(departmentCredit.release_date).getFullYear()
+						: '-',
+					type: 'crew',
+					department: departmentCredit.department
+				});
+			}
+
+			// Crew credit for a "tv" show
+			if (departmentCredit.type === 'crew' && departmentCredit.media_type === 'tv') {
+				credits.push({
+					mediaType: 'tv',
+					character: departmentCredit.character,
+					title: departmentCredit.name || departmentCredit.original_name,
+					episodeCount: departmentCredit.episode_count,
+					year: departmentCredit.first_air_date
+						? new Date(departmentCredit.first_air_date).getFullYear()
+						: '-',
+					type: 'crew',
+					department: departmentCredit.department
+				});
+			}
+
+			// Cast credit for a "movie"
+			if (departmentCredit.type === 'cast' && departmentCredit.media_type === 'movie') {
+				credits.push({
+					mediaType: 'movie',
+					character: departmentCredit.character,
+					title: departmentCredit.title || departmentCredit.original_title,
+					year: departmentCredit.release_date
+						? new Date(departmentCredit.release_date).getFullYear()
+						: '-',
+					type: 'cast'
+				});
+			}
+
+			// Cast credit for a "tv" show
+			if (departmentCredit.type === 'cast' && departmentCredit.media_type === 'tv') {
+				credits.push({
+					mediaType: 'tv',
+					character: departmentCredit.character,
+					title: departmentCredit.name || departmentCredit.original_name,
+					episodeCount: departmentCredit.episode_count,
+					year: departmentCredit.first_air_date
+						? new Date(departmentCredit.first_air_date).getFullYear()
+						: '-',
+					type: 'cast'
+				});
+			}
+		});
+
+		// Sort the credits by the assigned year, it should be highest to lowest
+		credits.sort((departmentCreditA, departmentCreditB) => {
+			if (
+				typeof departmentCreditA.year === 'number' &&
+				typeof departmentCreditB.year === 'number'
+			) {
+				return departmentCreditA.year - departmentCreditB.year;
+			}
+
+			return 0;
+		});
+
+		const allCreditsWithEmptyYears = credits.filter((credit) => typeof credit.type === 'string');
+		const allCreditsWithoutEmptyYears = credits.filter((credit) => typeof credit.year === 'number');
+
+		// Add the credits with empty years to the top of the list so they are rendered at the top of the list in the user-interface
+		const creditsWithEmptyYearsAtTop = [
+			...allCreditsWithEmptyYears,
+			...allCreditsWithoutEmptyYears
+		];
+
+		const groups: { year: number | '-'; credits: Group[] }[] = [];
+
+		creditsWithEmptyYearsAtTop.forEach((credit) => {
+			const groupIndex = groups.findIndex((el) => el.year === credit.year);
+
+			// Add the credit to the existing group
+			if (groupIndex !== -1) {
+				groups[groupIndex].credits.push(credit);
+			}
+
+			// Create a new credit group
+			if (groupIndex === -1) {
+				groups.push({
+					year: credit.year,
+					credits: [credit]
+				});
+			}
+		});
+
+		return groups;
+	}
+
+	async getCredits(personId: number) {
+		const { data } = await firstValueFrom(
+			this.httpService.get<TheOpenMovieDatabasePersonCombinedCredits>(
+				`https://api.themoviedb.org/3/person/${personId}/combined_credits?language=en-U`,
+				{
+					headers: {
+						Accept: 'application/json',
+						Authorization:
+							// eslint-disable-next-line max-len
+							'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1NDMwNWQxNmE1ZThkN2E3ZWMwZmM2NTk5MzZiY2EzMCIsInN1YiI6IjViMzE0MjQ1OTI1MTQxM2M5MTAwNTIwNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.iqdLKFCSgeWG3SYso7Rqj297FORviPf9hDdn2kKygTA'
+					}
+				}
+			)
+		);
+
+		const ActingGroup = this.getGroupCredits(
+			data.cast.map((el) => ({
+				...el,
+				type: 'cast'
+			}))
+		);
+
+		const ProductionGroup = this.getGroupCredits(
+			data.crew
+				.filter((el) => el.department === 'Production')
+				.map((el) => ({
+					...el,
+					type: 'crew'
+				}))
+		);
+
+		const WritingGroup = this.getGroupCredits(
+			data.crew
+				.filter((el) => el.department === 'Writing')
+				.map((el) => ({
+					...el,
+					type: 'crew'
+				}))
+		);
+
+		const DirectingGroup = this.getGroupCredits(
+			data.crew
+				.filter((el) => el.department === 'Directing')
+				.map((el) => ({
+					...el,
+					type: 'crew'
+				}))
+		);
+
+		const CrewGroup = this.getGroupCredits(
+			data.crew
+				.filter((el) => el.department === 'Crew')
+				.map((el) => ({
+					...el,
+					type: 'crew'
+				}))
+		);
+
+		const LightingGroup = this.getGroupCredits(
+			data.crew
+				.filter((el) => el.department === 'Lighting')
+				.map((el) => ({
+					...el,
+					type: 'crew'
+				}))
+		);
+
+		return {
+			ActingGroup,
+			ProductionGroup,
+			WritingGroup,
+			DirectingGroup,
+			CrewGroup,
+			LightingGroup
+		};
 	}
 }
