@@ -1,28 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+
 import { Keyword } from '../graphql.schema';
-
-export interface ICastAndCrew {
-	adult: boolean;
-	gender: number;
-	id: number;
-	known_for_department: string;
-	name: string;
-	original_name: string;
-	popularity: number;
-	profile_path: string;
-	credit_id: string;
-}
-
-export interface ICast extends ICastAndCrew {
-	cast_id: number;
-	character: string;
-	order: number;
-}
-
-export interface ICrew extends ICastAndCrew {
-	department: string;
-	job: string;
-}
+import { ICast, ICrew } from '../types/credits';
 
 export interface IReviewQuery {
 	id: number;

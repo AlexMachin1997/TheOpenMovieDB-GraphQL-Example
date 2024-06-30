@@ -2,6 +2,6 @@ type Cast {
 	id: Int
 	character: String
 	profileImageUrl: String
-	gender: GENDER
+	gender: String
 	episodeCount: Int
 }

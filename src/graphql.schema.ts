@@ -1,17 +1,10 @@
-
 /*
  * -------------------------------------------------------
  * THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
  * -------------------------------------------------------
  */
 
-/* tslint:disable */
 /* eslint-disable */
-
-export enum GENDER {
-    MALE = "MALE",
-    FEMALE = "FEMALE"
-}
 
 export enum ENTERTAINMENT_TYPES {
     MOVIE = "MOVIE",
@@ -165,7 +158,7 @@ export interface Cast {
     id?: Nullable<number>;
     character?: Nullable<string>;
     profileImageUrl?: Nullable<string>;
-    gender?: Nullable<GENDER>;
+    gender?: Nullable<string>;
     episodeCount?: Nullable<number>;
 }
 

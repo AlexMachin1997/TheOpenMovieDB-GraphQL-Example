@@ -2,23 +2,6 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
-import {
-	BelongsToCollection,
-	Cast,
-	Crew,
-	ENTERTAINMENT_TYPES,
-	GENDER,
-	Keyword,
-	Review,
-	Social,
-	Video
-} from 'src/graphql.schema';
-import {
-	TheOpenMovieDatabaseBelongsToCollection,
-	TheOpenMovieDatabaseSpokenLanguages
-} from 'src/movie/movie';
-import { SocialsService } from 'src/socials/socials.service';
-import { UtilsService } from 'src/utils/utils.service';
 
 import {
 	ICreditsQueryResponse,
@@ -26,6 +9,22 @@ import {
 	IReviewQuery,
 	IVdoesQueryResponse
 } from './entertainment';
+import {
+	BelongsToCollection,
+	Cast,
+	Crew,
+	ENTERTAINMENT_TYPES,
+	Keyword,
+	Review,
+	Social,
+	Video
+} from '../graphql.schema';
+import {
+	TheOpenMovieDatabaseBelongsToCollection,
+	TheOpenMovieDatabaseSpokenLanguages
+} from '../movie/movie';
+import { SocialsService } from '../socials/socials.service';
+import { UtilsService } from '../utils/utils.service';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 interface IEntertainmentCommonArguments {
@@ -109,7 +108,7 @@ export class EntertainmentService {
 			id: el.id,
 			character: el.character,
 			profileImageUrl: this.utilService.getFullImageUrlPath(el.profile_path),
-			gender: el.gender === 2 ? GENDER.MALE : GENDER.FEMALE
+			gender: this.utilService.getGender(el.gender)
 		}));
 	}
 

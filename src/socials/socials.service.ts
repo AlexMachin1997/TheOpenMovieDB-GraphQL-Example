@@ -30,8 +30,6 @@ export class SocialsService {
 			)
 		);
 
-		console.log('social', data);
-
 		let facebook = null;
 		let instagram = null;
 		let twitter = null;

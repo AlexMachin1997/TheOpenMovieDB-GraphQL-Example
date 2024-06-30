@@ -6,8 +6,7 @@ import {
 	Group,
 	IGetGroupCredits,
 	TheOpenMovieDatabasePerson,
-	TheOpenMovieDatabasePersonCombinedCredits,
-	TheOpenMovieDatabasePersonGender
+	TheOpenMovieDatabasePersonCombinedCredits
 } from './person';
 import { SocialsService } from '../socials/socials.service';
 import { UtilsService } from '../utils/utils.service';
@@ -42,30 +41,6 @@ export class PersonService {
 		return `${birthdayInReadableFormat} (${age} years old)`;
 	}
 
-	getGender(gender: TheOpenMovieDatabasePersonGender) {
-		switch (gender) {
-			case 0: {
-				return 'Not set / not specified';
-			}
-
-			case 1: {
-				return 'Female';
-			}
-
-			case 2: {
-				return 'Male';
-			}
-
-			case 3: {
-				return 'Non-bindary';
-			}
-
-			default: {
-				return '';
-			}
-		}
-	}
-
 	async getPerson(personId: number) {
 		const { data } = await firstValueFrom(
 			this.httpService.get<TheOpenMovieDatabasePerson>(
@@ -87,7 +62,7 @@ export class PersonService {
 			knowForDepartment: data.known_for_department,
 			name: data.name,
 			alsoKnownAs: data.also_known_as,
-			gender: this.getGender(data.gender),
+			gender: this.utilService.getGender(data.gender),
 			overview: data.biography,
 			placeOfBirth: data.place_of_birth,
 			posterUrl: this.utilService.getFullImageUrlPath(data.profile_path),

@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
+import { Gender } from '../types/gender';
+
 @Injectable()
 export class UtilsService {
 	getFullImageUrlPath(imageUrl: string | null | undefined = null): string {
@@ -23,5 +25,25 @@ export class UtilsService {
 			// TODO: Read the users current country code and output it in their format
 			currency: 'GBP'
 		});
+	}
+
+	getGender(gender: Gender) {
+		switch (gender) {
+			case 1: {
+				return 'Female';
+			}
+
+			case 2: {
+				return 'Male';
+			}
+
+			case 3: {
+				return 'Non-binary';
+			}
+
+			default: {
+				return 'Not set / not specified';
+			}
+		}
 	}
 }

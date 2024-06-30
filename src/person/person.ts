@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-export type TheOpenMovieDatabasePersonGender = 0 | 1 | 2 | 3;
+import { Gender } from '../types/gender';
 
 export type TheOpenMovieDatabaseDepartments =
 	| 'Production'
@@ -14,7 +14,7 @@ export interface TheOpenMovieDatabasePerson {
 	biography: string;
 	birthday: string;
 	deathday: null | string;
-	gender: TheOpenMovieDatabasePersonGender;
+	gender: Gender;
 	homepage: string;
 	id: number;
 	imdb_id: string;

@@ -1,6 +1,8 @@
-import { TheOpenMovieDatabaseBelongsToCollection } from 'src/movie/movie';
-
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Genre } from '../graphql.schema';
+import { TheOpenMovieDatabaseBelongsToCollection } from '../movie/movie';
+import { ICast, ICrew } from '../types/credits';
+import { Gender } from '../types/gender';
 
 export interface TheOpenMovieDatabaseEpisodeToAir {
 	id: number;
@@ -34,7 +36,7 @@ export interface TheOpenMovieDatabaseShow {
 		credit_id: string;
 		name: string;
 		original_name: string;
-		gender: number;
+		gender: Gender;
 		profile_path: string;
 	}[];
 	episode_run_time: number[];
@@ -79,4 +81,24 @@ export interface TheOpenMovieDatabaseShow {
 	type: string;
 	vote_average: number;
 	vote_count: number;
+}
+
+interface IAggregatedCreditJob {
+	credit_id: string;
+	job: string;
+	episode_count: number;
+}
+
+interface IAggregatedCreditsQueryCastResponse extends ICast {
+	roles: IAggregatedCreditJob[];
+}
+
+interface IAggregatedCreditsQueryCrewResponse extends ICrew {
+	roles: IAggregatedCreditJob[];
+}
+
+export interface IAggregatedCreditsQueryResponse {
+	id: number;
+	cast: IAggregatedCreditsQueryCastResponse[];
+	crew: IAggregatedCreditsQueryCrewResponse[];
 }

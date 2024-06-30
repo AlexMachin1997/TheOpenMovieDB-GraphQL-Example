@@ -3,7 +3,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 
-import { TheOpenMovieDatabaseShow } from './show';
+import { IAggregatedCreditsQueryResponse, TheOpenMovieDatabaseShow } from './show';
 import { EntertainmentService } from '../entertainment/entertainment.service';
 import { CurrentSeason, ENTERTAINMENT_TYPES } from '../graphql.schema';
 import { UtilsService } from '../utils/utils.service';
@@ -89,10 +89,56 @@ export class ShowService {
 		});
 	}
 
+	async getCastAggregatedCredits(showId: number) {
+		const { data } = await firstValueFrom(
+			this.httpService.get<IAggregatedCreditsQueryResponse>(
+				`https://api.themoviedb.org/3/tv/${showId}/aggregate_credits?language=en-U`,
+				{
+					headers: {
+						Accept: 'application/json',
+						Authorization:
+							// eslint-disable-next-line max-len
+							'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1NDMwNWQxNmE1ZThkN2E3ZWMwZmM2NTk5MzZiY2EzMCIsInN1YiI6IjViMzE0MjQ1OTI1MTQxM2M5MTAwNTIwNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.iqdLKFCSgeWG3SYso7Rqj297FORviPf9hDdn2kKygTA'
+					}
+				}
+			)
+		);
+
+		return data;
+	}
+
 	async getTopBilledCast(showId: number) {
-		return this.entertainmentService.getTopBilledCast({
+		// Get the top billed cast members
+		const topBilledCast = await this.entertainmentService.getTopBilledCast({
 			entertainmentId: showId,
 			entertainmentType: ENTERTAINMENT_TYPES.TV
+		});
+
+		// Since the episode count isn't available via getTopBilledCast perform an additional lookup to get the additional credit
+		// data like a list of the users roles for the particular show being queried
+		const aggregatedCredits = await this.getCastAggregatedCredits(showId);
+
+		return topBilledCast?.map((topBilledCastMember) => {
+			// Find the cast members credits data, found via the aggregate_credits endpoint
+			const aggregatedCredit = aggregatedCredits.cast.find(
+				(el) => el.id === topBilledCastMember.id
+			);
+
+			// If the aggregatedCredit is available then total up the cast members episode count
+			if (typeof aggregatedCredit !== 'undefined') {
+				return {
+					...topBilledCastMember,
+					episodeCount: aggregatedCredit.roles.reduce(
+						(total, role) => total + role.episode_count,
+						0
+					)
+				};
+			}
+
+			return {
+				...topBilledCastMember,
+				episodeCount: 0
+			};
 		});
 	}
 

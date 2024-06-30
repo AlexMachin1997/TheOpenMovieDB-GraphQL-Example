@@ -1,4 +1,5 @@
 import { Genre, Keyword } from '../graphql.schema';
+import { Gender } from '../types/gender';
 
 export interface TheOpenMovieDatabaseBelongsToCollection {
 	id: number;
@@ -59,7 +60,7 @@ export interface TheOpenMovieDatabaseMovieReview {
 
 export interface TheOpenMovieDatabaseMovieCastAndCrew {
 	adult: boolean;
-	gender: number;
+	gender: Gender;
 	id: number;
 	known_for_department: string;
 	name: string;
