@@ -1,5 +1,6 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
 
 import {
@@ -16,7 +17,8 @@ export class PersonService {
 	constructor(
 		private readonly utilService: UtilsService,
 		private readonly httpService: HttpService,
-		private readonly socialService: SocialsService
+		private readonly socialService: SocialsService,
+		private readonly configService: ConfigService
 	) {}
 
 	getBirthday(birthday: string) {
@@ -48,9 +50,7 @@ export class PersonService {
 				{
 					headers: {
 						Accept: 'application/json',
-						Authorization:
-							// eslint-disable-next-line max-len
-							'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1NDMwNWQxNmE1ZThkN2E3ZWMwZmM2NTk5MzZiY2EzMCIsInN1YiI6IjViMzE0MjQ1OTI1MTQxM2M5MTAwNTIwNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.iqdLKFCSgeWG3SYso7Rqj297FORviPf9hDdn2kKygTA'
+						Authorization: `Bearer ${this.configService.get('THE_OPEN_MOVIE_DATABASE_API_KEY')}`
 					}
 				}
 			)
@@ -188,9 +188,7 @@ export class PersonService {
 				{
 					headers: {
 						Accept: 'application/json',
-						Authorization:
-							// eslint-disable-next-line max-len
-							'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1NDMwNWQxNmE1ZThkN2E3ZWMwZmM2NTk5MzZiY2EzMCIsInN1YiI6IjViMzE0MjQ1OTI1MTQxM2M5MTAwNTIwNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.iqdLKFCSgeWG3SYso7Rqj297FORviPf9hDdn2kKygTA'
+						Authorization: `Bearer ${this.configService.get('THE_OPEN_MOVIE_DATABASE_API_KEY')}`
 					}
 				}
 			)

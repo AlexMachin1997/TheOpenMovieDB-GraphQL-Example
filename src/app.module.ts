@@ -1,6 +1,8 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
+import joi from 'joi';
 
 import { MovieModule } from './movie/movie.module';
 import { PersonModule } from './person/person.module';
@@ -8,6 +10,12 @@ import { ShowModule } from './show/show.module';
 
 @Module({
 	imports: [
+		ConfigModule.forRoot({
+			isGlobal: true,
+			validationSchema: joi.object({
+				THE_OPEN_MOVIE_DATABASE_API_KEY: joi.string().required()
+			})
+		}),
 		GraphQLModule.forRoot<ApolloDriverConfig>({
 			driver: ApolloDriver,
 			playground: true,
