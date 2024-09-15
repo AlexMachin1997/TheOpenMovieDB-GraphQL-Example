@@ -31,37 +31,37 @@ export interface TheOpenMovieDatabaseShow {
 	adult: boolean;
 	backdrop_path: string;
 	belongs_to_collection?: TheOpenMovieDatabaseBelongsToCollection | null;
-	created_by: {
+	created_by: Array<{
 		id: number;
 		credit_id: string;
 		name: string;
 		original_name: string;
 		gender: Gender;
 		profile_path: string;
-	}[];
-	episode_run_time: number[];
+	}>;
+	episode_run_time: Array<number>;
 	first_air_date: string;
-	genres: Genre[];
+	genres: Array<Genre>;
 	homepage: string;
 	id: number;
 	in_production: boolean;
-	languages: string[];
+	languages: Array<string>;
 	last_air_date: string;
 	last_episode_to_air: null | TheOpenMovieDatabaseEpisodeToAir;
 	name: string;
 	next_episode_to_air: null | TheOpenMovieDatabaseEpisodeToAir;
-	networks: TheOpenMovieDatabaseCompany[];
+	networks: Array<TheOpenMovieDatabaseCompany>;
 	number_of_episodes: number;
 	number_of_seasons: number;
-	origin_country: string[];
+	origin_country: Array<string>;
 	original_language: string;
 	original_name: string;
 	overview: string;
 	popularity: number;
 	poster_path: string;
-	production_companies: TheOpenMovieDatabaseCompany[];
-	production_countries: { iso_3166_1: string; name: string }[];
-	seasons: {
+	production_companies: Array<TheOpenMovieDatabaseCompany>;
+	production_countries: Array<{ iso_3166_1: string; name: string }>;
+	seasons: Array<{
 		air_date: string | null;
 		episode_count: number;
 		id: number;
@@ -70,12 +70,12 @@ export interface TheOpenMovieDatabaseShow {
 		poster_path: string;
 		season_number: number;
 		vote_average: number;
-	}[];
-	spoken_languages: {
+	}>;
+	spoken_languages: Array<{
 		english_name: string;
 		iso_639_1: string;
 		name: string;
-	}[];
+	}>;
 	status: string;
 	tagline: string;
 	type: string;
@@ -90,15 +90,15 @@ interface IAggregatedCreditJob {
 }
 
 interface IAggregatedCreditsQueryCastResponse extends ICast {
-	roles: IAggregatedCreditJob[];
+	roles: Array<IAggregatedCreditJob>;
 }
 
 interface IAggregatedCreditsQueryCrewResponse extends ICrew {
-	roles: IAggregatedCreditJob[];
+	roles: Array<IAggregatedCreditJob>;
 }
 
 export interface IAggregatedCreditsQueryResponse {
 	id: number;
-	cast: IAggregatedCreditsQueryCastResponse[];
-	crew: IAggregatedCreditsQueryCrewResponse[];
+	cast: Array<IAggregatedCreditsQueryCastResponse>;
+	crew: Array<IAggregatedCreditsQueryCrewResponse>;
 }

@@ -6,7 +6,7 @@ import { ICast, ICrew } from '../types/credits';
 export interface IReviewQuery {
 	id: number;
 	page: number;
-	results: {
+	results: Array<{
 		author: string;
 		author_details: {
 			name: string;
@@ -19,18 +19,18 @@ export interface IReviewQuery {
 		id: string;
 		updated_at: string;
 		url: string;
-	}[];
+	}>;
 }
 
 export interface ICreditsQueryResponse {
 	id: number;
-	cast: ICast[];
-	crew: ICrew[];
+	cast: Array<ICast>;
+	crew: Array<ICrew>;
 }
 
 export interface IKeywordsQueryResponse {
 	id: number;
-	keywords: Keyword[];
+	keywords: Array<Keyword>;
 }
 
 export interface IVideosQueryResult {
@@ -48,5 +48,5 @@ export interface IVideosQueryResult {
 
 export interface IVdoesQueryResponse {
 	id: number;
-	results: IVideosQueryResult[];
+	results: Array<IVideosQueryResult>;
 }

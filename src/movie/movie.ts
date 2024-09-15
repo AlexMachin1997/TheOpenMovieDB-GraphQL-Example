@@ -19,22 +19,27 @@ export interface TheOpenMovieDatabaseMovie {
 	backdrop_path: string;
 	belongs_to_collection: TheOpenMovieDatabaseBelongsToCollection | null;
 	budget: number;
-	genres: Genre[];
+	genres: Array<Genre>;
 	homepage: string;
 	id: number;
 	imdb_id: string;
-	origin_country: string[];
+	origin_country: Array<string>;
 	original_language: string;
 	original_title: string;
 	overview: string;
 	popularity: number;
 	poster_path: string;
-	production_companies: { id: number; logo_path: string; name: string; origin_country: string }[];
-	production_countries: { iso_3166_1: string; name: string }[];
+	production_companies: Array<{
+		id: number;
+		logo_path: string;
+		name: string;
+		origin_country: string;
+	}>;
+	production_countries: Array<{ iso_3166_1: string; name: string }>;
 	release_date: string;
 	revenue: number;
 	runtime: number;
-	spoken_languages: TheOpenMovieDatabaseSpokenLanguages[];
+	spoken_languages: Array<TheOpenMovieDatabaseSpokenLanguages>;
 	status: string;
 	tagline: string;
 	title: string;
@@ -83,7 +88,7 @@ export interface TheOpenMovieDatabaseMovieCrew extends TheOpenMovieDatabaseMovie
 
 export interface TheOpenMovieDatabaseMovieKeywords {
 	id: number;
-	keywords: Keyword[];
+	keywords: Array<Keyword>;
 }
 
 export interface TheOpenMovieDatbaseExternalIds {

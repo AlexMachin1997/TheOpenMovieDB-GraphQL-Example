@@ -85,7 +85,7 @@ export class EntertainmentService {
 	async getTopBilledCast({
 		entertainmentType,
 		entertainmentId
-	}: IEntertainmentCommonArguments): Promise<Cast[] | null> {
+	}: IEntertainmentCommonArguments): Promise<Array<Cast> | null> {
 		const { data } = await firstValueFrom(
 			this.httpService.get<ICreditsQueryResponse>(
 				`https://api.themoviedb.org/3/${entertainmentType.toLocaleLowerCase()}/${entertainmentId}/credits?language=en-U`,
@@ -113,7 +113,7 @@ export class EntertainmentService {
 	async getFeaturedCrewMembers({
 		entertainmentType,
 		entertainmentId
-	}: IEntertainmentCommonArguments): Promise<Crew[] | null> {
+	}: IEntertainmentCommonArguments): Promise<Array<Crew> | null> {
 		const { data } = await firstValueFrom(
 			this.httpService.get<ICreditsQueryResponse>(
 				`https://api.themoviedb.org/3/${entertainmentType.toLowerCase()}/${entertainmentId}/credits?language=en-U`,
@@ -138,7 +138,7 @@ export class EntertainmentService {
 			})
 			.slice(0, 6);
 
-		const featuredCrewMembers: Crew[] = [];
+		const featuredCrewMembers: Array<Crew> = [];
 
 		/*
 
@@ -172,7 +172,7 @@ export class EntertainmentService {
 	async getKeywords({
 		entertainmentType,
 		entertainmentId
-	}: IEntertainmentCommonArguments): Promise<Keyword[] | null> {
+	}: IEntertainmentCommonArguments): Promise<Array<Keyword> | null> {
 		const { data } = await firstValueFrom(
 			this.httpService.get<IKeywordsQueryResponse>(
 				`https://api.themoviedb.org/3/${entertainmentType.toLocaleLowerCase()}/${entertainmentId}/keywords?language=en-U`,
@@ -218,7 +218,7 @@ export class EntertainmentService {
 		spokenLanguages
 	}: {
 		originalLanguage: string;
-		spokenLanguages: TheOpenMovieDatabaseSpokenLanguages[];
+		spokenLanguages: Array<TheOpenMovieDatabaseSpokenLanguages>;
 	}) => {
 		if (originalLanguage.length !== 0 && spokenLanguages.length === 0) {
 			const foundFriendlyLanguage = spokenLanguages.find(

@@ -10,7 +10,7 @@ export type TheOpenMovieDatabaseDepartments =
 
 export interface TheOpenMovieDatabasePerson {
 	adult: boolean;
-	also_known_as: string[];
+	also_known_as: Array<string>;
 	biography: string;
 	birthday: string;
 	deathday: null | string;
@@ -28,7 +28,7 @@ export interface TheOpenMovieDatabasePerson {
 interface ICredit {
 	adult: boolean;
 	backdrop_path: string | null;
-	genre_ids: number[];
+	genre_ids: Array<number>;
 	id: number;
 	overview: string;
 	popularity: number;
@@ -50,7 +50,7 @@ type IMovieCredit = {
 } & ICredit;
 
 type ITVCredits = {
-	origin_country: string[];
+	origin_country: Array<string>;
 	original_language: string;
 	original_name: string;
 	first_air_date: string;
@@ -83,10 +83,10 @@ export type Crew = IMovieCrew | ITVCrew;
 
 export type Cast = IMovieCast | ITVCast;
 
-export type IGetGroupCredits = Crew[] | Cast[];
+export type IGetGroupCredits = Array<Crew> | Array<Cast>;
 export interface TheOpenMovieDatabasePersonCombinedCredits {
-	cast: Omit<IMovieCast, 'type'>[] | Omit<ITVCast, 'type'>[];
-	crew: Omit<IMovieCrew, 'type'>[] | Omit<ITVCrew, 'type'>[];
+	cast: Array<Omit<IMovieCast, 'type'>> | Array<Omit<ITVCast, 'type'>>;
+	crew: Array<Omit<IMovieCrew, 'type'>> | Array<Omit<ITVCrew, 'type'>>;
 	id: number;
 }
 

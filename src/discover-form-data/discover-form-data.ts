@@ -3,12 +3,12 @@ export interface IDefaultValues {
 	sort_by?: string;
 	ott_region?: string;
 	restrict_services?: boolean;
-	with_ott_providers?: string[];
+	with_ott_providers?: Array<string>;
 	show_me?: string;
-	with_watch_monetization_types?: string[];
-	with_genres?: string[];
-	certifications?: string[];
-	with_release_types?: string[];
+	with_watch_monetization_types?: Array<string>;
+	with_genres?: Array<string>;
+	certifications?: Array<string>;
+	with_release_types?: Array<string>;
 	with_original_language?: string;
 	region?: string;
 	vote_average_lte?: string;

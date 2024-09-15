@@ -78,7 +78,7 @@ export class PersonService {
 	}
 
 	private getGroupCredits(departmentCredits: IGetGroupCredits) {
-		const credits: Group[] = [];
+		const credits: Array<Group> = [];
 
 		departmentCredits.forEach((departmentCredit) => {
 			// Crew credit for a "movie"
@@ -159,7 +159,7 @@ export class PersonService {
 			...allCreditsWithoutEmptyYears
 		];
 
-		const groups: { year: number | '-'; credits: Group[] }[] = [];
+		const groups: Array<{ year: number | '-'; credits: Array<Group> }> = [];
 
 		creditsWithEmptyYearsAtTop.forEach((credit) => {
 			const groupIndex = groups.findIndex((el) => el.year === credit.year);

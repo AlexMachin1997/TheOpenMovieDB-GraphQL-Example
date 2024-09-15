@@ -4,7 +4,6 @@
  * -------------------------------------------------------
  */
 
-/* tslint:disable */
 /* eslint-disable */
 
 export enum ENTERTAINMENT_TYPES {
