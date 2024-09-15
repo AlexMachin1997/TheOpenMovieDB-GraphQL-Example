@@ -23,6 +23,7 @@ const schemas = [
 	'./models/entertainment/Review.graphql',
 	'./models/entertainment/Social.graphql',
 	'./models/entertainment/Video.graphql',
+	'./models/Discover.graphql',
 
 	// Individual resource schemas
 	'./models/Show.graphql',

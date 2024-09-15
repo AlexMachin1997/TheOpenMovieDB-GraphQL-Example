@@ -2,4 +2,9 @@ type Query {
 	movie(id: Int!): Movie
 	show(id: Int!): Show
 	person(id: Int!): Person
+	formData(
+		entertainmentType: ENTERTAINMENT_TYPES
+		resourceType: RESOURCE_TYPE
+		defaultValues: DiscoverFormDataInput
+	): DiscoverFormData
 }

@@ -34,6 +34,7 @@
 		"@nestjs/mapped-types": "*",
 		"@nestjs/platform-express": "^10.0.0",
 		"axios": "^1.7.2",
+		"date-fns": "^3.6.0",
 		"graphql": "^16.8.1",
 		"joi": "^17.13.3",
 		"reflect-metadata": "^0.1.13",

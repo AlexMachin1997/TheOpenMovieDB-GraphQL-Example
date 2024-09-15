@@ -110,6 +110,13 @@
 				"avoidEscape": true,
 				"allowTemplateLiterals": true
 			}
+		],
+
+		"@typescript-eslint/array-type": [
+			"error",
+			{
+				"default": "generic"
+			}
 		]
 	}
 }

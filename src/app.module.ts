@@ -4,6 +4,8 @@ import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import joi from 'joi';
 
+import { DiscoverFormDataModule } from './discover-form-data/discover-form-data.module';
+import { FilteringOptionsModule } from './filtering-options/filtering-options.module';
 import { MovieModule } from './movie/movie.module';
 import { PersonModule } from './person/person.module';
 import { ShowModule } from './show/show.module';
@@ -36,6 +38,7 @@ import { ShowModule } from './show/show.module';
 				'./src/models/entertainment/Review.graphql',
 				'./src/models/entertainment/Social.graphql',
 				'./src/models/entertainment/Video.graphql',
+				'./src/models/Discover.graphql',
 
 				// Individual resource schemas
 				'./src/models/Show.graphql',
@@ -47,7 +50,9 @@ import { ShowModule } from './show/show.module';
 		}),
 		ShowModule,
 		MovieModule,
-		PersonModule
+		PersonModule,
+		DiscoverFormDataModule,
+		FilteringOptionsModule
 	]
 })
 export class AppModule {}

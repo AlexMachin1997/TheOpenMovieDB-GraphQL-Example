@@ -67,5 +67,6 @@
 	},
 	"terminal.integrated.fontSize": 20,
 	"screencastMode.fontSize": 59,
-	"scm.inputFontSize": 20
+	"scm.inputFontSize": 20,
+	"typescript.tsdk": "node_modules\\typescript\\lib"
 }

@@ -4,6 +4,7 @@
  * -------------------------------------------------------
  */
 
+/* tslint:disable */
 /* eslint-disable */
 
 export enum ENTERTAINMENT_TYPES {
@@ -18,6 +19,80 @@ export enum RESOURCE_TYPE {
 	UPCOMING = 'UPCOMING',
 	AIRING_TODAY = 'AIRING_TODAY',
 	ON_THE_AIR = 'ON_THE_AIR'
+}
+
+export interface DateRangeFilterInput {
+	gte?: Nullable<string>;
+	lte?: Nullable<string>;
+}
+
+export interface NumberRangeFilterInput {
+	gte?: Nullable<number>;
+	lte?: Nullable<number>;
+}
+
+export interface VoteCountFilterInput {
+	gte?: Nullable<number>;
+	lte?: Nullable<number>;
+}
+
+export interface DiscoverFormDataInput {
+	sort?: Nullable<string>;
+	show_me?: Nullable<string>;
+	with_watch_monetization_types?: Nullable<Nullable<string>[]>;
+	with_genres?: Nullable<Nullable<string>[]>;
+	certifications?: Nullable<Nullable<string>[]>;
+	with_release_types?: Nullable<Nullable<string>[]>;
+	release_date?: Nullable<DateRangeFilterInput>;
+	air_date?: Nullable<DateRangeFilterInput>;
+	with_original_language?: Nullable<string>;
+	region?: Nullable<string>;
+	vote_average?: Nullable<NumberRangeFilterInput>;
+	with_runtime?: Nullable<NumberRangeFilterInput>;
+	vote_count?: Nullable<VoteCountFilterInput>;
+	search_first_air_date?: Nullable<boolean>;
+	restrict_services?: Nullable<boolean>;
+	ott_region?: Nullable<string>;
+	with_ott_providers?: Nullable<Nullable<string>[]>;
+}
+
+export interface DateRangeFilter {
+	__typename?: 'DateRangeFilter';
+	gte?: Nullable<string>;
+	lte?: Nullable<string>;
+}
+
+export interface NumberRangeFilter {
+	__typename?: 'NumberRangeFilter';
+	gte?: Nullable<number>;
+	lte?: Nullable<number>;
+}
+
+export interface VoteCountFilter {
+	__typename?: 'VoteCountFilter';
+	gte?: Nullable<number>;
+	lte?: Nullable<number>;
+}
+
+export interface DiscoverFormData {
+	__typename?: 'DiscoverFormData';
+	sort?: Nullable<string>;
+	show_me?: Nullable<string>;
+	with_watch_monetization_types?: Nullable<Nullable<string>[]>;
+	with_genres?: Nullable<Nullable<string>[]>;
+	certifications?: Nullable<Nullable<string>[]>;
+	with_release_types?: Nullable<Nullable<string>[]>;
+	release_date?: Nullable<DateRangeFilter>;
+	air_date?: Nullable<DateRangeFilter>;
+	with_original_language?: Nullable<string>;
+	region?: Nullable<string>;
+	vote_average?: Nullable<NumberRangeFilter>;
+	with_runtime?: Nullable<NumberRangeFilter>;
+	vote_count?: Nullable<VoteCountFilter>;
+	search_first_air_date?: Nullable<boolean>;
+	restrict_services?: Nullable<boolean>;
+	ott_region?: Nullable<string>;
+	with_ott_providers?: Nullable<Nullable<string>[]>;
 }
 
 export interface Movie {
@@ -93,6 +168,11 @@ export interface IQuery {
 	movie(id: number): Nullable<Movie> | Promise<Nullable<Movie>>;
 	show(id: number): Nullable<Show> | Promise<Nullable<Show>>;
 	person(id: number): Nullable<Person> | Promise<Nullable<Person>>;
+	formData(
+		entertainmentType?: Nullable<ENTERTAINMENT_TYPES>,
+		resourceType?: Nullable<RESOURCE_TYPE>,
+		defaultValues?: Nullable<DiscoverFormDataInput>
+	): Nullable<DiscoverFormData> | Promise<Nullable<DiscoverFormData>>;
 }
 
 export interface CurrentSeason {
