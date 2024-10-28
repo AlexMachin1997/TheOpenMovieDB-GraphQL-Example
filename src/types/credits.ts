@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Gender } from './gender';
+import { Gender } from './TheOpenMovieDatabase.common';
 
 export interface ICastAndCrew {
 	adult: boolean;

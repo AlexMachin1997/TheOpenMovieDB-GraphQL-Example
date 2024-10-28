@@ -2,6 +2,7 @@
 
 import { Keyword } from '../graphql.schema';
 import { ICast, ICrew } from '../types/credits';
+import { Nullable } from '../types/Nullable';
 
 export interface IReviewQuery {
 	id: number;
@@ -11,8 +12,8 @@ export interface IReviewQuery {
 		author_details: {
 			name: string;
 			username: string;
-			avatar_path: string | null;
-			rating: number | null;
+			avatar_path: Nullable<string>;
+			rating: Nullable<number>;
 		};
 		content: string;
 		created_at: string;

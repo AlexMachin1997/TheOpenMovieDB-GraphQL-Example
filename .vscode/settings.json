@@ -14,7 +14,7 @@
 		"source.fixAll.eslint": "explicit"
 	},
 	"editor.cursorSmoothCaretAnimation": "on",
-	"editor.fontSize": 20,
+	"editor.fontSize": 15,
 
 	"editor.minimap.enabled": false,
 	"editor.tabSize": 2,
@@ -65,8 +65,8 @@
 		"*.react.js": "javascriptreact",
 		"*.jsx": "javascriptreact"
 	},
-	"terminal.integrated.fontSize": 20,
+	"terminal.integrated.fontSize": 15,
 	"screencastMode.fontSize": 59,
-	"scm.inputFontSize": 20,
+	"scm.inputFontSize": 15,
 	"typescript.tsdk": "node_modules\\typescript\\lib"
 }

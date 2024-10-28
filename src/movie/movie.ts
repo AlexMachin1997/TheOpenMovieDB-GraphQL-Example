@@ -1,60 +1,27 @@
-import { Genre, Keyword } from '../graphql.schema';
-import { Gender } from '../types/gender';
+/* eslint-disable @typescript-eslint/naming-convention */
+import { Keyword } from '../graphql.schema';
+import { Nullable } from '../types/Nullable';
+import {
+	Gender,
+	ICommonTheOpenMovieDatabaseEntertainmentModel
+} from '../types/TheOpenMovieDatabase.common';
 
-export interface TheOpenMovieDatabaseBelongsToCollection {
-	id: number;
-	name: string;
-	poster_path: string;
-	backdrop: string;
-}
-
-export interface TheOpenMovieDatabaseSpokenLanguages {
-	english_name: string;
-	iso_639_1: string;
-	name: string;
-}
-
-export interface TheOpenMovieDatabaseMovie {
-	adult: boolean;
-	backdrop_path: string;
-	belongs_to_collection: TheOpenMovieDatabaseBelongsToCollection | null;
+export interface ITheOpenMovieDatabaseMovie extends ICommonTheOpenMovieDatabaseEntertainmentModel {
 	budget: number;
-	genres: Array<Genre>;
-	homepage: string;
-	id: number;
 	imdb_id: string;
-	origin_country: Array<string>;
-	original_language: string;
 	original_title: string;
-	overview: string;
-	popularity: number;
-	poster_path: string;
-	production_companies: Array<{
-		id: number;
-		logo_path: string;
-		name: string;
-		origin_country: string;
-	}>;
-	production_countries: Array<{ iso_3166_1: string; name: string }>;
 	release_date: string;
 	revenue: number;
 	runtime: number;
-	spoken_languages: Array<TheOpenMovieDatabaseSpokenLanguages>;
-	status: string;
-	tagline: string;
-	title: string;
-	video: boolean;
-	vote_average: number;
-	vote_count: number;
 }
 
-export interface TheOpenMovieDatabaseMovieReview {
+export interface ITheOpenMovieDatabaseMovieReview {
 	author: string;
 	author_details: {
 		name: string;
 		username: string;
-		avatar_path: string | null;
-		rating: number | null;
+		avatar_path: Nullable<string>;
+		rating: Nullable<number>;
 	};
 	content: string;
 	created_at: string;
@@ -63,7 +30,7 @@ export interface TheOpenMovieDatabaseMovieReview {
 	url: string;
 }
 
-export interface TheOpenMovieDatabaseMovieCastAndCrew {
+export interface ITheOpenMovieDatabaseMovieCastAndCrew {
 	adult: boolean;
 	gender: Gender;
 	id: number;
@@ -75,23 +42,23 @@ export interface TheOpenMovieDatabaseMovieCastAndCrew {
 	credit_id: string;
 }
 
-export interface TheOpenMovieDatabaseMovieCast extends TheOpenMovieDatabaseMovieCastAndCrew {
+export interface ITheOpenMovieDatabaseMovieCast extends ITheOpenMovieDatabaseMovieCastAndCrew {
 	cast_id: number;
 	character: string;
 	order: number;
 }
 
-export interface TheOpenMovieDatabaseMovieCrew extends TheOpenMovieDatabaseMovieCastAndCrew {
+export interface ITheOpenMovieDatabaseMovieCrew extends ITheOpenMovieDatabaseMovieCastAndCrew {
 	department: string;
 	job: string;
 }
 
-export interface TheOpenMovieDatabaseMovieKeywords {
+export interface ITheOpenMovieDatabaseMovieKeywords {
 	id: number;
 	keywords: Array<Keyword>;
 }
 
-export interface TheOpenMovieDatbaseExternalIds {
+export interface ITheOpenMovieDatabaseExternalIds {
 	id: number;
 	imdb_id: string;
 	wikidata_id: string;

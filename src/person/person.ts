@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Gender } from '../types/gender';
+import { Nullable } from '../types/Nullable';
+import { Gender } from '../types/TheOpenMovieDatabase.common';
 
 export type TheOpenMovieDatabaseDepartments =
 	| 'Production'
@@ -27,12 +28,12 @@ export interface TheOpenMovieDatabasePerson {
 
 interface ICredit {
 	adult: boolean;
-	backdrop_path: string | null;
+	backdrop_path: Nullable<string>;
 	genre_ids: Array<number>;
 	id: number;
 	overview: string;
 	popularity: number;
-	poster_path: string | null;
+	poster_path: Nullable<string>;
 	vote_average: number;
 	vote_count: number;
 	character: string;

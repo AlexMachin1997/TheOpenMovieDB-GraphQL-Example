@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { addDays, format, subDays } from 'date-fns';
 
+import { FilteringOptionsService } from '../filtering-options/filtering-options.service';
+import { ENTERTAINMENT_TYPES, RESOURCE_TYPE } from '../graphql.schema';
+import { isNonNullable } from '../lib';
 import {
 	GetCheckboxFormDataResult,
 	GetDropdownFormDataOptions,
@@ -19,15 +22,8 @@ import {
 	GetSortSectionFormDataResult,
 	GetDiscoverFormDataOptions,
 	GetDiscoverFormDataResult,
-	GetCheckboxFormDataOptions,
-	GetAirDateFormDataOptions,
-	GetReleaseDateOptions,
-	GetReleaseDateResult,
-	GetAirDateFormDataResult
-} from './types';
-import { FilteringOptionsService } from '../filtering-options/filtering-options.service';
-import { ENTERTAINMENT_TYPES, RESOURCE_TYPE } from '../graphql.schema';
-import { isNonNullable } from '../lib';
+	GetCheckboxFormDataOptions
+} from '../types/Discover';
 
 @Injectable()
 export class DiscoverFormDataService {
@@ -105,24 +101,34 @@ export class DiscoverFormDataService {
 		};
 	};
 
-	private getAirDateFormData = ({
-		entertainmentType,
+	private setupDateFilters = ({
 		resourceType,
+		mediaType,
 		searchFirstAirDate
-	}: GetAirDateFormDataOptions): GetAirDateFormDataResult => {
-		// The Release Date field isn't a valid entertainmentType for 'movie'
-		if (entertainmentType === ENTERTAINMENT_TYPES.MOVIE) {
-			return {
-				lte: null,
-				gte: null
-			};
-		}
-
+	}: {
+		resourceType: RESOURCE_TYPE;
+		mediaType: ENTERTAINMENT_TYPES;
+		searchFirstAirDate: boolean;
+	}) => {
 		// gte - "From"
 		// lte - "To"
 
+		// Set the release_date values for the /movie/popular route
+		if (resourceType === RESOURCE_TYPE.POPULAR && mediaType === ENTERTAINMENT_TYPES.MOVIE) {
+			return {
+				release_date: {
+					gte: '',
+					lte: format(addDays(new Date(), 181), 'yyyy-MM-dd')
+				},
+				air_date: {
+					gte: null,
+					lte: null
+				}
+			};
+		}
+
 		// Set the air_date values for the /tv/popular route
-		if (resourceType === RESOURCE_TYPE.POPULAR) {
+		if (resourceType === RESOURCE_TYPE.POPULAR && mediaType === ENTERTAINMENT_TYPES.TV) {
 			// Get the "From" value (gte)
 			const gte = '';
 
@@ -131,19 +137,45 @@ export class DiscoverFormDataService {
 
 			if (searchFirstAirDate) {
 				return {
-					gte,
-					lte
+					air_date: {
+						gte,
+						lte
+					},
+					release_date: {
+						gte: null,
+						lte: null
+					}
 				};
 			}
 
 			return {
-				gte,
-				lte
+				air_date: {
+					gte: null,
+					lte: null
+				},
+				release_date: {
+					gte,
+					lte
+				}
+			};
+		}
+
+		// Set the release_date values for the /tv/now-playing route
+		if (resourceType === RESOURCE_TYPE.NOW_PLAYING && mediaType === ENTERTAINMENT_TYPES.MOVIE) {
+			return {
+				air_date: {
+					gte: null,
+					lte: null
+				},
+				release_date: {
+					gte: format(subDays(new Date(), 40), 'yyyy-MM-dd'),
+					lte: format(addDays(new Date(), 2), 'yyyy-MM-dd')
+				}
 			};
 		}
 
 		// Set the air_date values for the /tv/airing-today route
-		if (resourceType === RESOURCE_TYPE.AIRING_TODAY) {
+		if (resourceType === RESOURCE_TYPE.AIRING_TODAY && mediaType === ENTERTAINMENT_TYPES.TV) {
 			// Get the "From" value (gte)
 			const gte = format(new Date(), 'yyyy-MM-dd');
 
@@ -154,19 +186,45 @@ export class DiscoverFormDataService {
 			// NOTE: Add find out more about this filter's functionality
 			if (searchFirstAirDate) {
 				return {
-					gte,
-					lte
+					air_date: {
+						gte,
+						lte
+					},
+					release_date: {
+						gte: null,
+						lte: null
+					}
 				};
 			}
 
 			return {
-				gte,
-				lte
+				release_date: {
+					gte,
+					lte
+				},
+				air_date: {
+					gte: null,
+					lte: null
+				}
+			};
+		}
+
+		// Set the release_date values for the /movie/upcoming route
+		if (resourceType === RESOURCE_TYPE.UPCOMING && mediaType === ENTERTAINMENT_TYPES.MOVIE) {
+			return {
+				release_date: {
+					gte: format(addDays(new Date(), 3), 'yyyy-MM-dd'),
+					lte: format(addDays(new Date(), 24), 'yyyy-MM-dd')
+				},
+				air_date: {
+					gte: null,
+					lte: null
+				}
 			};
 		}
 
 		// Set the air_date values for the /tv/on-the-air route
-		if (resourceType === RESOURCE_TYPE.ON_THE_AIR) {
+		if (resourceType === RESOURCE_TYPE.ON_THE_AIR && mediaType === ENTERTAINMENT_TYPES.TV) {
 			// Get the "From" value (gte)
 			const gte = format(new Date(), 'yyyy-MM-dd');
 
@@ -177,98 +235,76 @@ export class DiscoverFormDataService {
 			// NOTE: Add find out more about this filter's functionality
 			if (searchFirstAirDate) {
 				return {
-					gte,
-					lte
+					air_date: {
+						gte,
+						lte
+					},
+					release_date: {
+						gte: null,
+						lte: null
+					}
 				};
 			}
 
 			return {
-				gte,
-				lte
-			};
-		}
-
-		if (resourceType === RESOURCE_TYPE.TOP_RATED) {
-			// Set the release_date values for the /tv/top-rated route
-			// Get the "From" value (gte)
-			const gte = '';
-
-			// Get the "To" value (lte)
-			const lte = format(addDays(new Date(), 180), 'yyyy-MM-dd');
-
-			// When using the first_air fate filter set the air_date values otherwise just set the release_date
-			// NOTE: Add find out more about this filter's functionality
-			if (searchFirstAirDate) {
-				return {
+				release_date: {
 					gte,
 					lte
-				};
-			}
-
-			return {
-				gte,
-				lte
-			};
-		}
-
-		return {
-			gte: null,
-			lte: null
-		};
-	};
-
-	private getReleaseDateFormData({
-		entertainmentType,
-		resourceType
-	}: GetReleaseDateOptions): GetReleaseDateResult {
-		// The Release Date field isn't a valid entertainmentType for 'tv'
-		if (entertainmentType === ENTERTAINMENT_TYPES.TV) {
-			return {
-				lte: null,
-				gte: null
-			};
-		}
-
-		// gte - "From"
-		// lte - "To"
-
-		// Set the release_date values for the /movie/popular route
-		if (resourceType === RESOURCE_TYPE.POPULAR) {
-			return {
-				gte: '',
-				lte: format(addDays(new Date(), 181), 'yyyy-MM-dd') // Add 181 days to the "To" label value
-			};
-		}
-
-		// Set the release_date values for the /tv/now-playing route
-		if (resourceType === RESOURCE_TYPE.NOW_PLAYING) {
-			return {
-				gte: format(subDays(new Date(), 40), 'yyyy-MM-dd'),
-				lte: format(addDays(new Date(), 2), 'yyyy-MM-dd')
-			};
-		}
-
-		// Set the release_date values for the /movie/upcoming route
-		if (resourceType === RESOURCE_TYPE.UPCOMING) {
-			return {
-				gte: format(addDays(new Date(), 3), 'yyyy-MM-dd'),
-				lte: format(addDays(new Date(), 24), 'yyyy-MM-dd')
+				},
+				air_date: {
+					gte: null,
+					lte: null
+				}
 			};
 		}
 
 		// Set the release_date values for the /movie/top-rated route
-		if (resourceType === RESOURCE_TYPE.TOP_RATED) {
+		if (resourceType === RESOURCE_TYPE.TOP_RATED && mediaType === ENTERTAINMENT_TYPES.MOVIE) {
 			return {
-				gte: '',
-				lte: format(addDays(new Date(), 181), 'yyyy-MM-dd')
+				release_date: {
+					gte: '',
+					lte: format(addDays(new Date(), 181), 'yyyy-MM-dd')
+				},
+				air_date: {
+					gte: null,
+					lte: null
+				}
+			};
+		}
+
+		// Set the release_date values for the /tv/top-rated route
+		// Get the "From" value (gte)
+		const gte = '';
+
+		// Get the "To" value (lte)
+		const lte = format(addDays(new Date(), 180), 'yyyy-MM-dd');
+
+		// When using the first_air fate filter set the air_date values otherwise just set the release_date
+		// NOTE: Add find out more about this filter's functionality
+		if (searchFirstAirDate) {
+			return {
+				air_date: {
+					gte,
+					lte
+				},
+				release_date: {
+					gte: null,
+					lte: null
+				}
 			};
 		}
 
 		return {
-			gte: null,
-			lte: null
+			release_date: {
+				gte,
+				lte
+			},
+			air_date: {
+				gte: null,
+				lte: null
+			}
 		};
-	}
+	};
 
 	private getVoteAverageFilterFormData({
 		voteAverageGte = 10,
@@ -446,15 +482,10 @@ export class DiscoverFormDataService {
 			searchFirstAirDate = false;
 		}
 
-		const airDate = this.getAirDateFormData({
-			entertainmentType,
+		const dateFilters = this.setupDateFilters({
 			resourceType,
+			mediaType: entertainmentType,
 			searchFirstAirDate
-		});
-
-		const releaseDate = this.getReleaseDateFormData({
-			entertainmentType,
-			resourceType
 		});
 
 		return {
@@ -463,8 +494,8 @@ export class DiscoverFormDataService {
 			with_genres: withGenres.isMultiple ? withGenres.value : [],
 			certifications: certification.isMultiple ? certification.value : [],
 			with_release_types: withReleaseTypes,
-			release_date: releaseDate,
-			air_date: airDate,
+			release_date: dateFilters.release_date,
+			air_date: dateFilters.air_date,
 			with_original_language: !withOriginalLanguage.isMultiple ? withOriginalLanguage.value : null,
 			region: !region.isMultiple ? region.value : null,
 			vote_average: voteAverage,
@@ -513,9 +544,9 @@ export class DiscoverFormDataService {
 
 		let defaultSortBy = 'popularity.desc';
 
-		if (typeof defaultValues?.sort !== 'undefined' && defaultValues.sort !== null) {
+		if (typeof defaultValues?.sort_by !== 'undefined' && defaultValues.sort_by !== null) {
 			// If there is an existing value use that
-			defaultSortBy = defaultValues.sort;
+			defaultSortBy = defaultValues.sort_by;
 		} else if (resourceType === RESOURCE_TYPE.TOP_RATED) {
 			// If there is no value but the resource type is "top-rated" then sort the results by vote_average in descending order
 			defaultSortBy = 'vote_average.desc';
@@ -530,12 +561,12 @@ export class DiscoverFormDataService {
 
 		if (!generatedSortByValue.isMultiple) {
 			return {
-				sort: generatedSortByValue.value
+				sort_by: generatedSortByValue.value
 			};
 		}
 
 		return {
-			sort: null
+			sort_by: null
 		};
 	}
 

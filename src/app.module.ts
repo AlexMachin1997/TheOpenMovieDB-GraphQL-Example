@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import joi from 'joi';
 
+import { DiscoverFilteringModule } from './discover-filtering/discover-filtering.module';
 import { DiscoverFormDataModule } from './discover-form-data/discover-form-data.module';
 import { FilteringOptionsModule } from './filtering-options/filtering-options.module';
 import { MovieModule } from './movie/movie.module';
@@ -26,6 +27,7 @@ import { ShowModule } from './show/show.module';
 			typePaths: [
 				// Enums used by all the graphql schemas
 				'./src/models/enum.graphql',
+				'./src/models/Pagination.graphql',
 
 				// Entertainment specific models, used for the Movie and Show schemas
 				'./src/models/entertainment/BelongsToCollection.graphql',
@@ -52,7 +54,8 @@ import { ShowModule } from './show/show.module';
 		MovieModule,
 		PersonModule,
 		DiscoverFormDataModule,
-		FilteringOptionsModule
+		FilteringOptionsModule,
+		DiscoverFilteringModule
 	]
 })
 export class AppModule {}

@@ -20,11 +20,12 @@ import {
 	Social,
 	Video
 } from '../graphql.schema';
-import {
-	TheOpenMovieDatabaseBelongsToCollection,
-	TheOpenMovieDatabaseSpokenLanguages
-} from '../movie/movie';
 import { SocialsService } from '../socials/socials.service';
+import { Nullable } from '../types/Nullable';
+import {
+	ISpokenLanguage,
+	ITheOpenMovieDatabaseBelongsToCollection
+} from '../types/TheOpenMovieDatabase.common';
 import { UtilsService } from '../utils/utils.service';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -45,7 +46,7 @@ export class EntertainmentService {
 	async getReview({
 		entertainmentType,
 		entertainmentId
-	}: IEntertainmentCommonArguments): Promise<Review | null> {
+	}: IEntertainmentCommonArguments): Promise<Nullable<Review>> {
 		const { data } = await firstValueFrom(
 			this.httpService.get<IReviewQuery>(
 				`https://api.themoviedb.org/3/${entertainmentType.toLowerCase()}/${entertainmentId}/reviews?language=en-U`,
@@ -85,7 +86,7 @@ export class EntertainmentService {
 	async getTopBilledCast({
 		entertainmentType,
 		entertainmentId
-	}: IEntertainmentCommonArguments): Promise<Array<Cast> | null> {
+	}: IEntertainmentCommonArguments): Promise<Array<Cast>> {
 		const { data } = await firstValueFrom(
 			this.httpService.get<ICreditsQueryResponse>(
 				`https://api.themoviedb.org/3/${entertainmentType.toLocaleLowerCase()}/${entertainmentId}/credits?language=en-U`,
@@ -113,7 +114,7 @@ export class EntertainmentService {
 	async getFeaturedCrewMembers({
 		entertainmentType,
 		entertainmentId
-	}: IEntertainmentCommonArguments): Promise<Array<Crew> | null> {
+	}: IEntertainmentCommonArguments): Promise<Array<Crew>> {
 		const { data } = await firstValueFrom(
 			this.httpService.get<ICreditsQueryResponse>(
 				`https://api.themoviedb.org/3/${entertainmentType.toLowerCase()}/${entertainmentId}/credits?language=en-U`,
@@ -172,7 +173,7 @@ export class EntertainmentService {
 	async getKeywords({
 		entertainmentType,
 		entertainmentId
-	}: IEntertainmentCommonArguments): Promise<Array<Keyword> | null> {
+	}: IEntertainmentCommonArguments): Promise<Array<Keyword>> {
 		const { data } = await firstValueFrom(
 			this.httpService.get<IKeywordsQueryResponse>(
 				`https://api.themoviedb.org/3/${entertainmentType.toLocaleLowerCase()}/${entertainmentId}/keywords?language=en-U`,
@@ -199,14 +200,19 @@ export class EntertainmentService {
 	}
 
 	getCollection = (
-		collection: undefined | null | TheOpenMovieDatabaseBelongsToCollection = null
-	): BelongsToCollection | null => {
+		collection: Nullable<ITheOpenMovieDatabaseBelongsToCollection> = null
+	): Nullable<BelongsToCollection> => {
 		if (collection !== null) {
+			// 	    id: number;
+			// name: string;
+			// backdrop: string;
+			// backgroundUrl?: Nullable<string>;
+			// posterUrl?: Nullable<string>;
 			return {
-				backgroundUrl: this.utilService.getFullImageUrlPath(collection.poster_path),
 				id: collection.id,
 				name: collection.name,
-				posterUrl: collection.poster_path
+				posterUrl: collection.poster_path,
+				backgroundUrl: this.utilService.getFullImageUrlPath(collection.poster_path)
 			};
 		}
 
@@ -218,7 +224,7 @@ export class EntertainmentService {
 		spokenLanguages
 	}: {
 		originalLanguage: string;
-		spokenLanguages: Array<TheOpenMovieDatabaseSpokenLanguages>;
+		spokenLanguages: Array<ISpokenLanguage>;
 	}) => {
 		if (originalLanguage.length !== 0 && spokenLanguages.length === 0) {
 			const foundFriendlyLanguage = spokenLanguages.find(
@@ -238,7 +244,7 @@ export class EntertainmentService {
 	async getYouTubeVideo({
 		entertainmentType,
 		entertainmentId
-	}: IEntertainmentCommonArguments): Promise<Video | null> {
+	}: IEntertainmentCommonArguments): Promise<Nullable<Video>> {
 		const { data } = await firstValueFrom(
 			this.httpService.get<IVdoesQueryResponse>(
 				`https://api.themoviedb.org/3/${entertainmentType.toLowerCase()}/${entertainmentId}/videos?language=en-U`,

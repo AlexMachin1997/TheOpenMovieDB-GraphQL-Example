@@ -4,9 +4,10 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
 
-import { IAggregatedCreditsQueryResponse, TheOpenMovieDatabaseShow } from './show';
+import { IAggregatedCreditsQueryResponse, ITheOpenMovieDatabaseShow } from './show';
 import { EntertainmentService } from '../entertainment/entertainment.service';
 import { CurrentSeason, ENTERTAINMENT_TYPES } from '../graphql.schema';
+import { Nullable } from '../types/Nullable';
 import { UtilsService } from '../utils/utils.service';
 
 @Injectable()
@@ -21,7 +22,7 @@ export class ShowService {
 	private getCurrentSeason({
 		last_episode_to_air = null,
 		seasons = []
-	}: Pick<TheOpenMovieDatabaseShow, 'last_episode_to_air' | 'seasons'>): CurrentSeason | null {
+	}: Pick<ITheOpenMovieDatabaseShow, 'last_episode_to_air' | 'seasons'>): Nullable<CurrentSeason> {
 		if (last_episode_to_air !== null && seasons.length === 0) return null;
 
 		const currentSeason = seasons.find(
@@ -41,7 +42,7 @@ export class ShowService {
 
 	async getShow(showId: number) {
 		const { data } = await firstValueFrom(
-			this.httpService.get<TheOpenMovieDatabaseShow>(
+			this.httpService.get<ITheOpenMovieDatabaseShow>(
 				`https://api.themoviedb.org/3/tv/${showId}?language=en-U`,
 				{
 					headers: {
@@ -116,7 +117,7 @@ export class ShowService {
 		// data like a list of the users roles for the particular show being queried
 		const aggregatedCredits = await this.getCastAggregatedCredits(showId);
 
-		return topBilledCast?.map((topBilledCastMember) => {
+		return topBilledCast.map((topBilledCastMember) => {
 			// Find the cast members credits data, found via the aggregate_credits endpoint
 			const aggregatedCredit = aggregatedCredits.cast.find(
 				(el) => el.id === topBilledCastMember.id

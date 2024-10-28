@@ -1,0 +1,9 @@
+type PaginationMetaData {
+	page: Int!
+	pageCount: Int!
+	total: Int!
+}
+
+interface PaginatedResult {
+	meta: PaginationMetaData!
+}

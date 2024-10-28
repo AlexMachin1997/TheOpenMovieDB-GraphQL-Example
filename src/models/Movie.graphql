@@ -21,7 +21,6 @@ type Movie {
 	belongsToCollection: BelongsToCollection
 	tagline: String
 	runtime: String
-
 	budget: String
 	revenue: String
 }

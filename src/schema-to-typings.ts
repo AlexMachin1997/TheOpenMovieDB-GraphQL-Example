@@ -11,6 +11,7 @@ const typeDefinitionOutputFormat = 'interface';
 const schemas = [
 	// Enums used by all the graphql schemas
 	'./models/enum.graphql',
+	'./models/Pagination.graphql',
 
 	// Entertainment specific models, used for the Movie and Show schemas
 	'./models/entertainment/BelongsToCollection.graphql',

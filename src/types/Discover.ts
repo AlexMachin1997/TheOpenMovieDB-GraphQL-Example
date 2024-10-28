@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/consistent-type-definitions */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { ISelectOption } from 'src/types/SelectOption';
-
+import { Nullable } from './Nullable';
+import { ISelectOption } from './SelectOption';
+import { ICommonTheOpenMovieDatabaseEntertainmentModel } from './TheOpenMovieDatabase.common';
 import {
 	DiscoverFormData,
 	DiscoverFormDataInput,
@@ -13,7 +14,7 @@ import {
 
 interface IGetDropdownFormDataSingleSelectResult {
 	isMultiple: false;
-	value: string | null;
+	value: Nullable<string>;
 }
 
 interface IGetDropdownFormDataMultiSelectResult {
@@ -50,7 +51,7 @@ export type GetCheckboxFormDataOptions = {
 
 export type GetCheckboxFormDataResult = Array<string>;
 
-// Setup Date Range FormData types
+// Setup Release Date FormData types
 
 export type GetReleaseDateOptions = {
 	entertainmentType: ENTERTAINMENT_TYPES;
@@ -58,9 +59,11 @@ export type GetReleaseDateOptions = {
 };
 
 export type GetReleaseDateResult = {
-	gte: string | null;
-	lte: string | null;
+	gte: Nullable<string>;
+	lte: Nullable<string>;
 };
+
+// Setup Air Date FormData types
 
 export type GetAirDateFormDataOptions = {
 	entertainmentType: ENTERTAINMENT_TYPES;
@@ -69,25 +72,9 @@ export type GetAirDateFormDataOptions = {
 };
 
 export type GetAirDateFormDataResult = {
-	gte: null | string;
-	lte: string | null;
+	gte: Nullable<string>;
+	lte: Nullable<string>;
 };
-
-export interface GetDateRangeFormDataAirDate {
-	type: 'airDate';
-	gte: string;
-	lte: string;
-}
-
-export interface GetDateRangeFormDataReleaseDate {
-	type: 'releaseDate';
-	gte: string;
-	lte: string;
-}
-
-export type GetDateRangeFormDataResult =
-	| GetDateRangeFormDataAirDate
-	| GetDateRangeFormDataReleaseDate;
 
 // Get Vote Average Filter FormData types
 
@@ -122,8 +109,8 @@ export type GetVoteCountFilterFormDataOptions = {
 };
 
 export type GetVoteCountFilterFormDataResult = {
-	gte: number | null;
-	lte: number | null;
+	gte: Nullable<number>;
+	lte: Nullable<number>;
 };
 
 // Get Filters section FormData type
@@ -185,10 +172,10 @@ export type GetWhereToWatchSectionFormDataResult = Pick<
 
 export type GetSortSectionFormDataOptions = {
 	resourceType: RESOURCE_TYPE;
-	defaultValues?: Pick<DiscoverFormDataInput, 'sort'>;
+	defaultValues?: Pick<DiscoverFormDataInput, 'sort_by'>;
 };
 
-export type GetSortSectionFormDataResult = Pick<DiscoverFormData, 'sort'>;
+export type GetSortSectionFormDataResult = Pick<DiscoverFormData, 'sort_by'>;
 
 // Get Discover FormData types
 
@@ -205,3 +192,8 @@ export interface GetDiscoverFormDataResult
 	extends GetSortSectionFormDataResult,
 		GetFiltersSectionFormDataResult,
 		GetWhereToWatchSectionFormDataResult {}
+
+export type ITheOpenMovieDatabaseDiscoverResult = Omit<
+	ICommonTheOpenMovieDatabaseEntertainmentModel,
+	'production_companies' | 'production_countries' | 'genres'
+>;

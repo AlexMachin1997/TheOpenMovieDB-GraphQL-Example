@@ -2,6 +2,27 @@ import { Injectable } from '@nestjs/common';
 
 import { ENTERTAINMENT_TYPES } from '../graphql.schema';
 
+interface DropdownOptions<Value, Name> {
+	label: string;
+	id: string;
+	value: Value;
+	name: Name;
+	order: number;
+}
+
+type AvailabilityOptionValue = 'all' | 'flatrate' | 'free' | 'ads' | 'rent' | 'buy';
+type AvailabilityOptionName = 'all' | 'stream' | 'free' | 'ads' | 'rent' | 'buy';
+
+type ReleaseTypeOptionValue = 'all' | '1' | '2' | '3' | '4' | '5' | '6';
+type ReleaseTypeOptionName =
+	| 'all'
+	| 'premiere'
+	| 'theatrical-ltd'
+	| 'theatrical'
+	| 'digital'
+	| 'physical'
+	| 'tv';
+
 @Injectable()
 export class FilteringOptionsService {
 	getSortByOptions() {
@@ -26,7 +47,7 @@ export class FilteringOptionsService {
 			},
 			{
 				label: 'Rating Ascending',
-				id: 'vote_average.asc',
+				id: 'vote_avaverage.asc',
 				value: 'vote_average.asc',
 				order: 4
 			},
@@ -125,8 +146,14 @@ export class FilteringOptionsService {
 		].sort((a, b) => a.order - b.order);
 	}
 
-	getAvailabilityOptions() {
-		return [
+	getAvailabilityOptions({
+		excludeOptions = []
+	}: {
+		excludeOptions?: Array<AvailabilityOptionName>;
+	} = {}): Array<DropdownOptions<AvailabilityOptionValue, AvailabilityOptionName>> {
+		let availabilityOptions: Array<
+			DropdownOptions<AvailabilityOptionValue, AvailabilityOptionName>
+		> = [
 			{
 				label: 'Search all availabilities',
 				id: 'Search-All-Availabilities-Option',
@@ -169,7 +196,15 @@ export class FilteringOptionsService {
 				order: 6,
 				name: 'buy'
 			}
-		].sort((a, b) => a.order - b.order);
+		];
+
+		if (excludeOptions.length > 0) {
+			availabilityOptions = availabilityOptions.filter(
+				(option) => !excludeOptions.includes(option.name)
+			);
+		}
+
+		return availabilityOptions.sort((a, b) => a.order - b.order);
 	}
 
 	getGenreOptions() {
@@ -332,12 +367,14 @@ export class FilteringOptionsService {
 		].sort((a, b) => a.order - b.order);
 	}
 
-	getReleaseTypeOptions() {
-		return [
+	getReleaseTypeOptions({
+		excludeOptions = []
+	}: { excludeOptions?: Array<ReleaseTypeOptionName> } = {}) {
+		let releaseTypes: Array<DropdownOptions<ReleaseTypeOptionValue, ReleaseTypeOptionName>> = [
 			{
 				label: 'Search all releases',
 				id: 'Search-All-Releases',
-				value: 'all', // Special value, this just takes all the existing values
+				value: 'all',
 				order: 1,
 				name: 'all'
 			},
@@ -383,7 +420,15 @@ export class FilteringOptionsService {
 				order: 7,
 				name: 'tv'
 			}
-		].sort((a, b) => a.order - b.order);
+		];
+
+		if (excludeOptions.length > 0) {
+			releaseTypes = releaseTypes.filter((option) => !excludeOptions.includes(option.name));
+		}
+
+		return releaseTypes
+			.filter((option) => !excludeOptions.includes(option.name))
+			.sort((a, b) => a.order - b.order);
 	}
 
 	getLanguageOptions() {

@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
 
-import { TheOpenMovieDatabaseMovie } from './movie';
+import { ITheOpenMovieDatabaseMovie } from './movie';
 import { EntertainmentService } from '../entertainment/entertainment.service';
 import { ENTERTAINMENT_TYPES } from '../graphql.schema';
 import { UtilsService } from '../utils/utils.service';
@@ -25,8 +25,8 @@ export class MovieService {
 	}
 
 	async getMovie(movieId: number) {
-		const { data } = await firstValueFrom(
-			this.httpService.get<TheOpenMovieDatabaseMovie>(
+		const { data: movie } = await firstValueFrom(
+			this.httpService.get<ITheOpenMovieDatabaseMovie>(
 				`https://api.themoviedb.org/3/movie/${movieId}?language=en-U`,
 				{
 					headers: {
@@ -39,32 +39,32 @@ export class MovieService {
 
 		return {
 			// Common "entertainment" properties
-			id: data.id,
-			name: data.title === '' || data.title.length === 0 ? data.original_title : data.title,
-			overview: data.overview,
-			backgroundUrl: this.utilService.getFullImageUrlPath(data.backdrop_path),
-			posterUrl: this.utilService.getFullImageUrlPath(data.poster_path),
-			genres: data.genres,
-			homepage: data.homepage,
+			id: movie.id,
+			name: !movie.title ? movie.original_title : movie.title,
+			overview: movie.overview,
+			backgroundUrl: this.utilService.getFullImageUrlPath(movie.backdrop_path),
+			posterUrl: this.utilService.getFullImageUrlPath(movie.poster_path),
+			genres: movie.genres,
+			homepage: movie.homepage,
 			originalLanguage: this.entertainmentService.getOriginalLanguage({
-				originalLanguage: data.original_language,
-				spokenLanguages: data.spoken_languages
+				originalLanguage: movie.original_language,
+				spokenLanguages: movie.spoken_languages
 			}),
-			productionCompanies: data.production_companies.map((productionCompany) => ({
+			productionCompanies: movie.production_companies.map((productionCompany) => ({
 				id: productionCompany.id,
 				logo: this.utilService.getFullImageUrlPath(productionCompany.logo_path),
 				name: productionCompany.name
 			})),
-			releaseDate: data.release_date,
-			voteAverage: data.vote_average,
-			status: data.status,
-			tagline: data.tagline,
-			belongsToCollection: this.entertainmentService.getCollection(data.belongs_to_collection),
+			releaseDate: movie.release_date,
+			voteAverage: movie.vote_average,
+			status: movie.status,
+			tagline: movie.tagline,
+			belongsToCollection: this.entertainmentService.getCollection(movie.belongs_to_collection),
 
 			// Movie specific properties
-			runtime: this.getMovieRunTime(data.runtime),
-			budget: this.utilService.convertNumberToLocalCurrency(data.budget),
-			revenue: this.utilService.convertNumberToLocalCurrency(data.revenue)
+			runtime: this.getMovieRunTime(movie.runtime),
+			budget: this.utilService.convertNumberToLocalCurrency(movie.budget),
+			revenue: this.utilService.convertNumberToLocalCurrency(movie.revenue)
 		};
 	}
 

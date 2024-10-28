@@ -7,4 +7,6 @@ type Query {
 		resourceType: RESOURCE_TYPE
 		defaultValues: DiscoverFormDataInput
 	): DiscoverFormData
+	discoverMovies(filterValues: DiscoverFormDataInput!, pageNumber: Int!): PaginatedDiscoverResult
+	discoverShows(filterValues: DiscoverFormDataInput!, pageNumber: Int!): PaginatedDiscoverResult
 }

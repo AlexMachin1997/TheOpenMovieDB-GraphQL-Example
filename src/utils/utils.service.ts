@@ -1,18 +1,17 @@
 import { Injectable } from '@nestjs/common';
 
-import { Gender } from '../types/gender';
+import { Nullable } from '../types/Nullable';
+import { Gender } from '../types/TheOpenMovieDatabase.common';
 
 @Injectable()
 export class UtilsService {
-	getFullImageUrlPath(imageUrl: string | null | undefined = null): string {
-		if (imageUrl === null) {
-			return '';
-		}
+	getFullImageUrlPath(imageUrl: Nullable<string> = null): Nullable<string> {
+		if (imageUrl === null) return null;
 
 		return `https://image.tmdb.org/t/p/original${imageUrl}`;
 	}
 
-	getNumberAsPercentage(value: number | null, highestValueProvided: number): `${number}%` {
+	getNumberAsPercentage(value: Nullable<number>, highestValueProvided: number): `${number}%` {
 		if (value === null) return '0%';
 		return `${value * highestValueProvided}%`;
 	}
