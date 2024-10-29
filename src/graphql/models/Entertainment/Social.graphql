@@ -1,0 +1,12 @@
+type Social {
+	id: Int
+	freebase: String
+	imdb: String
+	tvrage: Int
+	wikidata: String
+	facebook: String
+	instagram: String
+	tiktok: String
+	twitter: String
+	youtube: String
+}

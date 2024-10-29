@@ -1,7 +1,0 @@
-type Social {
-	facebook: String
-	instagram: String
-	twitter: String
-	homepage: String
-	tiktok: String
-}

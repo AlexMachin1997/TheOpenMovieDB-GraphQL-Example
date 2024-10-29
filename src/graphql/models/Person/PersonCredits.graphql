@@ -1,0 +1,7 @@
+type PersonCredits {
+	ActingGroup: [CreditGroup]
+	ProductionGroup: [CreditGroup]
+	WritingGroup: [CreditGroup]
+	DirectingGroup: [CreditGroup]
+	CrewGroup: [CreditGroup]
+}

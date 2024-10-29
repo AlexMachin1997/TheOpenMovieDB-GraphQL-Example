@@ -1,0 +1,14 @@
+type Person {
+	id: Int
+	birthday: String
+	knownForDepartment: String
+	name: String
+	alsoKnownAs: [String]
+	gender: String
+	overview: String
+	placeOfBirth: String
+	posterUrl: String
+	creditGroup: CreditGroup
+	social: Social
+	homepage: String
+}

@@ -1,0 +1,29 @@
+type DateRangeFilter {
+	gte: String
+	lte: String
+}
+
+type NumberRangeFilter {
+	gte: Int
+	lte: Int
+}
+
+type VoteCountFilter {
+	gte: Int
+	lte: Int
+}
+
+input DateRangeFilterInput {
+	gte: String
+	lte: String
+}
+
+input NumberRangeFilterInput {
+	gte: Int
+	lte: Int
+}
+
+input VoteCountFilterInput {
+	gte: Int
+	lte: Int
+}
