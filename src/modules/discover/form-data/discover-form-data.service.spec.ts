@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-useless-template-literals */
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { DiscoverFormDataService } from './discover-form-data.service';
