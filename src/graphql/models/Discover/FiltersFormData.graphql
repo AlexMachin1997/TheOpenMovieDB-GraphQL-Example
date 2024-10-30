@@ -14,6 +14,5 @@ type DiscoverFormData {
 	vote_count: VoteCountFilter
 	search_first_air_date: Boolean
 	restrict_services: Boolean
-	ott_region: String
 	with_ott_providers: [String]
 }

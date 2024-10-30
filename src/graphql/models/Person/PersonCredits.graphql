@@ -4,4 +4,5 @@ type PersonCredits {
 	WritingGroup: [CreditGroup]
 	DirectingGroup: [CreditGroup]
 	CrewGroup: [CreditGroup]
+	LightingGroup: [CreditGroup]
 }

@@ -138,13 +138,13 @@ export class DiscoverFilteringService {
 		this.handleSearchParameterSetting(
 			searchParameters,
 			'vote_average.gte',
-			filters.vote_count?.gte?.toString()
+			filters.vote_average?.gte?.toString()
 		);
 
 		this.handleSearchParameterSetting(
 			searchParameters,
 			'vote_average.lte',
-			filters.vote_count?.lte?.toString()
+			filters.vote_average?.lte?.toString()
 		);
 
 		// OTT provider filter e.g. netflix, disney, amazon_prime, hulu, apple_tv, etc
@@ -156,6 +156,14 @@ export class DiscoverFilteringService {
 
 				searchParameter: 'with_watch_providers'
 			})
+		);
+
+		// Restrict services filter e.g. true, false
+		// NOTE: This isn't actually used yet.....
+		this.handleSearchParameterSetting(
+			searchParameters,
+			'restrict_services',
+			filters.restrict_services?.toString()
 		);
 
 		// If the user is using the "search first air date" filter then instead of using "release_date" we use "first_air_date"
@@ -194,6 +202,18 @@ export class DiscoverFilteringService {
 
 				searchParameter: 'with_genres'
 			})
+		);
+
+		this.handleSearchParameterSetting(
+			searchParameters,
+			'vote_count.gte',
+			filters.vote_count?.gte?.toString()
+		);
+
+		this.handleSearchParameterSetting(
+			searchParameters,
+			'vote_count.lte',
+			filters.vote_count?.lte?.toString()
 		);
 
 		/*

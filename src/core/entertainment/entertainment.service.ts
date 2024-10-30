@@ -1,4 +1,5 @@
-/* eslint-disable import/extensions */
+/* eslint-disable @typescript-eslint/naming-convention */
+
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -22,7 +23,6 @@ import {
 import { UtilsService } from '../../modules/utils/utils.service';
 import { SocialsService } from '../socials/socials.service';
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 interface IEntertainmentCommonArguments {
 	entertainmentType: ENTERTAINMENT_TYPES;
 	entertainmentId: number;

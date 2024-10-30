@@ -54,8 +54,9 @@ export function getGraphQLPaths(pathType: 'absolute' | 'relative' = 'absolute') 
 		'models/Discover/FiltersFormData.graphql',
 
 		// Person specific models
-		'models/Person/CreditGroup.graphql',
 		'models/Person/Credit.graphql',
+		'models/Person/CreditGroup.graphql',
+		'models/Person/PersonCredits.graphql',
 		'models/Person/Person.graphql',
 
 		// Individual resource schemas

@@ -156,16 +156,13 @@ export type GetFiltersSectionFormDataResult = Pick<
 // Get Where To Watch Section FormData types
 
 export type GetWhereToWatchSectionFormDataOptions = {
-	defaultValues?: Pick<
-		DiscoverFormDataInput,
-		'restrict_services' | 'ott_region' | 'with_ott_providers'
-	>;
+	defaultValues?: Pick<DiscoverFormDataInput, 'restrict_services' | 'with_ott_providers'>;
 	countryOptions: Array<ISelectOption>;
 };
 
 export type GetWhereToWatchSectionFormDataResult = Pick<
 	DiscoverFormData,
-	'restrict_services' | 'ott_region' | 'with_ott_providers'
+	'restrict_services' | 'with_ott_providers'
 >;
 
 // Get Sort Section FormData types

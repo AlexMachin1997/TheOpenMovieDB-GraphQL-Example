@@ -506,18 +506,10 @@ export class DiscoverFormDataService {
 	}
 
 	private getWhereToWatchSectionFormData({
-		defaultValues,
-		countryOptions
+		defaultValues
 	}: GetWhereToWatchSectionFormDataOptions): GetWhereToWatchSectionFormDataResult {
 		// Get the "OTT Providers" e.g. "Netflix", "Amazon Prime" etc, used by the "Where To Watch" filters
 		const ottProviders = this.filteringOptionsService.getOttProviderOptions();
-
-		// Get the dropdown form data, validates the option actually exists in the options list
-		const ottRegionValue = this.getDropdownFormData({
-			isMultiple: false,
-			defaultValue: defaultValues?.ott_region ?? 'US',
-			options: countryOptions
-		});
 
 		// Get the dropdown form data, validates the option actually exists in the options list
 		const ottProvidersValues = this.getDropdownFormData({
@@ -528,7 +520,6 @@ export class DiscoverFormDataService {
 
 		return {
 			restrict_services: defaultValues?.restrict_services ?? false,
-			ott_region: !ottRegionValue.isMultiple ? ottRegionValue.value : null,
 			with_ott_providers: ottProvidersValues.isMultiple ? ottProvidersValues.value : []
 		};
 	}

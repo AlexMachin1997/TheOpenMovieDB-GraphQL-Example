@@ -36,7 +36,6 @@ export interface DiscoverFormDataInput {
 	vote_count?: Nullable<VoteCountFilterInput>;
 	search_first_air_date?: Nullable<boolean>;
 	restrict_services?: Nullable<boolean>;
-	ott_region?: Nullable<string>;
 	with_ott_providers?: Nullable<Nullable<string>[]>;
 }
 
@@ -102,7 +101,6 @@ export interface DiscoverFormData {
 	vote_count?: Nullable<VoteCountFilter>;
 	search_first_air_date?: Nullable<boolean>;
 	restrict_services?: Nullable<boolean>;
-	ott_region?: Nullable<string>;
 	with_ott_providers?: Nullable<Nullable<string>[]>;
 }
 

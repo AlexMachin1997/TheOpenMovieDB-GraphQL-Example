@@ -19,6 +19,9 @@
 	],
 	"ignorePatterns": ["**/node_modules/**", "dist/**", "*.graphql"],
 	"rules": {
+		"jest/prefer-expect-assertions": "error",
+		"jest/no-identical-title": "error",
+		"jest/valid-expect": "error",
 		// These rules are for reference only.
 		//#region eslint
 		"class-methods-use-this": "off",

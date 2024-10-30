@@ -1,6 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { writeFileSync } from 'fs';
 import { firstValueFrom } from 'rxjs';
 
 import { TheOpenMovieDatabasePerson } from './types';
@@ -88,7 +89,7 @@ export class PersonService {
 					character: departmentCredit.character,
 					title: departmentCredit.title || departmentCredit.original_title,
 					year: departmentCredit.release_date
-						? new Date(departmentCredit.release_date).getFullYear()
+						? `${new Date(departmentCredit.release_date).getFullYear()}`
 						: '-',
 					type: 'crew',
 					department: departmentCredit.department
@@ -103,7 +104,7 @@ export class PersonService {
 					title: departmentCredit.name || departmentCredit.original_name,
 					episodeCount: departmentCredit.episode_count,
 					year: departmentCredit.first_air_date
-						? new Date(departmentCredit.first_air_date).getFullYear()
+						? `${new Date(departmentCredit.first_air_date).getFullYear()}`
 						: '-',
 					type: 'crew',
 					department: departmentCredit.department
@@ -117,7 +118,7 @@ export class PersonService {
 					character: departmentCredit.character,
 					title: departmentCredit.title || departmentCredit.original_title,
 					year: departmentCredit.release_date
-						? new Date(departmentCredit.release_date).getFullYear()
+						? `${new Date(departmentCredit.release_date).getFullYear()}`
 						: '-',
 					type: 'cast'
 				});
@@ -131,22 +132,23 @@ export class PersonService {
 					title: departmentCredit.name || departmentCredit.original_name,
 					episodeCount: departmentCredit.episode_count,
 					year: departmentCredit.first_air_date
-						? new Date(departmentCredit.first_air_date).getFullYear()
+						? `${new Date(departmentCredit.first_air_date).getFullYear()}`
 						: '-',
 					type: 'cast'
 				});
 			}
 		});
 
-		// Sort the CreditGroup by the assigned year, it should be highest to lowest
+		// Sort the CreditGroup by the assigned year, with '-' at the top and the rest highest to lowest
 		CreditGroup.sort((departmentCreditA, departmentCreditB) => {
+			if (departmentCreditA.year === '-') return -1;
+			if (departmentCreditB.year === '-') return 1;
 			if (
 				typeof departmentCreditA.year === 'number' &&
 				typeof departmentCreditB.year === 'number'
 			) {
-				return departmentCreditA.year - departmentCreditB.year;
+				return departmentCreditB.year - departmentCreditA.year;
 			}
-
 			return 0;
 		});
 
@@ -163,21 +165,21 @@ export class PersonService {
 			...allCreditGroupWithoutEmptyYears
 		];
 
-		const groups: Array<{ year: number | '-'; CreditGroup: Array<Group> }> = [];
+		const groups: Array<{ year: string; credits: Array<Group> }> = [];
 
 		CreditGroupWithEmptyYearsAtTop.forEach((credit) => {
 			const groupIndex = groups.findIndex((el) => el.year === credit.year);
 
 			// Add the credit to the existing group
 			if (groupIndex !== -1) {
-				groups[groupIndex].CreditGroup.push(credit);
+				groups[groupIndex].credits.push(credit);
 			}
 
 			// Create a new credit group
 			if (groupIndex === -1) {
 				groups.push({
-					year: credit.year,
-					CreditGroup: [credit]
+					year: credit.year.toString(),
+					credits: [credit]
 				});
 			}
 		});
@@ -188,7 +190,7 @@ export class PersonService {
 	async getCreditGroup(personId: number) {
 		const { data } = await firstValueFrom(
 			this.httpService.get<TheOpenMovieDatabasePersonCombinedCreditGroup>(
-				`https://api.themoviedb.org/3/person/${personId}/combined_CreditGroup?language=en-U`,
+				`https://api.themoviedb.org/3/person/${personId}/combined_credits?language=en-U`,
 				{
 					headers: {
 						Accept: 'application/json',
@@ -204,6 +206,8 @@ export class PersonService {
 				type: 'cast'
 			}))
 		);
+
+		writeFileSync('ActingGroup.json', JSON.stringify(ActingGroup, null, 2));
 
 		const ProductionGroup = this.getGroupCreditGroup(
 			data.crew

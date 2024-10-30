@@ -8,7 +8,7 @@ type Person {
 	overview: String
 	placeOfBirth: String
 	posterUrl: String
-	creditGroup: CreditGroup
+	creditGroup: PersonCredits
 	social: Social
 	homepage: String
 }

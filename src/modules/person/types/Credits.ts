@@ -71,7 +71,7 @@ export interface TheOpenMovieDatabasePersonCombinedCreditGroup {
 export type Group =
 	| {
 			mediaType: 'tv';
-			year: number | '-';
+			year: string;
 			character: string;
 			title: string;
 			episodeCount: number;
@@ -79,14 +79,14 @@ export type Group =
 	  }
 	| {
 			mediaType: 'movie';
-			year: number | '-';
+			year: string;
 			character: string;
 			title: string;
 			type: 'cast';
 	  }
 	| {
 			mediaType: 'tv';
-			year: number | '-';
+			year: string;
 			character: string;
 			title: string;
 			episodeCount: number;
@@ -95,7 +95,7 @@ export type Group =
 	  }
 	| {
 			mediaType: 'movie';
-			year: number | '-';
+			year: string;
 			character: string;
 			title: string;
 			type: 'crew';
