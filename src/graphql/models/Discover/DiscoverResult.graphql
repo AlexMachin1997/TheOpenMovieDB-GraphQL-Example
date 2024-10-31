@@ -1,0 +1,23 @@
+type DiscoverResult {
+	adult: Boolean
+	backdropUrl: String
+	posterUrl: String
+	name: String
+	homepage: String
+	id: ID!
+	originCountry: [String]
+	originalLanguage: String
+	overview: String
+	releaseDate: String
+	popularity: Float
+	posterPath: String
+	status: String
+	tagline: String
+	voteAverage: Float
+	voteCount: Int
+}
+
+type PaginatedDiscoverResult implements PaginatedResult {
+	meta: PaginationMetaData!
+	results: [DiscoverResult!]!
+}

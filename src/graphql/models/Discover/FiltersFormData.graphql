@@ -1,0 +1,18 @@
+type DiscoverFormData {
+	sort_by: String
+	show_me: String
+	with_watch_monetization_types: [String]
+	with_genres: [String]
+	certifications: [String]
+	with_release_types: [String]
+	release_date: DateRangeFilter
+	air_date: DateRangeFilter
+	with_original_language: String
+	region: String
+	vote_average: NumberRangeFilter
+	with_runtime: NumberRangeFilter
+	vote_count: VoteCountFilter
+	search_first_air_date: Boolean
+	restrict_services: Boolean
+	with_ott_providers: [String]
+}

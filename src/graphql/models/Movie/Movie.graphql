@@ -1,0 +1,26 @@
+type Movie {
+	id: Int
+	name: String
+	overview: String
+	backgroundUrl: String
+	posterUrl: String
+	genres: [Genre]
+	homepage: String
+	originalLanguage: String
+	productionCompanies: [Company]
+	releaseDate: String
+	voteAverage: Float
+	status: String
+	review: Review
+	recommendations: [Recommendation]
+	keywords: [Keyword]
+	social: Social
+	topBilledCast: [Cast]
+	featuredCrew: [Crew]
+	youtubeVideo: Video
+	belongsToCollection: BelongsToCollection
+	tagline: String
+	runtime: String
+	budget: String
+	revenue: String
+}

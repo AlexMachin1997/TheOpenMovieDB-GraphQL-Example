@@ -1,0 +1,6 @@
+type Recommendation {
+	name: String
+	releaseDate: String
+	backgroundUrl: String
+	rating: Int
+}

@@ -1,4 +1,6 @@
 {
+	"scss.lint.unknownAtRules": "ignore",
+	"files.eol": "\n",
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
 	"editor.formatOnSave": true,
 	"editor.formatOnPaste": true,
@@ -9,19 +11,22 @@
 	"editor.acceptSuggestionOnCommitCharacter": false,
 	"editor.renderWhitespace": "boundary",
 	"editor.codeActionsOnSave": {
-		"source.fixAll.eslint": true
+		"source.fixAll.eslint": "explicit"
 	},
-	"editor.cursorSmoothCaretAnimation": true,
-	"editor.fontSize": 20,
+	"editor.cursorSmoothCaretAnimation": "on",
+	"editor.fontSize": 15,
+
 	"editor.minimap.enabled": false,
 	"editor.tabSize": 2,
 
 	"files.trimTrailingWhitespace": true,
 	"files.trimFinalNewlines": true,
 
-	"workbench.sideBar.location": "left",
+	"workbench.sideBar.location": "right",
 
 	"javascript.updateImportsOnFileMove.enabled": "always",
+
+	"typescript.validate.enable": true,
 
 	"files.autoSave": "off",
 	"files.exclude": {
@@ -42,10 +47,7 @@
 
 	"eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
 
-	"javascript.implicitProjectConfig.checkJs": true,
-
 	"breadcrumbs.enabled": true,
-	"grunt.autoDetect": "off",
 	"npm.runSilent": true,
 	"explorer.confirmDragAndDrop": true,
 
@@ -61,7 +63,10 @@
 
 	"files.associations": {
 		"*.react.js": "javascriptreact",
-		"*.jsx": "javascriptreact",
-		"*.js": "javascriptreact"
-	}
+		"*.jsx": "javascriptreact"
+	},
+	"terminal.integrated.fontSize": 15,
+	"screencastMode.fontSize": 59,
+	"scm.inputFontSize": 15,
+	"typescript.tsdk": "node_modules\\typescript\\lib"
 }

@@ -1,64 +1,50 @@
-# Job name
-name: Application Linting
+name: Lint
 
-# When the to run the greeting
 on: [pull_request, push]
 
-# Jobs to run for the action (You can have multiple actions in one file)
 jobs:
   run-linters:
-    # Job display name
-    name: Running the eslint checks
-
-    # Runs on a Linux based OS
+    name: Run linters
     runs-on: ubuntu-latest
+
+  # Run the job on Node 20 and 23 which better support modern testing frameworks
+    strategy:
+      matrix:
+        node-version: [20.x, 21.x, 23.x]
 
     # Steps involved for this particular task
     steps:
-      # Checks out the reporsitoy and enables the use of commands made avaliable in the project ie npm run
+      # Checks out the repository and enables the use of commands made available in the project ie npm run
       - name: Check out Git repository
         uses: actions/checkout@v2
 
-      # Setup Nodes on the versions specified in the matrix stratergy
-      - name: Set up Node.js version
+      - name: Set up Node.js version ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: ${{ matrix.node-version }}
 
-      # Cache the node_modules
-      - name: Cache node modules
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Set Yarn version
+        run: yarn set version 4.2.2
+
+      - name: Cache yarn dependencies
         uses: actions/cache@v2
-
-        # Defining the cache env config ie the key
         env:
-          cache-name: cache-node-modules
-
-        # Caching options (https://github.com/actions/cache)
+          cache-name: cache-yarn-dependencies
         with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: ~/.npm
-
-          # Key for caching the files initally
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-
-          # Restore keys
+          path: |
+            .yarn/cache
+            .yarn/unplugged
+            .yarn/build-state.yml
+            .yarn/install-state.gz
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+            ${{ runner.os }}-yarn-
 
-      # Installs all the project dependencies e.g. prettier, eslint etc via a custom project script
-      - name: Install Node.js dependencies
-        run: npm run allDependencies
+      - name: Install dependencies
+        run: yarn install
 
-      # Run the linting action
       - name: Run linters
-        uses: samuelmeuli/lint-action@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }} # Authorizes the github action via a Github token which is for this repo only (Generated automatically)
-          eslint: true # Enables eslint
-          prettier: true # Enables prettier to prettieifer the code when commiting and spots any violations
-          auto_fix: true # Auto fixes an prettier or eslint violations
-          git_name: 'TheOpenMovieDB-GraphQL-Example BOT'
-          git_email: 'AlexMachin1997@gmail.com'
-          commit_message: 'TheOpenMovieDB-GraphQL-Example BOT has fixed an eslint/prettier issue' # Might need removing if it causes the linting to break
+        run: yarn lint

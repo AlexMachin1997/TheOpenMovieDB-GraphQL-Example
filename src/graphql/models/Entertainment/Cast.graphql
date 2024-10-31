@@ -1,0 +1,7 @@
+type Cast {
+	id: Int
+	character: String
+	profileImageUrl: String
+	gender: String
+	episodeCount: Int
+}

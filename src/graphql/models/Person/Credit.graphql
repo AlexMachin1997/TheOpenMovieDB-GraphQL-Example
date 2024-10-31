@@ -1,0 +1,8 @@
+type Credit {
+	mediaType: String
+	year: String
+	title: String
+	episodeCount: String
+	role: String
+	department: String
+}

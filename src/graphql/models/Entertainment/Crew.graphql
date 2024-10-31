@@ -1,0 +1,4 @@
+type Crew {
+	name: String
+	roles: String
+}
