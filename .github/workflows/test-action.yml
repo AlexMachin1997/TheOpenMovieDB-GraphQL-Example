@@ -13,10 +13,10 @@ jobs:
     # Runs on a Linux based OS
     runs-on: ubuntu-latest
 
-    # Run the job on Node 18 and 20 which better support modern testing frameworks
+    # Run the job on Node 20 and 23 which better support modern testing frameworks
     strategy:
       matrix:
-        node-version: [18.x, 20.x]
+        node-version: [20.x, 21.x, 23.x]
 
     # Steps involved for this particular task
     steps:

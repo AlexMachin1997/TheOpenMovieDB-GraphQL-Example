@@ -7,11 +7,14 @@ jobs:
     name: Run linters
     runs-on: ubuntu-latest
 
+  # Run the job on Node 20 and 23 which better support modern testing frameworks
     strategy:
       matrix:
-        node-version: [18.x, 20.x]
+        node-version: [20.x, 21.x, 23.x]
 
+    # Steps involved for this particular task
     steps:
+      # Checks out the repository and enables the use of commands made available in the project ie npm run
       - name: Check out Git repository
         uses: actions/checkout@v2
 
@@ -44,4 +47,4 @@ jobs:
         run: yarn install
 
       - name: Run linters
-        run: yarn lint  # assumes you have a `lint` script in package.json for ESLint and Prettier
+        run: yarn lint
