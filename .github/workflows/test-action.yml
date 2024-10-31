@@ -8,15 +8,15 @@ on: [pull_request, push]
 jobs:
   test:
     # Job display name
-    name: Running the jest tests
+    name: Running Vitest tests
 
     # Runs on a Linux based OS
     runs-on: ubuntu-latest
 
-    # Run the job on 2 different versions of Node (12, 14)
+    # Run the job on Node 18 and 20 which better support modern testing frameworks
     strategy:
       matrix:
-        node-version: [12.x, 14.x]
+        node-version: [18.x, 20.x]
 
     # Steps involved for this particular task
     steps:
@@ -30,35 +30,36 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      # Cache the node_modules
-      - name: Cache node modules
+      # Enable Corepack for Yarn
+      - name: Enable Corepack
+        run: corepack enable
+
+      # Set Yarn version
+      - name: Set Yarn version
+        run: yarn set version 4.2.2
+
+      # Cache the yarn dependencies
+      - name: Cache yarn dependencies
         uses: actions/cache@v2
-
-        # Defining the cache env config ie the key
         env:
-          cache-name: cache-node-modules
-
-        # Caching options (https://github.com/actions/cache)
+          cache-name: cache-yarn-dependencies
         with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: ~/.npm
-
-          # Key for caching the files initally
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-
-          # Restore keys
+          path: |
+            .yarn/cache
+            .yarn/unplugged
+            .yarn/build-state.yml
+            .yarn/install-state.gz
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+            ${{ runner.os }}-yarn-
 
-      # Installs all the project dependencies e.g. prettier, eslint etc via a custom project script
-      - name: Install Node.js dependencies
-        run: npm run allDependencies
+      # Install dependencies using Yarn
+      - name: Install dependencies
+        run: yarn install
 
-      # Run the react-testing-library tests
+      # Run the Vitest tests
       - name: Run all tests
         env:
           OPEN_MOVIE_DB_API_URI: ${{ secrets.OPEN_MOVIE_DB_API_URI }}
           OPEN_MOVIE_DB_API_KEY: ${{ secrets.OPEN_MOVIE_DB_API_KEY }}
-        run: npm run test
+        run: yarn test

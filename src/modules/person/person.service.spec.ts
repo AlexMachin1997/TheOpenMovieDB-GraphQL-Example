@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AxiosRequestHeaders } from 'axios';
 import { of } from 'rxjs';
+import { describe, it, expect, beforeEach, vi, beforeAll, afterAll } from 'vitest';
 
 import personCreditsMockData from './mocks/CombinedCreditsQuery';
 import getCreditGroupResponse from './mocks/GetCreditGroupResponse';
@@ -25,26 +26,26 @@ describe('PersonService', () => {
 				{
 					provide: HttpService,
 					useValue: {
-						get: jest.fn().mockImplementation(() => of({ data: personMockData }))
+						get: vi.fn().mockImplementation(() => of({ data: personMockData }))
 					}
 				},
 				{
 					provide: ConfigService,
 					useValue: {
-						get: jest.fn()
+						get: vi.fn()
 					}
 				},
 				{
 					provide: UtilsService,
 					useValue: {
-						getGender: jest.fn(),
-						getFullImageUrlPath: jest.fn()
+						getGender: vi.fn(),
+						getFullImageUrlPath: vi.fn()
 					}
 				},
 				{
 					provide: SocialsService,
 					useValue: {
-						getSocials: jest.fn()
+						getSocials: vi.fn()
 					}
 				}
 			]
@@ -66,7 +67,7 @@ describe('PersonService', () => {
 			expect.hasAssertions();
 			const personId = 1245;
 
-			jest.spyOn(httpService, 'get').mockReturnValueOnce(
+			vi.spyOn(httpService, 'get').mockReturnValueOnce(
 				of({
 					data: personMockData,
 					status: 200,
@@ -77,10 +78,10 @@ describe('PersonService', () => {
 					}
 				})
 			);
-			jest.spyOn(utilsService, 'getGender').mockReturnValueOnce('Female');
-			jest
-				.spyOn(utilsService, 'getFullImageUrlPath')
-				.mockReturnValueOnce('https://image.tmdb.org/t/p/original/6NsMbJXRlDZuDzatN2akFdGuTvx.jpg');
+			vi.spyOn(utilsService, 'getGender').mockReturnValueOnce('Female');
+			vi.spyOn(utilsService, 'getFullImageUrlPath').mockReturnValueOnce(
+				'https://image.tmdb.org/t/p/original/6NsMbJXRlDZuDzatN2akFdGuTvx.jpg'
+			);
 
 			const result = await service.getPerson(personId);
 
@@ -111,7 +112,7 @@ describe('PersonService', () => {
 			expect.hasAssertions();
 			const personId = 1245;
 
-			jest.spyOn(httpService, 'get').mockReturnValueOnce(
+			vi.spyOn(httpService, 'get').mockReturnValueOnce(
 				of({
 					data: personCreditsMockData,
 					status: 200,
@@ -152,12 +153,12 @@ describe('PersonService', () => {
 		beforeAll(() => {
 			// Mock current date to 2024-01-01
 			mockDate = new Date('2024-01-01');
-			jest.useFakeTimers();
-			jest.setSystemTime(mockDate);
+			vi.useFakeTimers();
+			vi.setSystemTime(mockDate);
 		});
 
 		afterAll(() => {
-			jest.useRealTimers();
+			vi.useRealTimers();
 		});
 
 		it('should return formatted birthday string with age', () => {
@@ -185,7 +186,7 @@ describe('PersonService', () => {
 			};
 
 			// Mock the getSocials method
-			const getSocialsMock = jest
+			const getSocialsMock = vi
 				.spyOn(socialsService, 'getSocials')
 				.mockResolvedValueOnce(mockSocials);
 

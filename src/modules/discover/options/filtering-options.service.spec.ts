@@ -1,5 +1,6 @@
 /* eslint-disable no-plusplus */
 import { Test, TestingModule } from '@nestjs/testing';
+import { describe, it, expect, beforeEach } from 'vitest';
 
 import { FilteringOptionsService } from './filtering-options.service';
 

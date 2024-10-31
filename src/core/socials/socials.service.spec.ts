@@ -2,6 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { of } from 'rxjs';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import { SocialsService } from './socials.service';
 import { ENTERTAINMENT_TYPES } from '../../graphql/generated/schema';
@@ -10,11 +11,11 @@ describe('SocialsService', () => {
 	let service: SocialsService;
 
 	const mockHttpService = {
-		get: jest.fn()
+		get: vi.fn()
 	};
 
 	const mockConfigService = {
-		get: jest.fn()
+		get: vi.fn()
 	};
 
 	beforeEach(async () => {
@@ -33,7 +34,7 @@ describe('SocialsService', () => {
 		}).compile();
 
 		service = module.get<SocialsService>(SocialsService);
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	});
 
 	it('should be defined', () => {

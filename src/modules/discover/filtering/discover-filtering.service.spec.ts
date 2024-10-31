@@ -1,6 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import { DiscoverFilteringService } from './discover-filtering.service';
 import { ENTERTAINMENT_TYPES } from '../../../graphql/generated/schema';
@@ -11,20 +12,20 @@ describe('DiscoverFilteringService', () => {
 	let service: DiscoverFilteringService;
 
 	const mockHttpService = {
-		get: jest.fn()
+		get: vi.fn()
 	};
 
 	const mockConfigService = {
-		get: jest.fn()
+		get: vi.fn()
 	};
 
 	const mockUtilsService = {
-		getFullImageUrlPath: jest.fn()
+		getFullImageUrlPath: vi.fn()
 	};
 
 	const mockFilteringOptionsService = {
-		getAvailabilityOptions: jest.fn(),
-		getReleaseTypeOptions: jest.fn()
+		getAvailabilityOptions: vi.fn(),
+		getReleaseTypeOptions: vi.fn()
 	};
 
 	beforeEach(async () => {

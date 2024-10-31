@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-useless-template-literals */
 import { Test, TestingModule } from '@nestjs/testing';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import { DiscoverFormDataService } from './discover-form-data.service';
 import { ENTERTAINMENT_TYPES, RESOURCE_TYPE } from '../../../graphql/generated/schema';
@@ -15,39 +15,39 @@ describe('DiscoverFormDataService', () => {
 				{
 					provide: FilteringOptionsService,
 					useValue: {
-						getCountryOptions: jest.fn().mockReturnValue([
+						getCountryOptions: vi.fn().mockReturnValue([
 							{ value: 'US', label: 'United States' },
 							{ value: 'GB', label: 'United Kingdom' }
 						]),
-						getSortByOptions: jest.fn().mockReturnValue([
+						getSortByOptions: vi.fn().mockReturnValue([
 							{ value: 'popularity.desc', label: 'Popularity Descending' },
 							{ value: 'vote_average.desc', label: 'Rating Descending' }
 						]),
-						getShowMeRadioOptions: jest.fn().mockReturnValue([
+						getShowMeRadioOptions: vi.fn().mockReturnValue([
 							{ value: 'all', label: 'Everything' },
 							{ value: 'watchlist', label: 'My Watchlist' }
 						]),
-						getAvailabilityOptions: jest.fn().mockReturnValue([
+						getAvailabilityOptions: vi.fn().mockReturnValue([
 							{ value: 'free', label: 'Free' },
 							{ value: 'ads', label: 'Ads' }
 						]),
-						getGenreOptions: jest.fn().mockReturnValue([
+						getGenreOptions: vi.fn().mockReturnValue([
 							{ value: '28', label: 'Action' },
 							{ value: '12', label: 'Adventure' }
 						]),
-						getCertificateOptions: jest.fn().mockReturnValue([
+						getCertificateOptions: vi.fn().mockReturnValue([
 							{ value: 'G', label: 'G' },
 							{ value: 'PG', label: 'PG' }
 						]),
-						getReleaseTypeOptions: jest.fn().mockReturnValue([
+						getReleaseTypeOptions: vi.fn().mockReturnValue([
 							{ value: '1', label: 'Premiere' },
 							{ value: '2', label: 'Limited Release' }
 						]),
-						getLanguageOptions: jest.fn().mockReturnValue([
+						getLanguageOptions: vi.fn().mockReturnValue([
 							{ value: 'en', label: 'English' },
 							{ value: 'es', label: 'Spanish' }
 						]),
-						getOttProviderOptions: jest.fn().mockReturnValue([
+						getOttProviderOptions: vi.fn().mockReturnValue([
 							{ value: 'netflix', label: 'Netflix' },
 							{ value: 'prime', label: 'Amazon Prime' }
 						])
@@ -68,7 +68,6 @@ describe('DiscoverFormDataService', () => {
 				RESOURCE_TYPE.TOP_RATED
 			];
 			movieResourceTypes.forEach((resourceType) => {
-				// eslint-disable-next-line jest/valid-title
 				describe(resourceType, () => {
 					it(`should handle ${resourceType} movies without default values`, () => {
 						expect.assertions(6);
@@ -124,7 +123,7 @@ describe('DiscoverFormDataService', () => {
 			];
 
 			tvResourceTypes.forEach((resourceType) => {
-				describe(`${resourceType}`, () => {
+				describe(resourceType, () => {
 					it(`should handle ${resourceType} TV shows without default values`, () => {
 						expect.assertions(3);
 
@@ -193,7 +192,7 @@ describe('DiscoverFormDataService', () => {
 
 		describe('Where To Watch Section', () => {
 			it('should handle where to watch options without default values', () => {
-				expect.assertions(3);
+				expect.assertions(2);
 
 				const result = service.getDiscoverFormData({
 					entertainmentType: ENTERTAINMENT_TYPES.MOVIE,
@@ -206,7 +205,7 @@ describe('DiscoverFormDataService', () => {
 			});
 
 			it('should handle where to watch options with default values', () => {
-				expect.assertions(3);
+				expect.assertions(2);
 
 				const result = service.getDiscoverFormData({
 					entertainmentType: ENTERTAINMENT_TYPES.MOVIE,

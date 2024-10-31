@@ -2,6 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { of } from 'rxjs';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import { EntertainmentService } from './entertainment.service';
 import {
@@ -19,21 +20,21 @@ describe('EntertainmentService', () => {
 	let service: EntertainmentService;
 
 	const mockHttpService = {
-		get: jest.fn()
+		get: vi.fn()
 	};
 
 	const mockConfigService = {
-		get: jest.fn()
+		get: vi.fn()
 	};
 
 	const mockUtilsService = {
-		getFullImageUrlPath: jest.fn(),
-		getNumberAsPercentage: jest.fn(),
-		getGender: jest.fn()
+		getFullImageUrlPath: vi.fn(),
+		getNumberAsPercentage: vi.fn(),
+		getGender: vi.fn()
 	};
 
 	const mockSocialsService = {
-		getSocials: jest.fn()
+		getSocials: vi.fn()
 	};
 
 	beforeEach(async () => {
@@ -60,7 +61,7 @@ describe('EntertainmentService', () => {
 		}).compile();
 
 		service = module.get<EntertainmentService>(EntertainmentService);
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	});
 
 	it('should be defined', () => {

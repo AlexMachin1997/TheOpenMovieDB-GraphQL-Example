@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AxiosRequestHeaders } from 'axios';
 import { of } from 'rxjs';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import { MovieService } from './movie.service';
 import { EntertainmentService } from '../../core/entertainment/entertainment.service';
@@ -88,7 +89,7 @@ describe('MovieService', () => {
 				{
 					provide: HttpService,
 					useValue: {
-						get: jest.fn().mockReturnValue(
+						get: vi.fn().mockReturnValue(
 							of({
 								data: mockMovieResponse,
 								status: 200,
@@ -104,32 +105,32 @@ describe('MovieService', () => {
 				{
 					provide: UtilsService,
 					useValue: {
-						getFullImageUrlPath: jest.fn().mockReturnValue('http://image.url'),
-						convertNumberToLocalCurrency: jest.fn().mockReturnValue('$100,000,000')
+						getFullImageUrlPath: vi.fn().mockReturnValue('http://image.url'),
+						convertNumberToLocalCurrency: vi.fn().mockReturnValue('$100,000,000')
 					}
 				},
 				{
 					provide: EntertainmentService,
 					useValue: {
-						getOriginalLanguage: jest.fn().mockReturnValue('English'),
-						getCollection: jest.fn().mockReturnValue({
+						getOriginalLanguage: vi.fn().mockReturnValue('English'),
+						getCollection: vi.fn().mockReturnValue({
 							id: 448150,
 							name: 'Deadpool Collection',
 							posterUrl: 'http://image.url',
 							backgroundUrl: 'http://image.url'
 						}),
-						getReview: jest.fn(),
-						getTopBilledCast: jest.fn(),
-						getFeaturedCrewMembers: jest.fn(),
-						getKeywords: jest.fn(),
-						getSocials: jest.fn(),
-						getYouTubeVideo: jest.fn()
+						getReview: vi.fn(),
+						getTopBilledCast: vi.fn(),
+						getFeaturedCrewMembers: vi.fn(),
+						getKeywords: vi.fn(),
+						getSocials: vi.fn(),
+						getYouTubeVideo: vi.fn()
 					}
 				},
 				{
 					provide: ConfigService,
 					useValue: {
-						get: jest.fn()
+						get: vi.fn()
 					}
 				}
 			]
@@ -149,7 +150,7 @@ describe('MovieService', () => {
 	describe('getMovie', () => {
 		it('should return transformed movie data', async () => {
 			expect.hasAssertions();
-			jest.spyOn(httpService, 'get').mockReturnValueOnce(
+			vi.spyOn(httpService, 'get').mockReturnValueOnce(
 				of({
 					data: mockMovieResponse,
 					status: 200,
@@ -161,9 +162,9 @@ describe('MovieService', () => {
 				})
 			);
 
-			jest.spyOn(utilsService, 'getFullImageUrlPath').mockReturnValue('http://image.url');
-			jest.spyOn(entertainmentService, 'getOriginalLanguage').mockReturnValue('English');
-			jest.spyOn(entertainmentService, 'getCollection').mockReturnValue({
+			vi.spyOn(utilsService, 'getFullImageUrlPath').mockReturnValue('http://image.url');
+			vi.spyOn(entertainmentService, 'getOriginalLanguage').mockReturnValue('English');
+			vi.spyOn(entertainmentService, 'getCollection').mockReturnValue({
 				id: 448150,
 				name: 'Deadpool Collection',
 				posterUrl: 'http://image.url',

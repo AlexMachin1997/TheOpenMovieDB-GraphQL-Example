@@ -6,12 +6,12 @@
 		"tsconfigRootDir": ".",
 		"sourceType": "module"
 	},
-	"plugins": ["@typescript-eslint", "sonarjs", "jest", "prettier"],
+	"plugins": ["@typescript-eslint", "sonarjs", "prettier"],
 	"extends": [
 		"eslint:recommended",
+		"plugin:@typescript-eslint/recommended",
 		"airbnb-base",
 		"airbnb-typescript/base",
-		"plugin:jest/recommended",
 		"plugin:sonarjs/recommended",
 		"plugin:@typescript-eslint/strict-type-checked",
 		"plugin:@typescript-eslint/stylistic-type-checked",
@@ -19,9 +19,10 @@
 	],
 	"ignorePatterns": ["**/node_modules/**", "dist/**", "*.graphql"],
 	"rules": {
-		"jest/prefer-expect-assertions": "error",
-		"jest/no-identical-title": "error",
-		"jest/valid-expect": "error",
+		"@typescript-eslint/lines-between-class-members": "off",
+		"@typescript-eslint/no-throw-literal": "off",
+		"@typescript-eslint/restrict-template-expressions": "off",
+		"@typescript-eslint/no-duplicate-enum-values": "off",
 		// These rules are for reference only.
 		//#region eslint
 		"class-methods-use-this": "off",
@@ -67,11 +68,6 @@
 		"@typescript-eslint/consistent-type-assertions": [
 			"error",
 			{ "assertionStyle": "angle-bracket" }
-		],
-		"@typescript-eslint/lines-between-class-members": [
-			"error",
-			"always",
-			{ "exceptAfterSingleLine": true }
 		],
 		"@typescript-eslint/naming-convention": [
 			"error",

@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AxiosResponse, AxiosRequestHeaders } from 'axios';
 import { of } from 'rxjs';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import { ShowService } from './show.service';
 import { ITheOpenMovieDatabaseShow, IAggregatedCreditGroupQueryResponse } from './types';
@@ -107,33 +108,33 @@ describe('ShowService', () => {
 				{
 					provide: HttpService,
 					useValue: {
-						get: jest.fn()
+						get: vi.fn()
 					}
 				},
 				{
 					provide: UtilsService,
 					useValue: {
-						getFullImageUrlPath: jest.fn(),
-						getNumberAsPercentage: jest.fn()
+						getFullImageUrlPath: vi.fn(),
+						getNumberAsPercentage: vi.fn()
 					}
 				},
 				{
 					provide: EntertainmentService,
 					useValue: {
-						getOriginalLanguage: jest.fn(),
-						getCollection: jest.fn(),
-						getReview: jest.fn(),
-						getTopBilledCast: jest.fn(),
-						getFeaturedCrewMembers: jest.fn(),
-						getKeywords: jest.fn(),
-						getSocials: jest.fn(),
-						getYouTubeVideo: jest.fn()
+						getOriginalLanguage: vi.fn(),
+						getCollection: vi.fn(),
+						getReview: vi.fn(),
+						getTopBilledCast: vi.fn(),
+						getFeaturedCrewMembers: vi.fn(),
+						getKeywords: vi.fn(),
+						getSocials: vi.fn(),
+						getYouTubeVideo: vi.fn()
 					}
 				},
 				{
 					provide: ConfigService,
 					useValue: {
-						get: jest.fn()
+						get: vi.fn()
 					}
 				}
 			]
@@ -163,14 +164,14 @@ describe('ShowService', () => {
 				}
 			};
 
-			jest.spyOn(httpService, 'get').mockReturnValueOnce(of(mockAxiosResponse));
+			vi.spyOn(httpService, 'get').mockReturnValueOnce(of(mockAxiosResponse));
 
-			jest
-				.spyOn(utilsService, 'getFullImageUrlPath')
-				.mockImplementation((path) => `https://image.tmdb.org/t/p/original${path}`);
+			vi.spyOn(utilsService, 'getFullImageUrlPath').mockImplementation(
+				(path) => `https://image.tmdb.org/t/p/original${path}`
+			);
 
-			jest.spyOn(entertainmentService, 'getOriginalLanguage').mockReturnValue('English');
-			jest.spyOn(entertainmentService, 'getCollection').mockReturnValue(null);
+			vi.spyOn(entertainmentService, 'getOriginalLanguage').mockReturnValue('English');
+			vi.spyOn(entertainmentService, 'getCollection').mockReturnValue(null);
 
 			const result = await service.getShow(63247);
 
@@ -210,7 +211,7 @@ describe('ShowService', () => {
 	describe('getReview', () => {
 		it('should call entertainment service getReview with correct params', async () => {
 			expect.hasAssertions();
-			const spy = jest.spyOn(entertainmentService, 'getReview');
+			const spy = vi.spyOn(entertainmentService, 'getReview');
 			await service.getReview(63247);
 
 			expect(spy).toHaveBeenCalledWith({
@@ -265,8 +266,8 @@ describe('ShowService', () => {
 				}
 			};
 
-			jest.spyOn(entertainmentService, 'getTopBilledCast').mockResolvedValue(mockTopBilledCast);
-			jest.spyOn(httpService, 'get').mockReturnValueOnce(of(mockAxiosResponse));
+			vi.spyOn(entertainmentService, 'getTopBilledCast').mockResolvedValue(mockTopBilledCast);
+			vi.spyOn(httpService, 'get').mockReturnValueOnce(of(mockAxiosResponse));
 
 			const result = await service.getTopBilledCast(63247);
 
