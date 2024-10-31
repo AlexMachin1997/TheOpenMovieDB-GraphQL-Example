@@ -15,41 +15,42 @@ jobs:
 
     # Steps involved for this particular task
     steps:
-      # Checks out the reporsitoy and enables the use of commands made avaliable in the project ie npm run
+      # Checks out the repository and enables the use of commands made available in the project ie npm run
       - name: Check out Git repository
         uses: actions/checkout@v2
 
-      # Setup Nodes on the versions specified in the matrix stratergy
-      - name: Set up Node.js version
+      # Setup Nodes on the versions specified in the matrix strategy
+      - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 20.x
 
-      # Cache the node_modules
-      - name: Cache node modules
+      # Enable Corepack for Yarn
+      - name: Enable Corepack
+        run: corepack enable
+
+      # Set Yarn version
+      - name: Set Yarn version
+        run: yarn set version 4.2.2
+
+      # Cache the yarn dependencies
+      - name: Cache yarn dependencies
         uses: actions/cache@v2
-
-        # Defining the cache env config ie the key
         env:
-          cache-name: cache-node-modules
-
-        # Caching options (https://github.com/actions/cache)
+          cache-name: cache-yarn-dependencies
         with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: ~/.npm
-
-          # Key for caching the files initally
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-
-          # Restore keys
+          path: |
+            .yarn/cache
+            .yarn/unplugged
+            .yarn/build-state.yml
+            .yarn/install-state.gz
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+            ${{ runner.os }}-yarn-
 
-      # Installs all the project dependencies e.g. prettier, eslint etc via a custom project script
-      - name: Install Node.js dependencies
-        run: npm run allDependencies
+      # Install dependencies using Yarn
+      - name: Install dependencies
+        run: yarn install
 
       # Run the linting action
       - name: Run linters
