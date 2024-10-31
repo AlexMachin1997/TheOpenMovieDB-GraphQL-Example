@@ -1,65 +1,35 @@
-# Job name
-name: Application Linting
+name: Lint
 
-# When the to run the greeting
-on: [pull_request, push]
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the main branch
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
-# Jobs to run for the action (You can have multiple actions in one file)
 jobs:
   run-linters:
-    # Job display name
-    name: Running the eslint checks
-
-    # Runs on a Linux based OS
+    name: Run linters
     runs-on: ubuntu-latest
 
-    # Steps involved for this particular task
     steps:
-      # Checks out the repository and enables the use of commands made available in the project ie npm run
       - name: Check out Git repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      # Setup Nodes on the versions specified in the matrix strategy
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 20.x
+          node-version: 12
 
-      # Enable Corepack for Yarn
-      - name: Enable Corepack
-        run: corepack enable
+      # ESLint and Prettier must be in `package.json`
+      - name: Install Node.js dependencies
+        run: npm ci
 
-      # Set Yarn version
-      - name: Set Yarn version
-        run: yarn set version 4.2.2
-
-      # Cache the yarn dependencies
-      - name: Cache yarn dependencies
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-yarn-dependencies
-        with:
-          path: |
-            .yarn/cache
-            .yarn/unplugged
-            .yarn/build-state.yml
-            .yarn/install-state.gz
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
-      # Install dependencies using Yarn
-      - name: Install dependencies
-        run: yarn install
-
-      # Run the linting action
       - name: Run linters
-        uses: samuelmeuli/lint-action@v1
+        uses: wearerequired/lint-action@v2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }} # Authorizes the github action via a Github token which is for this repo only (Generated automatically)
-          eslint: true # Enables eslint
-          prettier: true # Enables prettier to prettieifer the code when commiting and spots any violations
-          auto_fix: true # Auto fixes an prettier or eslint violations
-          git_name: 'TheOpenMovieDB-GraphQL-Example BOT'
-          git_email: 'AlexMachin1997@gmail.com'
-          commit_message: 'TheOpenMovieDB-GraphQL-Example BOT has fixed an eslint/prettier issue' # Might need removing if it causes the linting to break
+          eslint: true
+          prettier: true
